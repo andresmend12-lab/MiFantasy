@@ -706,39 +706,6 @@ export default function FantasyTeamDashboard() {
             />
           </Card>
 
-          <Card
-            title="Jugadores en mi equipo"
-            className="md:col-span-2 xl:col-span-2"
-          >
-            <div className="flex flex-wrap gap-2">
-              {myTeam.length === 0 && (
-                <span className="text-gray-500">
-                  Añade jugadores desde el buscador
-                </span>
-              )}
-              {teamPlayers.map((p) => (
-                <span
-                  key={p.name}
-                  className="relative px-3 py-1 rounded-full bg-white border shadow-sm text-sm flex items-center gap-2"
-                >
-                  {p.name}
-                  <SaleControl
-                    player={p}
-                    onSell={(value) => sellPlayer(p, value)}
-                    align="left"
-                  />
-                  <button
-                    className="text-gray-500 hover:text-red-600"
-                    onClick={() => removeFromTeam(p.name)}
-                    aria-label={`Quitar ${p.name}`}
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
-            </div>
-          </Card>
-
           <Card title="Añadir jugador" className="md:col-span-2 xl:col-span-2">
             <input
               type="text"

@@ -110,6 +110,7 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.queryByText("Aarón EscandellAarón")).not.toBeInTheDocument();
     expect(await screen.findByText("Iñaki Williams")).toBeInTheDocument();
     expect(screen.queryByText("Iñaki WilliamsI. Williams")).not.toBeInTheDocument();
+    expect(screen.queryByText("Jugadores en mi equipo")).not.toBeInTheDocument();
   });
 
   it("calcula ganancias, rentabilidad y puntos del equipo", async () => {
