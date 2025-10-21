@@ -22,6 +22,14 @@ describe("FantasyTeamDashboard", () => {
             diff_7: 0,
             points_avg: "4,5",
             points_last5: "4,8",
+            points_history: [
+              { matchday: 1, points: 3.2 },
+              { matchday: 2, points: 4.1 },
+              { matchday: 3, points: 4.6 },
+              { matchday: 4, points: 5.2 },
+              { matchday: 5, points: 4.9 },
+              { matchday: 6, points: 4.3 },
+            ],
           },
           {
             id: 2,
@@ -32,8 +40,16 @@ describe("FantasyTeamDashboard", () => {
             value: "2345678",
             diff_1: 0,
             diff_7: 0,
-            points_avg: "6,3",
-            points_last5: "7,1",
+            points_avg: null,
+            points_last5: null,
+            points_history: [
+              { matchday: 10, points: 6.5 },
+              { matchday: 11, points: 7.0 },
+              { matchday: 12, points: 8.5 },
+              { matchday: 13, points: 3.5 },
+              { matchday: 14, points: 9.0 },
+              { matchday: 15, points: 6.0 },
+            ],
           },
           {
             id: 3,
@@ -46,6 +62,11 @@ describe("FantasyTeamDashboard", () => {
             diff_7: 0,
             points_avg: "3,4",
             points_last5: "3,9",
+            points_history: [
+              { matchday: 8, points: 2.5 },
+              { matchday: 9, points: 3.1 },
+              { matchday: 10, points: 4.0 },
+            ],
           },
           {
             id: 4,
@@ -58,6 +79,12 @@ describe("FantasyTeamDashboard", () => {
             diff_7: 0,
             points_avg: "5,9",
             points_last5: "6,8",
+            points_history: [
+              { matchday: 10, points: 6.1 },
+              { matchday: 11, points: 5.4 },
+              { matchday: 12, points: 7.2 },
+              { matchday: 13, points: 6.8 },
+            ],
           },
         ],
       }),
@@ -106,7 +133,10 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.getByTestId("total-buy")).toHaveTextContent("3.000.000");
     expect(screen.getByTestId("total-gain")).toHaveTextContent("-654.322");
     expect(screen.getByTestId("total-roi")).toHaveTextContent("-21,81%");
-    expect(screen.getByTestId("team-avg")).toHaveTextContent("6,3");
-    expect(screen.getByTestId("team-avg5")).toHaveTextContent("7,1");
+    expect(screen.getByTestId("team-avg")).toHaveTextContent("6,8");
+    expect(screen.getByTestId("team-avg5")).toHaveTextContent("6,8");
+
+    expect(await screen.findByText("J15: 6,0")).toBeInTheDocument();
+    expect(screen.getByText("J14: 9,0")).toBeInTheDocument();
   });
 });

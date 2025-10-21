@@ -175,15 +175,94 @@ const toOptionalNumber = (value) => {
   return Number.isFinite(num) ? num : null;
 };
 
-const normalizePlayer = (player) => ({
-  ...player,
-  name: sanitizeName(player?.name),
-  team: normalizeText(player?.team),
-  position: normalizeText(player?.position),
-  value: toNumber(player?.value),
-  change_day: toNumber(player?.change_day ?? player?.diff_1),
-  change_week: toNumber(player?.change_week ?? player?.diff_7),
-  points_avg: toOptionalNumber(
+const normalizePointsHistory = (value) => {
+  if (!value) return [];
+  const source = Array.isArray(value) ? value : [value];
+  const entries = new Map();
+
+  source.forEach((item, index) => {
+    if (item == null) return;
+    if (typeof item === "object" && !Array.isArray(item)) {
+      const rawMatchday =
+        item.matchday ??
+        item.jornada ??
+        item.round ??
+        item.day ??
+        item.gw ??
+        item.match ??
+        item.index ??
+        item.id ??
+        index + 1;
+      const matchday = Number(rawMatchday);
+      if (!Number.isFinite(matchday) || matchday <= 0) return;
+      const pointsValue = toOptionalNumber(
+        item.points ??
+          item.puntos ??
+          item.score ??
+          item.value ??
+          item.valor ??
+          item.total ??
+          item.result
+      );
+      if (pointsValue === null) return;
+      entries.set(matchday, { matchday, points: Number(pointsValue) });
+      return;
+    }
+
+    if (Array.isArray(item) && item.length >= 2) {
+      const matchday = Number(item[0]);
+      const pointsValue = toOptionalNumber(item[1]);
+      if (!Number.isFinite(matchday) || matchday <= 0) return;
+      if (pointsValue === null) return;
+      entries.set(matchday, { matchday, points: Number(pointsValue) });
+      return;
+    }
+
+    if (typeof item === "number") {
+      if (!Number.isFinite(item)) return;
+      const matchday = index + 1;
+      entries.set(matchday, { matchday, points: Number(item) });
+      return;
+    }
+
+    if (typeof item === "string") {
+      const match = item.match(
+        /(?:j(?:or(?:nada)?)?|gw|md)?\s*(\d{1,3})[^0-9+\-]*([-+]?\d+(?:[.,]\d+)?)/i
+      );
+      if (!match) return;
+      const matchday = Number(match[1]);
+      const pointsValue = toOptionalNumber(match[2]);
+      if (!Number.isFinite(matchday) || matchday <= 0) return;
+      if (pointsValue === null) return;
+      entries.set(matchday, { matchday, points: Number(pointsValue) });
+    }
+  });
+
+  return Array.from(entries.values()).sort((a, b) => a.matchday - b.matchday);
+};
+
+const historyAverage = (history, lastCount = null) => {
+  if (!history.length) return null;
+  const items =
+    lastCount && lastCount > 0 ? history.slice(-lastCount) : history.slice();
+  const values = items
+    .map((item) => toOptionalNumber(item.points))
+    .filter((value) => value !== null);
+  if (!values.length) return null;
+  const sum = values.reduce((acc, value) => acc + value, 0);
+  return sum / values.length;
+};
+
+const normalizePlayer = (player) => {
+  const history = normalizePointsHistory(
+    player?.points_history ??
+      player?.pointsHistory ??
+      player?.matchday_points ??
+      player?.pointsByMatchday ??
+      player?.pointsByRound
+  );
+
+  const directAvg = toOptionalNumber(
     player?.points_avg ??
       player?.avg_points ??
       player?.average_points ??
@@ -191,8 +270,9 @@ const normalizePlayer = (player) => ({
       player?.media_jornada ??
       player?.avg_jornada ??
       player?.points_per_matchday
-  ),
-  points_last5: toOptionalNumber(
+  );
+
+  const directLast5 = toOptionalNumber(
     player?.points_last5 ??
       player?.avg_points_last5 ??
       player?.average_points_last5 ??
@@ -200,8 +280,24 @@ const normalizePlayer = (player) => ({
       player?.media5 ??
       player?.media_reciente ??
       player?.recent_average
-  ),
-});
+  );
+
+  const avgFromHistory = directAvg ?? historyAverage(history);
+  const last5FromHistory = directLast5 ?? historyAverage(history, 5);
+
+  return {
+    ...player,
+    name: sanitizeName(player?.name),
+    team: normalizeText(player?.team),
+    position: normalizeText(player?.position),
+    value: toNumber(player?.value),
+    change_day: toNumber(player?.change_day ?? player?.diff_1),
+    change_week: toNumber(player?.change_week ?? player?.diff_7),
+    points_history: history,
+    points_avg: avgFromHistory,
+    points_last5: last5FromHistory,
+  };
+};
 
 const sanitizeStoredTeam = (entries) => {
   if (!Array.isArray(entries)) return [];
@@ -566,6 +662,7 @@ export default function FantasyTeamDashboard() {
                   <Th className="text-right">Δ semana</Th>
                   <Th className="text-right">Media</Th>
                   <Th className="text-right">Media (5)</Th>
+                  <Th className="text-right">Historial (5)</Th>
                 </tr>
               </thead>
               <tbody>
@@ -639,6 +736,24 @@ export default function FantasyTeamDashboard() {
                       {p.points_last5 !== null
                         ? pointsFormatter.format(p.points_last5)
                         : "—"}
+                    </Td>
+                    <Td className="text-right text-gray-700">
+                      {p.points_history.length ? (
+                        <div className="flex flex-wrap justify-end gap-1">
+                          {p.points_history
+                            .slice(-5)
+                            .map(({ matchday, points }) => (
+                              <span
+                                key={matchday}
+                                className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
+                              >
+                                {`J${matchday}: ${pointsFormatter.format(points)}`}
+                              </span>
+                            ))}
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">—</span>
+                      )}
                     </Td>
                   </tr>
                 ))}
