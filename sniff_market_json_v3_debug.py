@@ -58,8 +58,56 @@ def dedupe_repeated_words(text: str | None) -> str:
     return " ".join(cleaned)
 
 
+def dedupe_repeated_suffix(text: str | None) -> str:
+    """
+    Elimina repeticiones consecutivas del bloque final aunque no exista un separador.
+
+    Casos:
+      - "Pau CubarsíCubarsí" -> "Pau Cubarsí"
+      - "Paulo GazzanigaGazzaniga" -> "Paulo Gazzaniga"
+      - "Robin Le NormandLe Normand" -> "Robin Le Normand"
+
+    Se ignoran duplicados triviales (p.ej. "Lala") al exigir bloques de tamaño
+    razonable o con mayúsculas/espacios.
+    """
+
+    s = normalize_name_text(text)
+    if not s:
+        return ""
+
+    def is_candidate_chunk(chunk: str) -> bool:
+        if len(chunk.strip()) < 3:
+            return False
+        if any(c.isupper() for c in chunk):
+            return True
+        if any(sep in chunk for sep in [" ", "-", "'", "’"]):
+            return True
+        return False
+
+    while True:
+        lowered = s.casefold()
+        found = False
+        for size in range(len(s) // 2, 0, -1):
+            chunk = s[-size:]
+            if not is_candidate_chunk(chunk):
+                continue
+            suffix = lowered[-size:]
+            if lowered.endswith(suffix * 2):
+                s = s[:-size].rstrip()
+                found = True
+                break
+        if not found:
+            break
+
+    return normalize_name_text(s)
+
+
 def clean_name_candidate(text: str | None) -> str:
-    return normalize_name_text(dedupe_repeated_words(dedupe_double_text(text)))
+    return dedupe_repeated_suffix(
+        dedupe_repeated_words(
+            dedupe_double_text(text)
+        )
+    )
 
 def maybe_accept_cookies(page):
     sels = [

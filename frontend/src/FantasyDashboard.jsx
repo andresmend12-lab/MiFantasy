@@ -30,12 +30,41 @@ const dedupeConsecutiveWords = (value) => {
     .join(" ");
 };
 
+const dedupeTrailingBlock = (value) => {
+  const base = collapseWhitespace(normalizeText(value));
+  if (!base) return "";
+
+  const hasUpperOrSeparator = (chunk) =>
+    /[A-ZÁÉÍÓÚÜÑ]/.test(chunk) || /[ \-'\u2019]/.test(chunk);
+
+  let current = base;
+  while (true) {
+    const lower = current.toLocaleLowerCase("es-ES");
+    let updated = false;
+    for (let size = Math.floor(current.length / 2); size > 0; size -= 1) {
+      const chunk = current.slice(-size);
+      if (chunk.trim().length < 3 || !hasUpperOrSeparator(chunk)) {
+        continue;
+      }
+      const suffix = lower.slice(-size);
+      if (lower.endsWith(suffix + suffix)) {
+        current = current.slice(0, -size).trimEnd();
+        updated = true;
+        break;
+      }
+    }
+    if (!updated) break;
+  }
+
+  return current;
+};
+
 const sanitizeName = (value) => {
   const base = collapseWhitespace(
     normalizeText(value)
       .split(/\s*\n\s*/)[0]
   );
-  return dedupeConsecutiveWords(dedupeDuplicateBlock(base));
+  return dedupeTrailingBlock(dedupeConsecutiveWords(dedupeDuplicateBlock(base)));
 };
 
 const toNumber = (value) => {
