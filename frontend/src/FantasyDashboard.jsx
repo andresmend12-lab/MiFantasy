@@ -158,6 +158,232 @@ const toNumber = (value) => {
   return Number.isFinite(num) ? num : 0;
 };
 
+const fmtEUR = new Intl.NumberFormat("es-ES", {
+  style: "currency",
+  currency: "EUR",
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+
+const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
+const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
+const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
+const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+
+const normalizeScoreEntries = (value) =>
+  normalizePointsHistory(value).map((item) => ({
+    jornada: item.matchday,
+    puntos: item.points,
+  }));
+
+const getResumenPuntos = (entries) => {
+  const history = normalizeScoreEntries(entries);
+  if (!history.length) {
+    return {
+      total: null,
+      media: null,
+      mediaUltimas5: null,
+      ultimas5: [],
+      history: [],
+    };
+  }
+
+  const total = history.reduce((acc, item) => acc + item.puntos, 0);
+  const media = total / history.length;
+  const ultimas5 = history.slice(-5);
+  const totalUltimas5 = ultimas5.reduce((acc, item) => acc + item.puntos, 0);
+  const mediaUltimas5 = ultimas5.length ? totalUltimas5 / ultimas5.length : null;
+
+  return {
+    total,
+    media,
+    mediaUltimas5,
+    ultimas5,
+    history,
+  };
+};
+
+const sanitizeScoreCacheEntry = (entry) => {
+  if (!entry) {
+    return { data: [], fetchedAt: null };
+  }
+  const base = Array.isArray(entry.data) || Array.isArray(entry)
+    ? entry.data ?? entry
+    : Array.isArray(entry.history)
+    ? entry.history
+    : [];
+  const data = normalizeScoreEntries(base);
+  const fetchedAt =
+    typeof entry.fetchedAt === "string"
+      ? entry.fetchedAt
+      : typeof entry.cacheFechaPuntuacion === "string"
+      ? entry.cacheFechaPuntuacion
+      : null;
+  return { data, fetchedAt };
+};
+
+const sanitizeScoreCache = (value) => {
+  if (!value || typeof value !== "object") return {};
+  return Object.entries(value).reduce((acc, [key, entry]) => {
+    if (!key) return acc;
+    acc[key] = sanitizeScoreCacheEntry(entry);
+    return acc;
+  }, {});
+};
+
+const buildPlayerDetailUrl = (playerId) => {
+  if (playerId === null || playerId === undefined) return null;
+  const id = String(playerId).trim();
+  if (!id) return null;
+  return `${PLAYER_DETAIL_ENDPOINT}/${encodeURIComponent(
+    id
+  )}?competition=${encodeURIComponent(PLAYER_DETAIL_COMPETITION)}`;
+};
+
+const parseScoreDataFromJson = (payload) => {
+  if (!payload) return [];
+  const candidates = [];
+  const pushCandidate = (value) => {
+    if (value) {
+      candidates.push(value);
+    }
+  };
+
+  if (Array.isArray(payload)) {
+    pushCandidate(payload);
+  }
+  pushCandidate(payload.jornadas);
+  pushCandidate(payload.jornada);
+  pushCandidate(payload.data?.jornadas);
+  pushCandidate(payload.data?.jornada);
+  pushCandidate(payload.player?.jornadas);
+  pushCandidate(payload.player?.points_history);
+  pushCandidate(payload.player?.matchday_points);
+  pushCandidate(payload.player?.matchdays);
+  pushCandidate(payload.player?.statistics?.matchdays);
+  pushCandidate(payload.matchdays);
+  pushCandidate(payload.points_history);
+  pushCandidate(payload.history);
+
+  for (const candidate of candidates) {
+    const normalized = normalizeScoreEntries(candidate);
+    if (normalized.length) {
+      return normalized;
+    }
+  }
+  return [];
+};
+
+const parseScoreDataFromHtml = (html) => {
+  if (typeof DOMParser === "undefined" || !html) return [];
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const rowCandidates = [];
+
+    doc.querySelectorAll("table").forEach((table) => {
+      table.querySelectorAll("tr").forEach((row) => {
+        const cells = row.querySelectorAll("td,th");
+        if (cells.length < 2) return;
+        const jornadaText = collapseWhitespace(cells[0].textContent ?? "");
+        const puntosText = collapseWhitespace(cells[1].textContent ?? "");
+        rowCandidates.push({ jornada: jornadaText, puntos: puntosText });
+      });
+    });
+
+    if (rowCandidates.length) {
+      const normalized = normalizeScoreEntries(rowCandidates);
+      if (normalized.length) {
+        return normalized;
+      }
+    }
+
+    const dataAttributes = [];
+    doc
+      .querySelectorAll("[data-matchday],[data-jornada]")
+      .forEach((node) => {
+        const jornadaAttr =
+          node.getAttribute("data-matchday") ?? node.getAttribute("data-jornada");
+        const puntosAttr =
+          node.getAttribute("data-points") ??
+          node.getAttribute("data-score") ??
+          node.getAttribute("data-puntos") ??
+          node.textContent;
+        if (jornadaAttr != null) {
+          dataAttributes.push({ jornada: jornadaAttr, puntos: puntosAttr });
+        }
+      });
+    if (dataAttributes.length) {
+      const normalized = normalizeScoreEntries(dataAttributes);
+      if (normalized.length) {
+        return normalized;
+      }
+    }
+
+    const text = collapseWhitespace(doc.body?.textContent ?? "");
+    if (text) {
+      const lines = text.split(/\s*(?:\r?\n|\.|;)+\s*/).filter(Boolean);
+      const normalized = normalizeScoreEntries(lines);
+      if (normalized.length) {
+        return normalized;
+      }
+    }
+  } catch (error) {
+    console.warn("No se pudo parsear el HTML de puntuaciones", error);
+  }
+  return [];
+};
+
+export async function fetchPuntuacionJugador(playerId) {
+  const url = buildPlayerDetailUrl(playerId);
+  if (!url || typeof fetch !== "function") {
+    return [];
+  }
+
+  let lastError = null;
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    try {
+      const response = await fetch(url, { credentials: "include" });
+      if (!response || !response.ok) {
+        throw new Error(`Respuesta no válida al cargar puntuaciones (${response?.status})`);
+      }
+
+      const clone = response.clone?.();
+      let parsed = [];
+      let jsonError = null;
+      try {
+        const data = await response.json();
+        parsed = parseScoreDataFromJson(data);
+      } catch (error) {
+        jsonError = error;
+      }
+
+      if (!parsed.length && clone && typeof clone.text === "function") {
+        try {
+          const html = await clone.text();
+          parsed = parseScoreDataFromHtml(html);
+        } catch (htmlError) {
+          if (!jsonError) {
+            jsonError = htmlError;
+          }
+        }
+      }
+
+      if (!parsed.length && jsonError) {
+        throw jsonError;
+      }
+
+      return parsed;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  if (lastError) {
+    console.warn("No se pudieron obtener las puntuaciones del jugador", lastError);
+  }
+  return [];
+}
+
 const toOptionalNumber = (value) => {
   if (value === null || value === undefined) return null;
   if (typeof value === "number") {
@@ -574,7 +800,26 @@ const sanitizeStoredTeam = (entries) => {
           item?.demarcacion
       )
     );
+    const storedScores = normalizeScoreEntries(
+      item?.puntuacionPorJornada ??
+        item?.points_history ??
+        item?.matchday_points ??
+        item?.scores ??
+        item?.scoreHistory
+    );
     const entry = { name, precioCompra };
+    if (storedScores.length) {
+      entry.puntuacionPorJornada = storedScores;
+    }
+    const storedScoreDate =
+      typeof item?.cacheFechaPuntuacion === "string"
+        ? item.cacheFechaPuntuacion
+        : typeof item?.scoresFetchedAt === "string"
+        ? item.scoresFetchedAt
+        : null;
+    if (storedScoreDate) {
+      entry.cacheFechaPuntuacion = storedScoreDate;
+    }
     if (id) {
       entry.id = id;
     }
@@ -649,6 +894,14 @@ export default function FantasyTeamDashboard() {
       return [];
     }
   });
+  const [cachePuntuaciones, setCachePuntuaciones] = useState(() => {
+    try {
+      const raw = localStorage.getItem(SCORE_CACHE_STORAGE_KEY);
+      return raw ? sanitizeScoreCache(JSON.parse(raw)) : {};
+    } catch {
+      return {};
+    }
+  });
   const savedLineup = useMemo(() => loadSavedLineup(), []);
   const [presupuestoActual, setPresupuestoActual] = useState(() => {
     try {
@@ -675,7 +928,11 @@ export default function FantasyTeamDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [feedback, setFeedback] = useState(null);
   const feedbackTimeoutRef = useRef(null);
+  const pendingScoreRequests = useRef(new Map());
   const [saleToRemove, setSaleToRemove] = useState(null);
+  const [playerDetailTarget, setPlayerDetailTarget] = useState(null);
+  const [playerDetailLoading, setPlayerDetailLoading] = useState(false);
+  const [playerDetailError, setPlayerDetailError] = useState(null);
 
   const MARKET_URL = "/market.json";
 
@@ -746,6 +1003,48 @@ export default function FantasyTeamDashboard() {
   }, [presupuestoActual]);
 
   useEffect(() => {
+    try {
+      localStorage.setItem(
+        SCORE_CACHE_STORAGE_KEY,
+        JSON.stringify(cachePuntuaciones)
+      );
+    } catch {
+      /* noop */
+    }
+  }, [cachePuntuaciones]);
+
+  useEffect(() => {
+    setMyTeam((prev) => {
+      let mutated = false;
+      const next = prev.map((entry) => {
+        if (!entry || typeof entry !== "object") return entry;
+        if (
+          Array.isArray(entry.puntuacionPorJornada) &&
+          entry.puntuacionPorJornada.length
+        ) {
+          return entry;
+        }
+        const id = getPlayerIdKey(entry);
+        if (!id) return entry;
+        const cached = cachePuntuaciones[id];
+        if (!cached || !Array.isArray(cached.data) || !cached.data.length) {
+          return entry;
+        }
+        const updated = {
+          ...entry,
+          puntuacionPorJornada: cached.data,
+        };
+        if (cached.fetchedAt) {
+          updated.cacheFechaPuntuacion = cached.fetchedAt;
+        }
+        mutated = true;
+        return updated;
+      });
+      return mutated ? next : prev;
+    });
+  }, [cachePuntuaciones]);
+
+  useEffect(() => {
     if (!feedback) {
       if (feedbackTimeoutRef.current) {
         clearTimeout(feedbackTimeoutRef.current);
@@ -763,6 +1062,170 @@ export default function FantasyTeamDashboard() {
     feedbackTimeoutRef.current = timeout;
     return () => clearTimeout(timeout);
   }, [feedback]);
+
+  const isScoreCacheStale = (timestamp) => {
+    if (!timestamp) return true;
+    const value = new Date(timestamp).getTime();
+    if (!Number.isFinite(value)) return true;
+    return Date.now() - value > SCORE_CACHE_TTL_MS;
+  };
+
+  const getCachedScoreInfo = (playerId) => {
+    const id =
+      playerId === null || playerId === undefined ? null : String(playerId);
+    if (!id) {
+      return { data: [], fetchedAt: null };
+    }
+    const teamEntry = myTeam.find((entry) => {
+      const entryId = getPlayerIdKey(entry);
+      return entryId ? entryId === id : false;
+    });
+    if (
+      teamEntry &&
+      Array.isArray(teamEntry.puntuacionPorJornada) &&
+      teamEntry.puntuacionPorJornada.length
+    ) {
+      const fetchedAt =
+        typeof teamEntry.cacheFechaPuntuacion === "string"
+          ? teamEntry.cacheFechaPuntuacion
+          : null;
+      return {
+        data: normalizeScoreEntries(teamEntry.puntuacionPorJornada),
+        fetchedAt,
+      };
+    }
+    const cached = cachePuntuaciones[id];
+    if (cached && Array.isArray(cached.data) && cached.data.length) {
+      const fetchedAt =
+        typeof cached.fetchedAt === "string" ? cached.fetchedAt : null;
+      return {
+        data: normalizeScoreEntries(cached.data),
+        fetchedAt,
+      };
+    }
+    return { data: [], fetchedAt: null };
+  };
+
+  const getPuntuacionJugador = (playerId) => getCachedScoreInfo(playerId).data;
+
+  const syncPuntuacionJugador = async (playerId, { force = false } = {}) => {
+    const id =
+      playerId === null || playerId === undefined ? null : String(playerId);
+    if (!id) return [];
+    const current = getCachedScoreInfo(id);
+    const shouldFetch =
+      force || !current.fetchedAt || isScoreCacheStale(current.fetchedAt);
+    if (!shouldFetch && current.data.length) {
+      return current.data;
+    }
+    const pending = pendingScoreRequests.current.get(id);
+    if (pending) {
+      return pending;
+    }
+    const fetchPromise = (async () => {
+      try {
+        const fetched = await fetchPuntuacionJugador(id);
+        const normalized = normalizeScoreEntries(fetched);
+        const nextData =
+          normalized.length || !current.data.length ? normalized : current.data;
+        const fetchedAt = new Date().toISOString();
+        setCachePuntuaciones((prev) => {
+          const prevEntry = prev[id];
+          if (
+            prevEntry &&
+            Array.isArray(prevEntry.data) &&
+            prevEntry.data.length === nextData.length &&
+            prevEntry.data.every(
+              (item, index) =>
+                item.jornada === nextData[index]?.jornada &&
+                item.puntos === nextData[index]?.puntos
+            ) &&
+            prevEntry.fetchedAt === fetchedAt
+          ) {
+            return prev;
+          }
+          return {
+            ...prev,
+            [id]: { data: nextData, fetchedAt },
+          };
+        });
+        setMyTeam((prev) => {
+          let mutated = false;
+          const candidate = playerIndex.byId.get(id);
+          const next = prev.map((entry) => {
+            if (!entry || typeof entry !== "object") return entry;
+            const entryId = getPlayerIdKey(entry);
+            const matches = entryId
+              ? entryId === id
+              : candidate
+              ? entryMatchesPlayer(entry, candidate)
+              : false;
+            if (!matches) return entry;
+            const updated = {
+              ...entry,
+              puntuacionPorJornada: nextData,
+              cacheFechaPuntuacion: fetchedAt,
+            };
+            if (
+              !entryId &&
+              candidate?.id !== null &&
+              candidate?.id !== undefined
+            ) {
+              updated.id = String(candidate.id);
+            }
+            mutated = true;
+            return updated;
+          });
+          return mutated ? next : prev;
+        });
+        return nextData;
+      } catch (error) {
+        console.warn(
+          `No se pudieron sincronizar las puntuaciones del jugador ${id}`,
+          error
+        );
+        return current.data;
+      } finally {
+        pendingScoreRequests.current.delete(id);
+      }
+    })();
+    pendingScoreRequests.current.set(id, fetchPromise);
+    return fetchPromise;
+  };
+
+  const abrirDetalleJugador = (player) => {
+    if (!player) return;
+    setPlayerDetailTarget(player);
+    setPlayerDetailError(null);
+  };
+
+  const cerrarDetalleJugador = () => {
+    setPlayerDetailTarget(null);
+    setPlayerDetailLoading(false);
+    setPlayerDetailError(null);
+  };
+
+  const refrescarDetalleJugador = () => {
+    if (!playerDetailTarget) return;
+    const playerId = getPlayerIdKey(playerDetailTarget);
+    if (!playerId) {
+      setPlayerDetailError("No se pudo identificar al jugador.");
+      return;
+    }
+    setPlayerDetailLoading(true);
+    syncPuntuacionJugador(playerId, { force: true })
+      .then(() => {
+        setPlayerDetailError(null);
+      })
+      .catch(() => {
+        setPlayerDetailError(
+          "No se pudieron actualizar las puntuaciones del jugador."
+        );
+      })
+      .finally(() => {
+        setPlayerDetailLoading(false);
+      });
+  };
 
   const playerIndex = useMemo(() => {
     const byName = new Map();
@@ -888,6 +1351,26 @@ export default function FantasyTeamDashboard() {
             : null;
         const zone = getZoneFromPosition(player.position ?? entry.position);
         const playerKey = getPlayerKey(player) ?? `name:${nameKey}`;
+        const playerId =
+          storedId ?? (player.id !== null && player.id !== undefined
+            ? String(player.id)
+            : null);
+        const scoreInfo = getCachedScoreInfo(playerId);
+        const summary = getResumenPuntos(
+          scoreInfo.data.length ? scoreInfo.data : player.points_history
+        );
+        const history =
+          summary.history.length
+            ? summary.history
+            : normalizeScoreEntries(player.points_history);
+        const pointsTotal =
+          summary.total !== null ? summary.total : player.points_total;
+        const pointsAvg =
+          summary.media !== null ? summary.media : player.points_avg;
+        const pointsLast5 =
+          summary.mediaUltimas5 !== null
+            ? summary.mediaUltimas5
+            : player.points_last5;
         return {
           ...player,
           precioCompra,
@@ -895,10 +1378,53 @@ export default function FantasyTeamDashboard() {
           roi,
           zone,
           playerKey,
+          puntuacionPorJornada: history,
+          points_total: pointsTotal,
+          points_avg: pointsAvg,
+          points_last5: pointsLast5,
+          scoreSummary: summary,
+          scoreFetchedAt: scoreInfo.fetchedAt ?? entry.cacheFechaPuntuacion ?? null,
         };
       })
       .filter(Boolean);
-  }, [myTeam, playerIndex]);
+  }, [myTeam, playerIndex, cachePuntuaciones]);
+
+  useEffect(() => {
+    if (!playerDetailTarget) return undefined;
+    const playerId = getPlayerIdKey(playerDetailTarget);
+    if (!playerId) {
+      setPlayerDetailError("No se pudo identificar al jugador.");
+      setPlayerDetailLoading(false);
+      return undefined;
+    }
+    const cached = getCachedScoreInfo(playerId);
+    if (cached.data.length && !isScoreCacheStale(cached.fetchedAt)) {
+      setPlayerDetailError(null);
+      setPlayerDetailLoading(false);
+      return undefined;
+    }
+    let cancelled = false;
+    setPlayerDetailLoading(true);
+    setPlayerDetailError(null);
+    syncPuntuacionJugador(playerId)
+      .then(() => {
+        if (cancelled) return;
+        setPlayerDetailError(null);
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setPlayerDetailError(
+          "No se pudieron cargar las puntuaciones del jugador."
+        );
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setPlayerDetailLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [playerDetailTarget]);
 
   const totals = useMemo(() => {
     const sum = (arr, key) =>
@@ -1331,7 +1857,6 @@ export default function FantasyTeamDashboard() {
     setSaleToRemove(null);
   };
 
-  const formatter = new Intl.NumberFormat("es-ES");
   const percentFormatter = new Intl.NumberFormat("es-ES", {
     maximumFractionDigits: 2,
     minimumFractionDigits: 0,
@@ -1344,6 +1869,11 @@ export default function FantasyTeamDashboard() {
     maximumFractionDigits: 1,
     minimumFractionDigits: 0,
   });
+
+  const detailScoreInfo = playerDetailTarget
+    ? getCachedScoreInfo(getPlayerIdKey(playerDetailTarget))
+    : { data: [], fetchedAt: null };
+  const detailScores = detailScoreInfo.data ?? [];
 
   const formatSoldAt = (value) => {
     if (!value) return "—";
@@ -1371,12 +1901,12 @@ export default function FantasyTeamDashboard() {
         <Card title="Valor actual del equipo" className="xl:col-span-2">
           <BigNumber>
             <span data-testid="total-value">
-              {formatter.format(totals.value)}
+              {fmtEUR.format(totals.value)}
             </span>
           </BigNumber>
           <SummaryRow
             label="Presupuesto actual del equipo"
-            value={`${formatter.format(presupuestoActual)} €`}
+            value={fmtEUR.format(presupuestoActual)}
             valueClassName={
               presupuestoActual >= 0 ? "text-green-600" : "text-red-600"
             }
@@ -1385,13 +1915,13 @@ export default function FantasyTeamDashboard() {
           <DeltaBar
             day={totals.change_day}
             week={totals.change_week}
-            formatter={formatter}
+            formatter={fmtEUR}
           />
           <div className="mt-3 space-y-1 border-t border-gray-100 pt-2">
             <SummaryRow
               label="Invertido"
               value={
-                totals.buy_count > 0 ? formatter.format(totals.buy_price) : "—"
+                totals.buy_count > 0 ? fmtEUR.format(totals.buy_price) : "—"
               }
               testId="total-buy"
             />
@@ -1399,7 +1929,7 @@ export default function FantasyTeamDashboard() {
               label="Ganancia"
               value={
                 totals.gain !== null
-                  ? `${totals.gain >= 0 ? "+" : "-"}${formatter.format(
+                  ? `${totals.gain >= 0 ? "+" : "-"}${fmtEUR.format(
                       Math.abs(totals.gain)
                     )}`
                   : "—"
@@ -1483,24 +2013,65 @@ export default function FantasyTeamDashboard() {
               {teamPlayers.map((p) => (
                 <tr key={p.name} className="border-b last:border-none">
                   <Td>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        className="text-xs font-semibold text-gray-400 transition hover:text-red-600"
-                        onClick={() => handleEliminarJugador(p)}
-                        aria-label={`Eliminar ${p.name} sin vender`}
-                      >
-                        ×
-                      </button>
-                      <span>{p.name}</span>
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="text-xs font-semibold text-gray-400 transition hover:text-red-600"
+                          onClick={() => handleEliminarJugador(p)}
+                          aria-label={`Eliminar ${p.name} sin vender`}
+                        >
+                          ×
+                        </button>
+                        <button
+                          type="button"
+                          className="text-sm font-semibold text-indigo-600 transition hover:text-indigo-800 focus:outline-none focus-visible:ring"
+                          onClick={() => abrirDetalleJugador(p)}
+                          aria-label={`Ver detalle de ${p.name}`}
+                        >
+                          {p.name}
+                        </button>
+                      </div>
+                      {p.scoreSummary?.ultimas5?.length ? (
+                        <details className="group text-xs text-gray-600">
+                          <summary className="cursor-pointer list-none text-indigo-600 hover:underline focus:outline-none focus-visible:ring">
+                            Últimas jornadas
+                          </summary>
+                          <div className="mt-2 rounded-lg border border-indigo-100 bg-indigo-50 p-2 shadow-sm">
+                            <ul className="space-y-1">
+                              {p.scoreSummary.ultimas5.map((item) => (
+                                <li
+                                  key={`${p.playerKey ?? p.name}-score-${item.jornada}`}
+                                  className="flex justify-between"
+                                >
+                                  <span>{`J${item.jornada}`}</span>
+                                  <span>
+                                    {pointsSummaryFormatter.format(item.puntos)}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                            <div className="mt-2 flex justify-between border-t border-indigo-200 pt-1 font-medium text-indigo-700">
+                              <span>Media últimas 5</span>
+                              <span>
+                                {p.scoreSummary.mediaUltimas5 !== null
+                                  ? pointsSummaryFormatter.format(
+                                      p.scoreSummary.mediaUltimas5
+                                    )
+                                  : "—"}
+                              </span>
+                            </div>
+                          </div>
+                        </details>
+                      ) : null}
                     </div>
                   </Td>
                   <Td>{p.team}</Td>
                   <Td>{p.position}</Td>
-                  <Td className="text-right">{formatter.format(p.value)}</Td>
+                  <Td className="text-right">{fmtEUR.format(p.value)}</Td>
                   <Td className="text-right">
                     {Number.isFinite(p.precioCompra)
-                      ? formatter.format(p.precioCompra)
+                      ? fmtEUR.format(p.precioCompra)
                       : "—"}
                   </Td>
                   <Td className="text-right">
@@ -1521,7 +2092,7 @@ export default function FantasyTeamDashboard() {
                     }`}
                   >
                     {p.gain !== null
-                      ? `${p.gain >= 0 ? "+" : "-"}${formatter.format(
+                      ? `${p.gain >= 0 ? "+" : "-"}${fmtEUR.format(
                           Math.abs(p.gain)
                         )}`
                       : "—"}
@@ -1547,7 +2118,7 @@ export default function FantasyTeamDashboard() {
                     }`}
                   >
                     {p.change_day >= 0 ? "+" : ""}
-                    {formatter.format(p.change_day)}
+                    {fmtEUR.format(p.change_day)}
                   </Td>
                   <Td
                     className={`text-right ${
@@ -1555,7 +2126,7 @@ export default function FantasyTeamDashboard() {
                     }`}
                   >
                     {p.change_week >= 0 ? "+" : ""}
-                    {formatter.format(p.change_week)}
+                    {fmtEUR.format(p.change_week)}
                   </Td>
                   <Td className="text-right text-gray-700">
                     {p.points_total !== null
@@ -1608,12 +2179,12 @@ export default function FantasyTeamDashboard() {
                     <Td>{sale.name}</Td>
                     <Td className="text-right">
                       {sale.buyPrice !== null
-                        ? formatter.format(sale.buyPrice)
+                        ? fmtEUR.format(sale.buyPrice)
                         : "—"}
                     </Td>
                     <Td className="text-right">
                       {sale.sellPrice !== null
-                        ? formatter.format(sale.sellPrice)
+                        ? fmtEUR.format(sale.sellPrice)
                         : "—"}
                     </Td>
                     <Td
@@ -1626,7 +2197,7 @@ export default function FantasyTeamDashboard() {
                       }`}
                     >
                       {sale.gain !== null
-                        ? `${sale.gain >= 0 ? "+" : "-"}${formatter.format(
+                        ? `${sale.gain >= 0 ? "+" : "-"}${fmtEUR.format(
                             Math.abs(sale.gain)
                           )}`
                         : "—"}
@@ -1898,6 +2469,18 @@ export default function FantasyTeamDashboard() {
           público del mercado.
         </footer>
       </div>
+      {playerDetailTarget && (
+        <PlayerDetailModal
+          player={playerDetailTarget}
+          scores={detailScores}
+          loading={playerDetailLoading}
+          error={playerDetailError}
+          onClose={cerrarDetalleJugador}
+          onRefresh={refrescarDetalleJugador}
+          pointsFormatter={pointsFormatter}
+          fetchedAt={detailScoreInfo.fetchedAt}
+        />
+      )}
       {playerToBuy && (
         <PurchaseModal
           player={playerToBuy}
@@ -2171,6 +2754,182 @@ function DeleteSaleModal({ sale, onConfirm, onCancel }) {
           >
             Confirmar
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlayerDetailModal({
+  player,
+  scores,
+  loading,
+  error,
+  onClose,
+  onRefresh,
+  pointsFormatter,
+  fetchedAt,
+}) {
+  if (!player) return null;
+  const pointFmt =
+    pointsFormatter ??
+    new Intl.NumberFormat("es-ES", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1,
+    });
+  const summary = getResumenPuntos(
+    scores && scores.length ? scores : player.points_history
+  );
+  const displayScores = summary.history;
+  const totalPoints = summary.total;
+  const averagePoints = summary.media;
+  const averageLast5 = summary.mediaUltimas5;
+  const infoLine = [player.team, player.position]
+    .filter(Boolean)
+    .join(" · ");
+  let fetchedLabel = null;
+  const fetchedTimestamp = fetchedAt ?? player.scoreFetchedAt;
+  if (fetchedTimestamp) {
+    const fetchedDate = new Date(fetchedTimestamp);
+    if (!Number.isNaN(fetchedDate.getTime())) {
+      fetchedLabel = fetchedDate.toLocaleString("es-ES");
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" onClick={onClose} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="player-detail-title"
+        className="relative flex w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+      >
+        <header className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
+          <div>
+            <h3
+              id="player-detail-title"
+              className="text-xl font-semibold text-gray-900"
+            >
+              {player.name}
+            </h3>
+            {infoLine && <p className="text-sm text-gray-500">{infoLine}</p>}
+            {fetchedLabel && (
+              <p className="text-xs text-gray-400">
+                Puntuaciones sincronizadas: {fetchedLabel}
+              </p>
+            )}
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-2xl leading-none text-gray-400 transition hover:text-gray-600"
+            aria-label="Cerrar detalle del jugador"
+          >
+            ×
+          </button>
+        </header>
+        <div className="max-h-[70vh] space-y-6 overflow-y-auto px-6 py-5">
+          <section>
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+              Información general
+            </h4>
+            <div className="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Valor de mercado</span>
+                <span className="font-medium text-gray-900">
+                  {fmtEUR.format(player.value)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Precio de compra</span>
+                <span className="font-medium text-gray-900">
+                  {Number.isFinite(player.precioCompra)
+                    ? fmtEUR.format(player.precioCompra)
+                    : "—"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Puntos totales</span>
+                <span className="font-medium text-gray-900">
+                  {totalPoints !== null ? pointFmt.format(totalPoints) : "—"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Media</span>
+                <span className="font-medium text-gray-900">
+                  {averagePoints !== null ? pointFmt.format(averagePoints) : "—"}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-gray-500">Media últimas 5</span>
+                <span className="font-medium text-gray-900">
+                  {averageLast5 !== null ? pointFmt.format(averageLast5) : "—"}
+                </span>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                Puntuación por jornada
+              </h4>
+              <div className="flex items-center gap-2">
+                {loading && (
+                  <span className="text-xs font-medium text-indigo-600">
+                    Cargando…
+                  </span>
+                )}
+                <button
+                  type="button"
+                  className="rounded-full border border-indigo-200 px-3 py-1 text-xs font-semibold text-indigo-600 transition hover:border-indigo-400 hover:text-indigo-800 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400"
+                  onClick={onRefresh}
+                  disabled={loading}
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+            {error && (
+              <p className="mt-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                {error}
+              </p>
+            )}
+            {!error && !loading && !displayScores.length ? (
+              <p className="mt-2 text-sm text-gray-500">
+                No hay puntuaciones disponibles para este jugador.
+              </p>
+            ) : (
+              <div className="mt-3 overflow-hidden rounded-xl border border-gray-200">
+                <table
+                  className="min-w-full text-sm"
+                  aria-label="Tabla de puntuación por jornada"
+                >
+                  <thead className="bg-indigo-50 text-indigo-700">
+                    <tr>
+                      <th className="px-3 py-2 text-left font-semibold">Jornada</th>
+                      <th className="px-3 py-2 text-right font-semibold">Puntos</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {displayScores.map((entry) => (
+                      <tr
+                        key={`player-score-${entry.jornada}`}
+                        className="odd:bg-white even:bg-indigo-50/40"
+                      >
+                        <td className="px-3 py-1.5 text-left text-gray-700">
+                          J{entry.jornada}
+                        </td>
+                        <td className="px-3 py-1.5 text-right text-gray-900">
+                          {pointFmt.format(entry.puntos)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
         </div>
       </div>
     </div>

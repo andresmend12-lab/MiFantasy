@@ -3,109 +3,140 @@ import FantasyTeamDashboard from "./FantasyDashboard";
 
 describe("FantasyTeamDashboard", () => {
   const originalFetch = global.fetch;
-
   beforeEach(() => {
     window.localStorage.clear();
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({
-        updated_at: "2025-01-01T00:00:00Z",
-        players: [
-          {
-            id: 1,
-            name: "Pau CubarsíCubarsí",
-            team: "Barcelona",
-            team_id: "3",
-            position: "Defensa",
-            value: "1234567",
-            diff_1: 0,
-            diff_7: 0,
-            points_avg: "4,5",
-            points_last5: "4,8",
-            points_history: [
-              { matchday: 1, points: 3.2 },
-              { matchday: 2, points: 4.1 },
-              { matchday: 3, points: 4.6 },
-              { matchday: 4, points: 5.2 },
-              { matchday: 5, points: 4.9 },
-              { matchday: 6, points: 4.3 },
-            ],
-          },
-          {
-            id: 2,
-            name: "Nico WilliamsN. Williams",
-            team: "Athletic",
-            team_id: "5",
-            position: "Delantero",
-            value: "2345678",
-            diff_1: 0,
-            diff_7: 0,
-            points_avg: null,
-            points_last5: null,
-            points_history: [
-              { matchday: 10, points: 6.5 },
-              { matchday: 11, points: 7.0 },
-              { matchday: 12, points: 8.5 },
-              { matchday: 13, points: 3.5 },
-              { matchday: 14, points: 9.0 },
-              { matchday: 15, points: 6.0 },
-            ],
-          },
-          {
-            id: 3,
-            name: "Aarón EscandellAarón",
-            team: "Las Palmas",
-            team_id: "10",
-            position: "Portero",
-            value: "3456789",
-            diff_1: 0,
-            diff_7: 0,
-            points_avg: "3,4",
-            points_last5: "3,9",
-            points_history: [
-              { matchday: 8, points: 2.5 },
-              { matchday: 9, points: 3.1 },
-              { matchday: 10, points: 4.0 },
-            ],
-          },
-          {
-            id: 5,
-            name: "Pedri GonzálezPedri",
-            team: "Barcelona",
-            team_id: "3",
-            position: "Centrocampista",
-            value: "3123456",
-            diff_1: 0,
-            diff_7: 0,
-            points_avg: "6,1",
-            points_last5: "6,4",
-            points_history: [
-              { matchday: 3, points: 6.2 },
-              { matchday: 4, points: 6.8 },
-              { matchday: 5, points: 5.9 },
-              { matchday: 6, points: 6.5 },
-            ],
-          },
-          {
-            id: 4,
-            name: "Iñaki WilliamsI. Williams",
-            team: "Athletic",
-            team_id: "5",
-            position: "Delantero",
-            value: "4567890",
-            diff_1: 0,
-            diff_7: 0,
-            points_avg: "5,9",
-            points_last5: "6,8",
-            points_history: [
-              { matchday: 10, points: 6.1 },
-              { matchday: 11, points: 5.4 },
-              { matchday: 12, points: 7.2 },
-              { matchday: 13, points: 6.8 },
-            ],
-          },
-        ],
-      }),
+    const createJsonResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+    global.fetch = jest.fn((url) => {
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(
+          createJsonResponse({
+            data: {
+              jornadas: [
+                { jornada: 1, puntos: 6.2 },
+                { jornada: 2, puntos: 5.1 },
+                { jornada: 3, puntos: 7.4 },
+                { jornada: 4, puntos: 4.8 },
+                { jornada: 5, puntos: 6.9 },
+              ],
+            },
+          })
+        );
+      }
+      return Promise.resolve(
+        createJsonResponse({
+          updated_at: "2025-01-01T00:00:00Z",
+          players: [
+            {
+              id: 1,
+              name: "Pau CubarsíCubarsí",
+              team: "Barcelona",
+              team_id: "3",
+              position: "Defensa",
+              value: "1234567",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: "4,5",
+              points_last5: "4,8",
+              points_history: [
+                { matchday: 1, points: 3.2 },
+                { matchday: 2, points: 4.1 },
+                { matchday: 3, points: 4.6 },
+                { matchday: 4, points: 5.2 },
+                { matchday: 5, points: 4.9 },
+                { matchday: 6, points: 4.3 },
+              ],
+            },
+            {
+              id: 2,
+              name: "Nico WilliamsN. Williams",
+              team: "Athletic",
+              team_id: "5",
+              position: "Delantero",
+              value: "2345678",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: null,
+              points_last5: null,
+              points_history: [
+                { matchday: 10, points: 6.5 },
+                { matchday: 11, points: 7.0 },
+                { matchday: 12, points: 8.5 },
+                { matchday: 13, points: 3.5 },
+                { matchday: 14, points: 9.0 },
+                { matchday: 15, points: 6.0 },
+              ],
+            },
+            {
+              id: 3,
+              name: "Aarón EscandellAarón",
+              team: "Las Palmas",
+              team_id: "10",
+              position: "Portero",
+              value: "3456789",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: "3,4",
+              points_last5: "3,9",
+              points_history: [
+                { matchday: 8, points: 2.5 },
+                { matchday: 9, points: 3.1 },
+                { matchday: 10, points: 4.0 },
+              ],
+            },
+            {
+              id: 5,
+              name: "Pedri GonzálezPedri",
+              team: "Barcelona",
+              team_id: "3",
+              position: "Centrocampista",
+              value: "3123456",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: "6,1",
+              points_last5: "6,4",
+              points_history: [
+                { matchday: 3, points: 6.2 },
+                { matchday: 4, points: 6.8 },
+                { matchday: 5, points: 5.9 },
+                { matchday: 6, points: 6.5 },
+              ],
+            },
+            {
+              id: 4,
+              name: "Iñaki WilliamsI. Williams",
+              team: "Athletic",
+              team_id: "5",
+              position: "Delantero",
+              value: "4567890",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: "5,9",
+              points_last5: "6,8",
+              points_history: [
+                { matchday: 10, points: 6.1 },
+                { matchday: 11, points: 5.4 },
+                { matchday: 12, points: 7.2 },
+                { matchday: 13, points: 6.8 },
+              ],
+            },
+          ],
+        })
+      );
     });
   });
 
@@ -148,16 +179,20 @@ describe("FantasyTeamDashboard", () => {
     expect(
       screen.queryByLabelText("Precio de compra de Nico Williams")
     ).not.toBeInTheDocument();
-    expect(within(row).getByText("2.000.000")).toBeInTheDocument();
+    expect(within(row).getByText(/2\.000\.000\s?€/)).toBeInTheDocument();
 
     expect(await screen.findByTestId("total-value")).toHaveTextContent(
-      "2.345.678"
+      /2\.345\.678\s?€/
     );
-    expect(screen.getByTestId("total-buy")).toHaveTextContent("2.000.000");
-    expect(screen.getByTestId("total-gain")).toHaveTextContent("+345.678");
+    expect(screen.getByTestId("total-buy")).toHaveTextContent(
+      /2\.000\.000\s?€/
+    );
+    expect(screen.getByTestId("total-gain")).toHaveTextContent(
+      /\+345\.678\s?€/
+    );
     expect(screen.getByTestId("total-roi")).toHaveTextContent("+17,28%");
     expect(screen.getByTestId("team-budget")).toHaveTextContent(
-      "-8.720.968 €"
+      /-8\.720\.968\s?€/
     );
 
     expect(screen.queryByTestId("team-total-points")).not.toBeInTheDocument();
@@ -199,11 +234,13 @@ describe("FantasyTeamDashboard", () => {
       .closest("tr");
     expect(row).not.toBeNull();
     if (!row) throw new Error("Fila de Pau Cubarsí no encontrada");
-    expect(within(row).getByText("1.500.000,5")).toBeInTheDocument();
+    expect(
+      within(row).getByText(/1\.500\.000,5\s?€/)
+    ).toBeInTheDocument();
 
     await waitFor(() =>
       expect(screen.getByTestId("team-budget")).toHaveTextContent(
-        "-10.220.968,5 €"
+        /-10\.220\.968,5\s?€/
       )
     );
   });
@@ -232,7 +269,7 @@ describe("FantasyTeamDashboard", () => {
     );
 
     expect(screen.getByTestId("team-budget")).toHaveTextContent(
-      "-8.720.968 €"
+      /-8\.720\.968\s?€/
     );
     expect(
       screen.getByText("Aún no has registrado ventas.")
@@ -267,15 +304,21 @@ describe("FantasyTeamDashboard", () => {
 
     const salesTable = screen.getByTestId("sales-table");
     expect(within(salesTable).getByText("Pau Cubarsí")).toBeInTheDocument();
-    expect(within(salesTable).getByText("1.500.000")).toBeInTheDocument();
-    expect(within(salesTable).getByText("2.000.000")).toBeInTheDocument();
-    expect(within(salesTable).getByText("+500.000")).toBeInTheDocument();
+    expect(
+      within(salesTable).getByText(/1\.500\.000\s?€/)
+    ).toBeInTheDocument();
+    expect(
+      within(salesTable).getByText(/2\.000\.000\s?€/)
+    ).toBeInTheDocument();
+    expect(
+      within(salesTable).getByText(/\+500\.000\s?€/)
+    ).toBeInTheDocument();
     expect(within(salesTable).getByText("+33,33%"))
       .toBeInTheDocument();
 
     await waitFor(() =>
       expect(screen.getByTestId("team-budget")).toHaveTextContent(
-        "-6.720.968 €"
+        /-6\.720\.968\s?€/
       )
     );
   });
@@ -320,7 +363,7 @@ describe("FantasyTeamDashboard", () => {
     const restoredTable = screen.getByTestId("team-table");
     expect(within(restoredTable).getByText("Pau Cubarsí")).toBeInTheDocument();
     expect(screen.getByTestId("team-budget")).toHaveTextContent(
-      "-8.720.968 €"
+      /-8\.720\.968\s?€/
     );
   });
 
@@ -364,7 +407,64 @@ describe("FantasyTeamDashboard", () => {
 
     const teamTable = screen.getByTestId("team-table");
     expect(within(teamTable).getByText("Pau Cubarsí")).toBeInTheDocument();
-    expect(screen.getByTestId("team-budget")).toHaveTextContent("-8.720.968 €");
+    expect(screen.getByTestId("team-budget")).toHaveTextContent(
+      /-8\.720\.968\s?€/
+    );
+  });
+
+  it("muestra las últimas jornadas y el detalle con puntuaciones sincronizadas", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    const detailButton = await screen.findByRole("button", {
+      name: "Ver detalle de Pau Cubarsí",
+    });
+    const row = detailButton.closest("tr");
+    expect(row).not.toBeNull();
+    if (!row) {
+      throw new Error("No se encontró la fila de Pau Cubarsí");
+    }
+
+    const summaryToggle = within(row).getByText("Últimas jornadas");
+    fireEvent.click(summaryToggle);
+    expect(within(row).getByText(/J6/i)).toBeInTheDocument();
+
+    fireEvent.click(detailButton);
+
+    const detailDialog = await screen.findByRole("dialog");
+
+    expect(
+      within(detailDialog).getByRole("heading", { name: "Información general" })
+    ).toBeInTheDocument();
+
+    expect(
+      await within(detailDialog).findByText(/Puntuaciones sincronizadas:/)
+    ).toBeInTheDocument();
+
+    expect(
+      within(detailDialog).getByRole("button", { name: "Actualizar" })
+    ).toBeInTheDocument();
+
+    const scoresTable = within(detailDialog).getByRole("table", {
+      name: "Tabla de puntuación por jornada",
+    });
+    expect(await within(scoresTable).findByText("6,2")).toBeInTheDocument();
+    expect(within(scoresTable).getByText("7,4")).toBeInTheDocument();
+
+    const detailCall = global.fetch.mock.calls.find(([url]) =>
+      typeof url === "string" && url.includes("/api/v3/player/1")
+    );
+    expect(detailCall).toBeDefined();
+    expect(detailCall?.[1]).toMatchObject({ credentials: "include" });
+
+    fireEvent.click(screen.getByRole("button", { name: /cerrar detalle/i }));
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
   });
 
   it("gestiona la alineación con drag and drop, guardado y restauración", async () => {
