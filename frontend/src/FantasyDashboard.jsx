@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 const normalizeText = (value) =>
   typeof value === "string" ? value : value ? String(value) : "";
@@ -553,6 +553,18 @@ const ZONE_LABELS = {
   MED: "Mediocampo",
   DEL: "Delantera",
 };
+const ZONE_LABELS_SINGULAR = {
+  POR: "portero",
+  DEF: "defensa",
+  MED: "centrocampista",
+  DEL: "delantero",
+};
+const ZONE_LABELS_PLURAL = {
+  POR: "porteros",
+  DEF: "defensas",
+  MED: "centrocampistas",
+  DEL: "delanteros",
+};
 const ZONE_ORDER = {
   POR: 0,
   DEF: 1,
@@ -725,6 +737,218 @@ const getPlayerKey = (player) => {
   );
   if (!name) return null;
   return `name:${name.toLowerCase()}`;
+};
+
+const RECOMMENDATION_TEMPORAL_WEIGHTS = [1, 1.1, 1.2, 1.3, 1.4];
+const USE_WEIGHTED_RECENT_FORM = true;
+
+const computePlayerRecommendationInfo = (player, { ponderado = false } = {}) => {
+  const history = normalizeScoreEntries(
+    player?.puntuacionPorJornada ??
+      player?.points_history ??
+      player?.scoreSummary?.history ??
+      []
+  );
+  const recentEntries = history.slice(-5);
+  const normalizedEntries = recentEntries.map((entry) => ({
+    jornada: entry?.jornada ?? entry?.matchday ?? entry?.round ?? null,
+    puntos: toOptionalNumber(entry?.puntos ?? entry?.points),
+  }));
+  const validEntries = normalizedEntries.filter((entry) => entry.puntos !== null);
+  const weights = ponderado
+    ? RECOMMENDATION_TEMPORAL_WEIGHTS.slice(-validEntries.length)
+    : Array(validEntries.length).fill(1);
+  let weightedSum = 0;
+  let totalWeight = 0;
+  validEntries.forEach((entry, index) => {
+    const weight = Number.isFinite(weights[index]) ? weights[index] : 1;
+    weightedSum += entry.puntos * weight;
+    totalWeight += weight;
+  });
+  const simpleTotal = validEntries.reduce((acc, entry) => acc + entry.puntos, 0);
+  const simpleAverage = validEntries.length ? simpleTotal / validEntries.length : 0;
+  const weightedAverage = validEntries.length
+    ? weightedSum / (totalWeight || validEntries.length)
+    : 0;
+  return {
+    score: weightedAverage,
+    simpleAverage,
+    total: simpleTotal,
+    entries: normalizedEntries,
+    matchesConsidered: validEntries.length,
+  };
+};
+
+const calcularScoreJugadorUlt5 = (jugador, { ponderado = false } = {}) =>
+  computePlayerRecommendationInfo(jugador, { ponderado }).score;
+
+const sortPlayersForRecommendation = (a, b) => {
+  const scoreA = Number.isFinite(a?.scoreRecomendacion) ? a.scoreRecomendacion : -Infinity;
+  const scoreB = Number.isFinite(b?.scoreRecomendacion) ? b.scoreRecomendacion : -Infinity;
+  if (scoreA !== scoreB) {
+    return scoreB - scoreA;
+  }
+  const matchesA = a?.recommendationInfo?.matchesConsidered ?? 0;
+  const matchesB = b?.recommendationInfo?.matchesConsidered ?? 0;
+  if (matchesA !== matchesB) {
+    return matchesB - matchesA;
+  }
+  const seasonAvgA = Number.isFinite(a?.points_avg) ? a.points_avg : -Infinity;
+  const seasonAvgB = Number.isFinite(b?.points_avg) ? b.points_avg : -Infinity;
+  if (seasonAvgA !== seasonAvgB) {
+    return seasonAvgB - seasonAvgA;
+  }
+  const valueA = Number.isFinite(a?.value) ? a.value : -Infinity;
+  const valueB = Number.isFinite(b?.value) ? b.value : -Infinity;
+  if (valueA !== valueB) {
+    return valueB - valueA;
+  }
+  const nameA = a?.name ?? "";
+  const nameB = b?.name ?? "";
+  return nameA.localeCompare(nameB, "es");
+};
+
+const generarRecomendacionesTopN = (
+  jugadores,
+  N = 3,
+  { ponderado = false } = {}
+) => {
+  if (!Array.isArray(jugadores) || !jugadores.length) {
+    return { recomendaciones: [], incompletas: [], playerScores: new Map() };
+  }
+
+  const scoreMap = new Map();
+  const playersByZone = {
+    POR: [],
+    DEF: [],
+    MED: [],
+    DEL: [],
+  };
+
+  jugadores.forEach((player) => {
+    if (!player) return;
+    const zone = ZONE_CODES.includes(player.zone)
+      ? player.zone
+      : getZoneFromPosition(player.position);
+    if (!ZONE_CODES.includes(zone)) return;
+    const info = computePlayerRecommendationInfo(player, { ponderado });
+    const playerKey = getPlayerKey(player);
+    const enriched = {
+      ...player,
+      zone,
+      playerKey,
+      scoreRecomendacion: info.score,
+      recommendationInfo: info,
+    };
+    playersByZone[zone].push(enriched);
+    if (playerKey) {
+      scoreMap.set(playerKey, info);
+    }
+  });
+
+  const sortedByZone = Object.fromEntries(
+    Object.entries(playersByZone).map(([zone, list]) => [
+      zone,
+      list.slice().sort(sortPlayersForRecommendation),
+    ])
+  );
+
+  const incompletas = [];
+  const recomendaciones = [];
+
+  FORMATIONS.forEach((formacion) => {
+    const counts = parseFormation(formacion);
+    const missing = [];
+    if (sortedByZone.POR.length < 1) {
+      missing.push({ zone: "POR", needed: 1 - sortedByZone.POR.length });
+    }
+    if (sortedByZone.DEF.length < counts.DEF) {
+      missing.push({
+        zone: "DEF",
+        needed: counts.DEF - sortedByZone.DEF.length,
+      });
+    }
+    if (sortedByZone.MED.length < counts.MED) {
+      missing.push({
+        zone: "MED",
+        needed: counts.MED - sortedByZone.MED.length,
+      });
+    }
+    if (sortedByZone.DEL.length < counts.DEL) {
+      missing.push({
+        zone: "DEL",
+        needed: counts.DEL - sortedByZone.DEL.length,
+      });
+    }
+
+    if (missing.length) {
+      incompletas.push({ formacion, missing });
+      return;
+    }
+
+    const selected = {
+      POR: sortedByZone.POR.slice(0, 1),
+      DEF: sortedByZone.DEF.slice(0, counts.DEF),
+      MED: sortedByZone.MED.slice(0, counts.MED),
+      DEL: sortedByZone.DEL.slice(0, counts.DEL),
+    };
+
+    const allPlayers = ZONE_CODES.flatMap((zone) => selected[zone]);
+    if (allPlayers.length !== 1 + counts.DEF + counts.MED + counts.DEL) {
+      incompletas.push({ formacion, missing: [{ zone: "VAR", needed: 1 }] });
+      return;
+    }
+
+    const totalScore = allPlayers.reduce(
+      (acc, player) =>
+        acc + (Number.isFinite(player.scoreRecomendacion) ? player.scoreRecomendacion : 0),
+      0
+    );
+    const scoreAlineacion = allPlayers.length ? totalScore / allPlayers.length : 0;
+
+    const breakdown = {};
+    ZONE_CODES.forEach((zone) => {
+      const zonePlayers = selected[zone];
+      const zoneTotal = zonePlayers.reduce(
+        (acc, player) =>
+          acc + (Number.isFinite(player.scoreRecomendacion) ? player.scoreRecomendacion : 0),
+        0
+      );
+      breakdown[zone] = {
+        total: zoneTotal,
+        average: zonePlayers.length ? zoneTotal / zonePlayers.length : 0,
+      };
+    });
+
+    const once = {
+      POR: selected.POR.map((player) => ({ ...player })),
+      DEF: selected.DEF.map((player) => ({ ...player })),
+      MED: selected.MED.map((player) => ({ ...player })),
+      DEL: selected.DEL.map((player) => ({ ...player })),
+    };
+
+    recomendaciones.push({
+      formacion,
+      scoreAlineacion,
+      once,
+      breakdown,
+    });
+  });
+
+  recomendaciones.sort((a, b) => {
+    const scoreA = Number.isFinite(a?.scoreAlineacion) ? a.scoreAlineacion : -Infinity;
+    const scoreB = Number.isFinite(b?.scoreAlineacion) ? b.scoreAlineacion : -Infinity;
+    if (scoreA !== scoreB) {
+      return scoreB - scoreA;
+    }
+    return a.formacion.localeCompare(b.formacion);
+  });
+
+  return {
+    recomendaciones: recomendaciones.slice(0, Math.max(0, N)),
+    incompletas,
+    playerScores: scoreMap,
+  };
 };
 
 const loadSavedLineup = () => {
@@ -933,6 +1157,12 @@ export default function FantasyTeamDashboard() {
   const [playerDetailTarget, setPlayerDetailTarget] = useState(null);
   const [playerDetailLoading, setPlayerDetailLoading] = useState(false);
   const [playerDetailError, setPlayerDetailError] = useState(null);
+  const [recomendaciones, setRecomendaciones] = useState([]);
+  const [recomendacionesLoading, setRecomendacionesLoading] = useState(false);
+  const [recomendacionesError, setRecomendacionesError] = useState(null);
+  const [formacionesIncompletas, setFormacionesIncompletas] = useState([]);
+  const [recomendacionSeleccionada, setRecomendacionSeleccionada] = useState(null);
+  const recommendationScoresRef = useRef(new Map());
 
   const MARKET_URL = "/market.json";
 
@@ -1193,6 +1423,32 @@ export default function FantasyTeamDashboard() {
     return fetchPromise;
   };
 
+  const ensurePuntuacionesUltimos5 = useCallback(
+    async ({ force = false } = {}) => {
+      const seen = new Set();
+      const tasks = [];
+      myTeam.forEach((entry) => {
+        const id = getPlayerIdKey(entry);
+        if (!id || seen.has(id)) return;
+        seen.add(id);
+        const cached = getCachedScoreInfo(id);
+        const shouldSync =
+          force ||
+          !Array.isArray(cached.data) ||
+          !cached.data.length ||
+          isScoreCacheStale(cached.fetchedAt);
+        if (shouldSync) {
+          tasks.push(syncPuntuacionJugador(id, { force: true }));
+        }
+      });
+      if (!tasks.length) {
+        return;
+      }
+      await Promise.allSettled(tasks);
+    },
+    [myTeam, getCachedScoreInfo, isScoreCacheStale, syncPuntuacionJugador]
+  );
+
   const abrirDetalleJugador = (player) => {
     if (!player) return;
     setPlayerDetailTarget(player);
@@ -1388,6 +1644,16 @@ export default function FantasyTeamDashboard() {
       })
       .filter(Boolean);
   }, [myTeam, playerIndex, cachePuntuaciones]);
+
+  useEffect(() => {
+    if (activeTab !== "alineacion") return;
+    ensurePuntuacionesUltimos5().catch((error) => {
+      console.warn(
+        "No se pudieron preparar las puntuaciones recientes antes de recomendar",
+        error
+      );
+    });
+  }, [activeTab, ensurePuntuacionesUltimos5]);
 
   useEffect(() => {
     if (!playerDetailTarget) return undefined;
@@ -1600,6 +1866,106 @@ export default function FantasyTeamDashboard() {
     });
     return set;
   }, [teamPlayers]);
+
+  const generarRecomendacionesDesdeEquipo = async ({ forceSync = false } = {}) => {
+    if (!teamPlayers.length) {
+      setRecomendaciones([]);
+      setFormacionesIncompletas([]);
+      setRecomendacionesError(
+        "Añade jugadores a tu plantilla para generar recomendaciones."
+      );
+      return;
+    }
+    setRecomendacionesLoading(true);
+    setRecomendacionesError(null);
+    try {
+      await ensurePuntuacionesUltimos5({ force: forceSync });
+      const result = generarRecomendacionesTopN(teamPlayers, 3, {
+        ponderado: USE_WEIGHTED_RECENT_FORM,
+      });
+      recommendationScoresRef.current = result.playerScores ?? new Map();
+      setFormacionesIncompletas(result.incompletas ?? []);
+      setRecomendaciones(result.recomendaciones ?? []);
+      if (!result.recomendaciones?.length && !result.incompletas?.length) {
+        setRecomendacionesError(
+          "No se pudieron generar alineaciones completas con los datos disponibles."
+        );
+      }
+    } catch (error) {
+      console.error("Error al generar recomendaciones", error);
+      recommendationScoresRef.current = new Map();
+      setRecomendaciones([]);
+      setFormacionesIncompletas([]);
+      setRecomendacionesError(
+        "No se pudieron generar las recomendaciones. Inténtalo de nuevo."
+      );
+    } finally {
+      setRecomendacionesLoading(false);
+    }
+  };
+
+  const handleAplicarRecomendacion = (recomendacion) => {
+    if (!recomendacion) return;
+    const jugadores = ZONE_CODES.flatMap(
+      (zone) => recomendacion.once?.[zone] ?? []
+    );
+    const faltantes = jugadores.filter((player) => {
+      if (!player?.playerKey) return true;
+      return !playerLookup.has(player.playerKey);
+    });
+    if (faltantes.length) {
+      setFeedback({
+        message:
+          "Algunos jugadores ya no están disponibles. Regenera las recomendaciones.",
+        type: "error",
+      });
+      return;
+    }
+    const confirmed =
+      typeof window === "undefined"
+        ? true
+        : window.confirm(
+            `Aplicar la alineación ${recomendacion.formacion}? Se reemplazará la alineación actual.`
+          );
+    if (!confirmed) return;
+    setFormacionSeleccionada(recomendacion.formacion);
+    setAlineacion(() => {
+      const base = createEmptyLineup(recomendacion.formacion);
+      ZONE_CODES.forEach((zone) => {
+        const players = recomendacion.once?.[zone] ?? [];
+        base[zone] = players.map((player) => player.playerKey ?? null);
+      });
+      return base;
+    });
+    setFeedback({
+      message: `Alineación ${recomendacion.formacion} aplicada.`,
+      type: "success",
+    });
+  };
+
+  const abrirDetalleRecomendacion = (recomendacion) => {
+    if (!recomendacion) return;
+    setRecomendacionSeleccionada(recomendacion);
+  };
+
+  const cerrarDetalleRecomendacion = () => {
+    setRecomendacionSeleccionada(null);
+  };
+
+  const formatMissingForFormation = (entry) => {
+    if (!entry?.missing?.length) return "";
+    return entry.missing
+      .map(({ zone, needed }) => {
+        const qty = Math.max(needed ?? 0, 0);
+        const plural = ZONE_LABELS_PLURAL[zone] ?? zone;
+        const singular = ZONE_LABELS_SINGULAR[zone] ?? zone;
+        if (qty === 1) {
+          return `1 ${singular}`;
+        }
+        return `${qty} ${plural}`;
+      })
+      .join(", ");
+  };
 
   useEffect(() => {
     setAlineacion((prev) => {
@@ -2250,7 +2616,7 @@ export default function FantasyTeamDashboard() {
           {feedback.message}
         </div>
       )}
-      <section className="bg-white border rounded-2xl shadow p-4 space-y-4">
+      <section className="bg-white border rounded-2xl shadow p-4 space-y-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1">
             <label
@@ -2295,6 +2661,146 @@ export default function FantasyTeamDashboard() {
               Restaurar última guardada
             </button>
           </div>
+        </div>
+        <div className="border-t border-gray-100" />
+        <div className="space-y-3">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Recomendadas</h3>
+              <p className="text-xs text-gray-500">
+                Basadas en los últimos 5 partidos de tus jugadores.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                className="rounded-full bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
+                onClick={() => generarRecomendacionesDesdeEquipo({ forceSync: false })}
+                disabled={recomendacionesLoading}
+              >
+                {recomendacionesLoading ? "Calculando…" : "Generar recomendaciones"}
+              </button>
+              <button
+                type="button"
+                className="rounded-full border border-indigo-200 px-4 py-1.5 text-sm font-semibold text-indigo-600 transition hover:border-indigo-400 hover:text-indigo-800 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400"
+                onClick={() => generarRecomendacionesDesdeEquipo({ forceSync: true })}
+                disabled={recomendacionesLoading || !teamPlayers.length}
+              >
+                Regenerar
+              </button>
+            </div>
+          </div>
+          {recomendacionesError && (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+              {recomendacionesError}
+            </div>
+          )}
+          {formacionesIncompletas.length > 0 && (
+            <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-700">
+              <p className="font-semibold">Formaciones incompletas:</p>
+              <ul className="mt-1 list-disc space-y-1 pl-4">
+                {formacionesIncompletas.map((item) => (
+                  <li key={`incompleta-${item.formacion}`}>
+                    {item.formacion}
+                    {item.missing?.length ? ` · ${formatMissingForFormation(item)}` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {recomendacionesLoading ? (
+            <p className="text-sm text-gray-500">Calculando recomendaciones…</p>
+          ) : recomendaciones.length ? (
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {recomendaciones.map((rec) => (
+                <article
+                  key={`recomendacion-${rec.formacion}`}
+                  className="flex h-full flex-col rounded-2xl border border-indigo-100 bg-indigo-50/40 p-4 shadow-sm"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-xs font-semibold uppercase tracking-wide text-indigo-600">
+                        Formación recomendada
+                      </div>
+                      <div className="text-2xl font-bold text-gray-900">
+                        {rec.formacion}
+                      </div>
+                      <div className="mt-1 text-xs text-gray-600">
+                        Media global: {pointsSummaryFormatter.format(
+                          Number.isFinite(rec.scoreAlineacion)
+                            ? rec.scoreAlineacion
+                            : 0
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        className="rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
+                        onClick={() => handleAplicarRecomendacion(rec)}
+                        disabled={recomendacionesLoading}
+                      >
+                        Aplicar alineación
+                      </button>
+                      <button
+                        type="button"
+                        className="rounded-full border border-indigo-200 px-3 py-1 text-xs font-semibold text-indigo-600 transition hover:border-indigo-400 hover:text-indigo-800"
+                        onClick={() => abrirDetalleRecomendacion(rec)}
+                      >
+                        Ver detalles
+                      </button>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-2 gap-2 text-xs text-gray-600">
+                    {ZONE_CODES.map((zone) => {
+                      const zonePlayers = rec.once?.[zone] ?? [];
+                      const zoneBreakdown = rec.breakdown?.[zone];
+                      return (
+                        <div
+                          key={`${rec.formacion}-${zone}`}
+                          className="rounded-xl bg-white/70 p-3 shadow-inner"
+                        >
+                          <div className="text-xs font-semibold uppercase text-indigo-700">
+                            {zone}
+                          </div>
+                          <div className="text-sm font-semibold text-gray-900">
+                            {pointsSummaryFormatter.format(
+                              Number.isFinite(zoneBreakdown?.average)
+                                ? zoneBreakdown.average
+                                : 0
+                            )}
+                          </div>
+                          <ul className="mt-2 space-y-1 text-[11px] text-gray-600">
+                            {zonePlayers.map((player) => (
+                              <li
+                                key={player.playerKey ?? player.name}
+                                className="flex justify-between gap-2"
+                              >
+                                <span className="truncate">{player.name}</span>
+                                <span className="font-semibold text-gray-900">
+                                  {pointsSummaryFormatter.format(
+                                    Number.isFinite(player.scoreRecomendacion)
+                                      ? player.scoreRecomendacion
+                                      : 0
+                                  )}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            !recomendacionesError && (
+              <p className="text-sm text-gray-500">
+                Genera recomendaciones para ver alineaciones sugeridas.
+              </p>
+            )
+          )}
         </div>
       </section>
       <div className="grid gap-4 lg:grid-cols-[minmax(220px,280px)_1fr]">
@@ -2469,6 +2975,15 @@ export default function FantasyTeamDashboard() {
           público del mercado.
         </footer>
       </div>
+      {recomendacionSeleccionada && (
+        <RecommendationDetailModal
+          recomendacion={recomendacionSeleccionada}
+          onClose={cerrarDetalleRecomendacion}
+          pointsFormatter={pointsFormatter}
+          pointsSummaryFormatter={pointsSummaryFormatter}
+          useWeighted={USE_WEIGHTED_RECENT_FORM}
+        />
+      )}
       {playerDetailTarget && (
         <PlayerDetailModal
           player={playerDetailTarget}
@@ -2754,6 +3269,166 @@ function DeleteSaleModal({ sale, onConfirm, onCancel }) {
           >
             Confirmar
           </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RecommendationDetailModal({
+  recomendacion,
+  onClose,
+  pointsFormatter,
+  pointsSummaryFormatter,
+  useWeighted,
+}) {
+  if (!recomendacion) return null;
+  const avgFormatter =
+    pointsSummaryFormatter ??
+    new Intl.NumberFormat("es-ES", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 0,
+    });
+  const totalFormatter =
+    pointsFormatter ??
+    new Intl.NumberFormat("es-ES", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 1,
+    });
+  const mediaGlobal = Number.isFinite(recomendacion.scoreAlineacion)
+    ? recomendacion.scoreAlineacion
+    : 0;
+  const jugadores = ZONE_CODES.flatMap((zone) =>
+    (recomendacion.once?.[zone] ?? []).map((player) => ({
+      ...player,
+      zone,
+    }))
+  ).sort((a, b) => {
+    if (ZONE_ORDER[a.zone] !== ZONE_ORDER[b.zone]) {
+      return ZONE_ORDER[a.zone] - ZONE_ORDER[b.zone];
+    }
+    return (a.name ?? "").localeCompare(b.name ?? "", "es");
+  });
+  const explanation = useWeighted
+    ? "Basado en la media ponderada de los últimos 5 partidos."
+    : "Basado en la media de los últimos 5 partidos.";
+
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" onClick={onClose} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="recommendation-detail-title"
+        className="relative flex w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+      >
+        <header className="flex items-start justify-between border-b border-gray-200 px-6 py-4">
+          <div>
+            <h3
+              id="recommendation-detail-title"
+              className="text-xl font-semibold text-gray-900"
+            >
+              Alineación {recomendacion.formacion}
+            </h3>
+            <p className="text-sm text-gray-500">
+              Media global: {avgFormatter.format(mediaGlobal)}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-2xl leading-none text-gray-400 transition hover:text-gray-600"
+            aria-label="Cerrar detalles de la recomendación"
+          >
+            ×
+          </button>
+        </header>
+        <div className="max-h-[75vh] space-y-4 overflow-y-auto px-6 py-5">
+          <section>
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+              Detalle por jugador
+            </h4>
+            <div className="mt-3 overflow-hidden rounded-xl border border-gray-200">
+              <table
+                className="min-w-full text-sm"
+                aria-label="Detalle de la alineación recomendada"
+              >
+                <thead className="bg-indigo-50 text-indigo-700">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-semibold">Jugador</th>
+                    <th className="px-3 py-2 text-left font-semibold">Posición</th>
+                    <th className="px-3 py-2 text-right font-semibold">Score recomendación</th>
+                    <th className="px-3 py-2 text-left font-semibold">Últimas 5</th>
+                    <th className="px-3 py-2 text-left font-semibold">Media / Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {jugadores.map((player) => {
+                    const entries = Array.isArray(player.recommendationInfo?.entries)
+                      ? player.recommendationInfo.entries
+                      : [];
+                    const entriesText = entries.length
+                      ? entries
+                          .map((entry, index) => {
+                            const jornada =
+                              entry?.jornada !== null && entry?.jornada !== undefined && entry?.jornada !== ""
+                                ? `J${entry.jornada}`
+                                : `P${index + 1}`;
+                            const puntos =
+                              entry?.puntos !== null && entry?.puntos !== undefined
+                                ? avgFormatter.format(entry.puntos)
+                                : "—";
+                            return `${jornada}: ${puntos}`;
+                          })
+                          .join(" · ")
+                      : "—";
+                    const simpleAverage = Number.isFinite(
+                      player.recommendationInfo?.simpleAverage
+                    )
+                      ? player.recommendationInfo.simpleAverage
+                      : null;
+                    const total = Number.isFinite(player.recommendationInfo?.total)
+                      ? player.recommendationInfo.total
+                      : null;
+                    const matches = player.recommendationInfo?.matchesConsidered ?? 0;
+                    const mediaText = matches
+                      ? `Media: ${avgFormatter.format(simpleAverage ?? 0)} · Total: ${totalFormatter.format(
+                          total ?? 0
+                        )} (${matches} ${matches === 1 ? "partido" : "partidos"})`
+                      : "Sin datos recientes";
+                    return (
+                      <tr
+                        key={player.playerKey ?? `${player.name}-${player.zone}`}
+                        className="odd:bg-white even:bg-indigo-50/40"
+                      >
+                        <td className="px-3 py-2 text-left font-medium text-gray-900">
+                          <div>{player.name}</div>
+                          {player.team && (
+                            <div className="text-xs font-normal text-gray-500">
+                              {player.team}
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-3 py-2 text-left text-gray-700">
+                          {ZONE_LABELS[player.zone] ?? player.zone}
+                        </td>
+                        <td className="px-3 py-2 text-right font-semibold text-gray-900">
+                          {avgFormatter.format(
+                            Number.isFinite(player.scoreRecomendacion)
+                              ? player.scoreRecomendacion
+                              : 0
+                          )}
+                        </td>
+                        <td className="px-3 py-2 text-left text-gray-700">{entriesText}</td>
+                        <td className="px-3 py-2 text-left text-gray-700">{mediaText}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <p className="text-xs text-gray-500">{explanation}</p>
         </div>
       </div>
     </div>
