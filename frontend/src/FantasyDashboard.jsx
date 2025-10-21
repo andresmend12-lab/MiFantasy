@@ -1,4 +1,41 @@
- import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
+const normalizeText = (value) =>
+  typeof value === "string" ? value : value ? String(value) : "";
+
+const sanitizeName = (value) =>
+  normalizeText(value)
+    .split(/\s*\n\s*/)[0]
+    .trim();
+
+const toNumber = (value) => {
+  const num = Number(value);
+  return Number.isFinite(num) ? num : 0;
+};
+
+const normalizePlayer = (player) => ({
+  ...player,
+  name: sanitizeName(player?.name),
+  team: normalizeText(player?.team),
+  position: normalizeText(player?.position),
+  value: toNumber(player?.value),
+  change_day: toNumber(player?.change_day ?? player?.diff_1),
+  change_week: toNumber(player?.change_week ?? player?.diff_7),
+});
+
+const sanitizeStoredTeam = (entries) => {
+  if (!Array.isArray(entries)) return [];
+  const seen = new Set();
+  return entries.reduce((acc, item) => {
+    const name = sanitizeName(item?.name);
+    if (!name) return acc;
+    const key = name.toLowerCase();
+    if (seen.has(key)) return acc;
+    seen.add(key);
+    acc.push({ name });
+    return acc;
+  }, []);
+};
 
 export default function FantasyTeamDashboard() {
   const [market, setMarket] = useState({ updated_at: null, players: [] });
@@ -6,7 +43,7 @@ export default function FantasyTeamDashboard() {
   const [myTeam, setMyTeam] = useState(() => {
     try {
       const raw = localStorage.getItem("myTeam");
-      return raw ? JSON.parse(raw) : [];
+      return raw ? sanitizeStoredTeam(JSON.parse(raw)) : [];
     } catch {
       return [];
     }
@@ -23,9 +60,11 @@ export default function FantasyTeamDashboard() {
         if (!res.ok) throw new Error("No se pudo descargar market.json");
         const data = await res.json();
         const players = Array.isArray(data.players) ? data.players : [];
+        const normalizedPlayers = players.map(normalizePlayer);
+
         setMarket({
           updated_at: data.updated_at || null,
-          players,
+          players: normalizedPlayers,
         });
         setStatus("ok");
       } catch (e) {
@@ -66,13 +105,19 @@ export default function FantasyTeamDashboard() {
   }, [teamPlayers]);
 
   const addToTeam = (p) => {
-    if (myTeam.some((x) => x.name.toLowerCase() === p.name.toLowerCase()))
-      return;
-    setMyTeam([...myTeam, { name: p.name }]);
+    setMyTeam((prev) => {
+      const exists = prev.some(
+        (x) => x.name.toLowerCase() === p.name.toLowerCase()
+      );
+      if (exists) return prev;
+      return [...prev, { name: p.name }];
+    });
   };
 
   const removeFromTeam = (name) => {
-    setMyTeam(myTeam.filter((x) => x.name.toLowerCase() !== name.toLowerCase()));
+    setMyTeam((prev) =>
+      prev.filter((x) => x.name.toLowerCase() !== name.toLowerCase())
+    );
   };
 
   const formatter = new Intl.NumberFormat("es-ES");
