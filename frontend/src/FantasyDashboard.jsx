@@ -3,10 +3,40 @@ import React, { useEffect, useMemo, useState } from "react";
 const normalizeText = (value) =>
   typeof value === "string" ? value : value ? String(value) : "";
 
-const sanitizeName = (value) =>
-  normalizeText(value)
-    .split(/\s*\n\s*/)[0]
-    .trim();
+const collapseWhitespace = (value) =>
+  typeof value === "string" ? value.replace(/\s+/g, " ").trim() : "";
+
+const dedupeDuplicateBlock = (value) => {
+  if (!value) return "";
+  const s = value;
+  if (s.length % 2 === 0) {
+    const half = s.length / 2;
+    if (s.slice(0, half) === s.slice(half)) {
+      return s.slice(0, half).trim();
+    }
+  }
+  const match = s.match(/^(.*)\s+\1$/);
+  if (match) {
+    return match[1].trim();
+  }
+  return s;
+};
+
+const dedupeConsecutiveWords = (value) => {
+  if (!value) return "";
+  const parts = value.split(" ");
+  return parts
+    .filter((part, index) => index === 0 || part.toLowerCase() !== parts[index - 1].toLowerCase())
+    .join(" ");
+};
+
+const sanitizeName = (value) => {
+  const base = collapseWhitespace(
+    normalizeText(value)
+      .split(/\s*\n\s*/)[0]
+  );
+  return dedupeConsecutiveWords(dedupeDuplicateBlock(base));
+};
 
 const toNumber = (value) => {
   const num = Number(value);
