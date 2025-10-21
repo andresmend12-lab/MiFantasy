@@ -4,7 +4,11 @@
   "players": [
     {
       "id": 8405,
+<<<<<<< HEAD
       "name": "antony",
+=======
+      "name": "Antony",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -30,7 +34,11 @@
     },
     {
       "id": 11520,
+<<<<<<< HEAD
       "name": "lamine yamal",
+=======
+      "name": "Lamine Yamal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -56,7 +64,11 @@
     },
     {
       "id": 6633,
+<<<<<<< HEAD
       "name": "jorge de frutos",
+=======
+      "name": "Jorge de Frutos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -82,7 +94,11 @@
     },
     {
       "id": 1931,
+<<<<<<< HEAD
       "name": "marcos llorente",
+=======
+      "name": "Marcos Llorente",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -108,7 +124,11 @@
     },
     {
       "id": 2632,
+<<<<<<< HEAD
       "name": "pablo fornals",
+=======
+      "name": "Pablo Fornals",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -134,7 +154,11 @@
     },
     {
       "id": 9125,
+<<<<<<< HEAD
       "name": "ruben vargas",
+=======
+      "name": "Rubén Vargas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -160,7 +184,11 @@
     },
     {
       "id": 2939,
+<<<<<<< HEAD
       "name": "marcus rashford",
+=======
+      "name": "Marcus Rashford",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -186,7 +214,11 @@
     },
     {
       "id": 6210,
+<<<<<<< HEAD
       "name": "frenkie de jong",
+=======
+      "name": "Frenkie de Jong",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -212,7 +244,11 @@
     },
     {
       "id": 11709,
+<<<<<<< HEAD
       "name": "fermin lopez",
+=======
+      "name": "Fermín López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -238,7 +274,11 @@
     },
     {
       "id": 10638,
+<<<<<<< HEAD
       "name": "tajon buchanan",
+=======
+      "name": "Tajon Buchanan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -264,7 +304,11 @@
     },
     {
       "id": 6363,
+<<<<<<< HEAD
       "name": "ander barrenetxea",
+=======
+      "name": "Ander Barrenetxea",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -290,7 +334,11 @@
     },
     {
       "id": 5546,
+<<<<<<< HEAD
       "name": "cucho hernandez",
+=======
+      "name": "Cucho Hernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -316,7 +364,11 @@
     },
     {
       "id": 10005,
+<<<<<<< HEAD
       "name": "pablo barrios",
+=======
+      "name": "Pablo Barrios",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -342,7 +394,11 @@
     },
     {
       "id": 11813,
+<<<<<<< HEAD
       "name": "natan",
+=======
+      "name": "Natan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -368,7 +424,11 @@
     },
     {
       "id": 7257,
+<<<<<<< HEAD
       "name": "pedri gonzalez",
+=======
+      "name": "Pedri González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -394,7 +454,11 @@
     },
     {
       "id": 6493,
+<<<<<<< HEAD
       "name": "alejandro catena",
+=======
+      "name": "Alejandro Catena",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -420,7 +484,11 @@
     },
     {
       "id": 7645,
+<<<<<<< HEAD
       "name": "alex baena",
+=======
+      "name": "Álex Baena",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -446,7 +514,11 @@
     },
     {
       "id": 9990,
+<<<<<<< HEAD
       "name": "alberto moleiro",
+=======
+      "name": "Alberto Moleiro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -472,7 +544,11 @@
     },
     {
       "id": 3738,
+<<<<<<< HEAD
       "name": "edu exposito",
+=======
+      "name": "Edu Expósito",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -498,7 +574,11 @@
     },
     {
       "id": 9750,
+<<<<<<< HEAD
       "name": "abde ezzalzouli",
+=======
+      "name": "Abde Ezzalzouli",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -524,7 +604,11 @@
     },
     {
       "id": 867,
+<<<<<<< HEAD
       "name": "alvaro garcia",
+=======
+      "name": "Álvaro García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -550,7 +634,11 @@
     },
     {
       "id": 10287,
+<<<<<<< HEAD
       "name": "julian alvarez",
+=======
+      "name": "Julián Álvarez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -576,7 +664,11 @@
     },
     {
       "id": 6002,
+<<<<<<< HEAD
       "name": "robin le normand",
+=======
+      "name": "Robin Le Normand",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -602,7 +694,11 @@
     },
     {
       "id": 9317,
+<<<<<<< HEAD
       "name": "jose angel carmona",
+=======
+      "name": "José Ángel Carmona",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -628,7 +724,11 @@
     },
     {
       "id": 6935,
+<<<<<<< HEAD
       "name": "luis milla",
+=======
+      "name": "Luis Milla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -654,7 +754,11 @@
     },
     {
       "id": 7542,
+<<<<<<< HEAD
       "name": "eric garcia",
+=======
+      "name": "Eric García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -680,7 +784,11 @@
     },
     {
       "id": 8816,
+<<<<<<< HEAD
       "name": "david affengruber",
+=======
+      "name": "David Affengruber",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -706,7 +814,11 @@
     },
     {
       "id": 8386,
+<<<<<<< HEAD
       "name": "jude bellingham",
+=======
+      "name": "Jude Bellingham",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -732,7 +844,11 @@
     },
     {
       "id": 3429,
+<<<<<<< HEAD
       "name": "kylian mbappe",
+=======
+      "name": "Kylian Mbappé",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -758,7 +874,11 @@
     },
     {
       "id": 6174,
+<<<<<<< HEAD
       "name": "arnaut danjuma",
+=======
+      "name": "Arnaut Danjuma",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -784,7 +904,11 @@
     },
     {
       "id": 1927,
+<<<<<<< HEAD
       "name": "pere milla",
+=======
+      "name": "Pere Milla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -810,7 +934,11 @@
     },
     {
       "id": 3758,
+<<<<<<< HEAD
       "name": "federico valverde",
+=======
+      "name": "Federico Valverde",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -836,7 +964,11 @@
     },
     {
       "id": 7658,
+<<<<<<< HEAD
       "name": "german valera",
+=======
+      "name": "Germán Valera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -862,7 +994,11 @@
     },
     {
       "id": 11138,
+<<<<<<< HEAD
       "name": "thiago almada",
+=======
+      "name": "Thiago Almada",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -888,7 +1024,11 @@
     },
     {
       "id": 6560,
+<<<<<<< HEAD
       "name": "andrei ratiu",
+=======
+      "name": "Andrei Ratiu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -914,7 +1054,11 @@
     },
     {
       "id": 863,
+<<<<<<< HEAD
       "name": "florian lejeune",
+=======
+      "name": "Florian Lejeune",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -940,7 +1084,11 @@
     },
     {
       "id": 12605,
+<<<<<<< HEAD
       "name": "mikel jauregizar",
+=======
+      "name": "Mikel Jauregizar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -966,7 +1114,11 @@
     },
     {
       "id": 11172,
+<<<<<<< HEAD
       "name": "carlos romero",
+=======
+      "name": "Carlos Romero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -992,7 +1144,11 @@
     },
     {
       "id": 2401,
+<<<<<<< HEAD
       "name": "andre silva",
+=======
+      "name": "André Silva",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -1018,7 +1174,11 @@
     },
     {
       "id": 12651,
+<<<<<<< HEAD
       "name": "augusto batalla",
+=======
+      "name": "Augusto Batalla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -1044,7 +1204,11 @@
     },
     {
       "id": 1071,
+<<<<<<< HEAD
       "name": "aaron escandell",
+=======
+      "name": "Aarón Escandell",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -1070,7 +1234,11 @@
     },
     {
       "id": 11765,
+<<<<<<< HEAD
       "name": "carlos vicente",
+=======
+      "name": "Carlos Vicente",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -1096,7 +1264,11 @@
     },
     {
       "id": 582,
+<<<<<<< HEAD
       "name": "leandro cabrera",
+=======
+      "name": "Leandro Cabrera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -1122,7 +1294,11 @@
     },
     {
       "id": 6180,
+<<<<<<< HEAD
       "name": "sergio gomez",
+=======
+      "name": "Sergio Gómez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -1148,7 +1324,11 @@
     },
     {
       "id": 7638,
+<<<<<<< HEAD
       "name": "jesus areso",
+=======
+      "name": "Jesús Areso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1174,7 +1354,11 @@
     },
     {
       "id": 4288,
+<<<<<<< HEAD
       "name": "raphinha",
+=======
+      "name": "Raphinha",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -1200,7 +1384,11 @@
     },
     {
       "id": 6885,
+<<<<<<< HEAD
       "name": "aleix febas",
+=======
+      "name": "Aleix Febas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -1226,7 +1414,11 @@
     },
     {
       "id": 14954,
+<<<<<<< HEAD
       "name": "victor muñoz",
+=======
+      "name": "Víctor Muñoz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -1252,7 +1444,11 @@
     },
     {
       "id": 3759,
+<<<<<<< HEAD
       "name": "marko dmitrovic",
+=======
+      "name": "Marko Dmitrovic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -1278,7 +1474,11 @@
     },
     {
       "id": 7992,
+<<<<<<< HEAD
       "name": "pep chavarria",
+=======
+      "name": "Pep Chavarría",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -1304,7 +1504,11 @@
     },
     {
       "id": 8134,
+<<<<<<< HEAD
       "name": "vedat muriqi",
+=======
+      "name": "Vedat Muriqi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -1330,7 +1534,11 @@
     },
     {
       "id": 697,
+<<<<<<< HEAD
       "name": "aymeric laporte",
+=======
+      "name": "Aymeric Laporte",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1356,7 +1564,11 @@
     },
     {
       "id": 11767,
+<<<<<<< HEAD
       "name": "alvaro nuñez",
+=======
+      "name": "Álvaro Núñez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -1382,7 +1594,11 @@
     },
     {
       "id": 9987,
+<<<<<<< HEAD
       "name": "roberto fernandez",
+=======
+      "name": "Roberto Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -1408,7 +1624,11 @@
     },
     {
       "id": 9276,
+<<<<<<< HEAD
       "name": "giuliano simeone",
+=======
+      "name": "Giuliano Simeone",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -1434,7 +1654,11 @@
     },
     {
       "id": 404,
+<<<<<<< HEAD
       "name": "pedro bigas",
+=======
+      "name": "Pedro Bigas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -1460,7 +1684,11 @@
     },
     {
       "id": 6062,
+<<<<<<< HEAD
       "name": "eder militao",
+=======
+      "name": "Éder Militão",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -1486,7 +1714,11 @@
     },
     {
       "id": 6611,
+<<<<<<< HEAD
       "name": "sergio herrera",
+=======
+      "name": "Sergio Herrera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -1512,7 +1744,11 @@
     },
     {
       "id": 44,
+<<<<<<< HEAD
       "name": "iñigo ruiz de galarreta",
+=======
+      "name": "Íñigo Ruiz de Galarreta",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -1538,7 +1774,11 @@
     },
     {
       "id": 735,
+<<<<<<< HEAD
       "name": "yuri berchiche",
+=======
+      "name": "Yuri Berchiche",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1564,7 +1804,11 @@
     },
     {
       "id": 1881,
+<<<<<<< HEAD
       "name": "unai lopez",
+=======
+      "name": "Unai López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -1590,7 +1834,11 @@
     },
     {
       "id": 4397,
+<<<<<<< HEAD
       "name": "marcos alonso",
+=======
+      "name": "Marcos Alonso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -1616,7 +1864,11 @@
     },
     {
       "id": 775,
+<<<<<<< HEAD
       "name": "jose maria gimenez",
+=======
+      "name": "José María Giménez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -1642,7 +1894,11 @@
     },
     {
       "id": 16308,
+<<<<<<< HEAD
       "name": "clemens riedel",
+=======
+      "name": "Clemens Riedel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -1668,7 +1924,11 @@
     },
     {
       "id": 9283,
+<<<<<<< HEAD
       "name": "haissem hassan",
+=======
+      "name": "Haissem Hassan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -1694,7 +1954,11 @@
     },
     {
       "id": 5978,
+<<<<<<< HEAD
       "name": "ionut radu",
+=======
+      "name": "Ionut Radu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -1720,7 +1984,11 @@
     },
     {
       "id": 10326,
+<<<<<<< HEAD
       "name": "karl etta eyong",
+=======
+      "name": "Karl Etta Eyong",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -1746,7 +2014,11 @@
     },
     {
       "id": 13883,
+<<<<<<< HEAD
       "name": "martim neto",
+=======
+      "name": "Martim Neto",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -1772,7 +2044,11 @@
     },
     {
       "id": 899,
+<<<<<<< HEAD
       "name": "johan mojica",
+=======
+      "name": "Johan Mojica",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -1798,7 +2074,11 @@
     },
     {
       "id": 1826,
+<<<<<<< HEAD
       "name": "jan oblak",
+=======
+      "name": "Jan Oblak",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -1824,7 +2104,11 @@
     },
     {
       "id": 7629,
+<<<<<<< HEAD
       "name": "ivan romero",
+=======
+      "name": "Iván Romero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -1850,7 +2134,11 @@
     },
     {
       "id": 7307,
+<<<<<<< HEAD
       "name": "pathe ciss",
+=======
+      "name": "Pathé Ciss",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -1876,7 +2164,11 @@
     },
     {
       "id": 16169,
+<<<<<<< HEAD
       "name": "jan virgili",
+=======
+      "name": "Jan Virgili",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -1902,7 +2194,11 @@
     },
     {
       "id": 1708,
+<<<<<<< HEAD
       "name": "axel witsel",
+=======
+      "name": "Axel Witsel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -1928,7 +2224,11 @@
     },
     {
       "id": 8105,
+<<<<<<< HEAD
       "name": "samu costa",
+=======
+      "name": "Samú Costa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -1954,7 +2254,11 @@
     },
     {
       "id": 1067,
+<<<<<<< HEAD
       "name": "pau lopez",
+=======
+      "name": "Pau López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -1980,7 +2284,11 @@
     },
     {
       "id": 12358,
+<<<<<<< HEAD
       "name": "gabriel suazo",
+=======
+      "name": "Gabriel Suazo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2006,7 +2314,11 @@
     },
     {
       "id": 7004,
+<<<<<<< HEAD
       "name": "ronald araujo",
+=======
+      "name": "Ronald Araújo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -2032,7 +2344,11 @@
     },
     {
       "id": 9218,
+<<<<<<< HEAD
       "name": "arnau martinez",
+=======
+      "name": "Arnau Martínez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -2058,7 +2374,11 @@
     },
     {
       "id": 5032,
+<<<<<<< HEAD
       "name": "toni martinez",
+=======
+      "name": "Toni Martinez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -2084,7 +2404,11 @@
     },
     {
       "id": 6235,
+<<<<<<< HEAD
       "name": "odysseas vlachodimos",
+=======
+      "name": "Odysseas Vlachodimos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -2110,7 +2434,11 @@
     },
     {
       "id": 3693,
+<<<<<<< HEAD
       "name": "unai simon",
+=======
+      "name": "Unai Simón",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -2136,7 +2464,11 @@
     },
     {
       "id": 10886,
+<<<<<<< HEAD
       "name": "mateo joseph",
+=======
+      "name": "Mateo Joseph",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -2162,7 +2494,11 @@
     },
     {
       "id": 2675,
+<<<<<<< HEAD
       "name": "mikel oyarzabal",
+=======
+      "name": "Mikel Oyarzabal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -2188,7 +2524,11 @@
     },
     {
       "id": 11230,
+<<<<<<< HEAD
       "name": "abel bretones",
+=======
+      "name": "Abel Bretones",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -2214,7 +2554,11 @@
     },
     {
       "id": 10220,
+<<<<<<< HEAD
       "name": "omar el hilali",
+=======
+      "name": "Omar El Hilali",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -2240,7 +2584,11 @@
     },
     {
       "id": 2687,
+<<<<<<< HEAD
       "name": "rafa mir",
+=======
+      "name": "Rafa Mir",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -2266,7 +2614,11 @@
     },
     {
       "id": 4516,
+<<<<<<< HEAD
       "name": "paulo gazzaniga",
+=======
+      "name": "Paulo Gazzaniga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -2292,7 +2644,11 @@
     },
     {
       "id": 6289,
+<<<<<<< HEAD
       "name": "iñaki peña",
+=======
+      "name": "Iñaki Peña",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -2318,7 +2674,11 @@
     },
     {
       "id": 9316,
+<<<<<<< HEAD
       "name": "alejandro balde",
+=======
+      "name": "Alejandro Balde",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -2344,7 +2704,11 @@
     },
     {
       "id": 2663,
+<<<<<<< HEAD
       "name": "pablo maffeo",
+=======
+      "name": "Pablo Maffeo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -2370,7 +2734,11 @@
     },
     {
       "id": 5549,
+<<<<<<< HEAD
       "name": "santi comesaña",
+=======
+      "name": "Santi Comesaña",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -2396,7 +2764,11 @@
     },
     {
       "id": 8479,
+<<<<<<< HEAD
       "name": "eduardo camavinga",
+=======
+      "name": "Eduardo Camavinga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -2422,7 +2794,11 @@
     },
     {
       "id": 5995,
+<<<<<<< HEAD
       "name": "david hancko",
+=======
+      "name": "David Hancko",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -2448,7 +2824,11 @@
     },
     {
       "id": 2242,
+<<<<<<< HEAD
       "name": "gonçalo guedes",
+=======
+      "name": "Gonçalo Guedes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -2474,7 +2854,11 @@
     },
     {
       "id": 9405,
+<<<<<<< HEAD
       "name": "leo roman",
+=======
+      "name": "Leo Román",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -2500,7 +2884,11 @@
     },
     {
       "id": 3879,
+<<<<<<< HEAD
       "name": "pol lozano",
+=======
+      "name": "Pol Lozano",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -2526,7 +2914,11 @@
     },
     {
       "id": 12595,
+<<<<<<< HEAD
       "name": "nobel mendy",
+=======
+      "name": "Nobel Mendy",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -2552,7 +2944,11 @@
     },
     {
       "id": 6889,
+<<<<<<< HEAD
       "name": "oscar valentin",
+=======
+      "name": "Óscar Valentín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -2578,7 +2974,11 @@
     },
     {
       "id": 10358,
+<<<<<<< HEAD
       "name": "marc aguado",
+=======
+      "name": "Marc Aguado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -2604,7 +3004,11 @@
     },
     {
       "id": 11683,
+<<<<<<< HEAD
       "name": "jon gorrotxategi",
+=======
+      "name": "Jon Gorrotxategi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -2630,7 +3034,11 @@
     },
     {
       "id": 15123,
+<<<<<<< HEAD
       "name": "vitor reis",
+=======
+      "name": "Vitor Reis",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -2656,7 +3064,11 @@
     },
     {
       "id": 2759,
+<<<<<<< HEAD
       "name": "carles aleña",
+=======
+      "name": "Carles Aleñá",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -2682,7 +3094,11 @@
     },
     {
       "id": 2751,
+<<<<<<< HEAD
       "name": "kike garcia",
+=======
+      "name": "Kike García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -2708,7 +3124,11 @@
     },
     {
       "id": 16714,
+<<<<<<< HEAD
       "name": "javier olaizola",
+=======
+      "name": "Javier Olaizola",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -2734,7 +3154,11 @@
     },
     {
       "id": 12453,
+<<<<<<< HEAD
       "name": "asier osambela",
+=======
+      "name": "Asier Osambela",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -2760,7 +3184,11 @@
     },
     {
       "id": 12609,
+<<<<<<< HEAD
       "name": "pol tristan",
+=======
+      "name": "Pol Tristan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -2786,7 +3214,11 @@
     },
     {
       "id": 13804,
+<<<<<<< HEAD
       "name": "ramon martinez",
+=======
+      "name": "Ramón Martínez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2812,7 +3244,11 @@
     },
     {
       "id": 14135,
+<<<<<<< HEAD
       "name": "manu gonzalez",
+=======
+      "name": "Manu González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -2838,7 +3274,11 @@
     },
     {
       "id": 16317,
+<<<<<<< HEAD
       "name": "marcos navarro",
+=======
+      "name": "Marcos Navarro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -2864,7 +3304,11 @@
     },
     {
       "id": 15413,
+<<<<<<< HEAD
       "name": "lucas nuñez",
+=======
+      "name": "Lucas Núñez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -2890,7 +3334,11 @@
     },
     {
       "id": 16319,
+<<<<<<< HEAD
       "name": "hugo lopez",
+=======
+      "name": "Hugo López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -2916,7 +3364,11 @@
     },
     {
       "id": 12596,
+<<<<<<< HEAD
       "name": "joaquin oso",
+=======
+      "name": "Joaquín Oso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2942,7 +3394,11 @@
     },
     {
       "id": 15133,
+<<<<<<< HEAD
       "name": "gregoire swiderski",
+=======
+      "name": "Grégoire Swiderski",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -2968,7 +3424,11 @@
     },
     {
       "id": 16227,
+<<<<<<< HEAD
       "name": "cheli pereda",
+=======
+      "name": "Cheli Pereda",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -2994,7 +3454,11 @@
     },
     {
       "id": 14811,
+<<<<<<< HEAD
       "name": "papa dame ba",
+=======
+      "name": "Papa Dame BaPapa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -3020,7 +3484,11 @@
     },
     {
       "id": 16163,
+<<<<<<< HEAD
       "name": "gibert jordana",
+=======
+      "name": "Gibert Jordana",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -3046,7 +3514,11 @@
     },
     {
       "id": 11871,
+<<<<<<< HEAD
       "name": "dimitrios stamatakis",
+=======
+      "name": "Dimitrios Stamatakis",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -3072,7 +3544,11 @@
     },
     {
       "id": 13868,
+<<<<<<< HEAD
       "name": "raul chasco",
+=======
+      "name": "Raúl Chasco",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -3098,7 +3574,11 @@
     },
     {
       "id": 12980,
+<<<<<<< HEAD
       "name": "antoniu roca",
+=======
+      "name": "Antoniu Roca",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -3124,7 +3604,11 @@
     },
     {
       "id": 11684,
+<<<<<<< HEAD
       "name": "mikel goti",
+=======
+      "name": "Mikel Goti",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -3150,7 +3634,11 @@
     },
     {
       "id": 13808,
+<<<<<<< HEAD
       "name": "miguel roman",
+=======
+      "name": "Miguel Román",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -3176,7 +3664,11 @@
     },
     {
       "id": 14812,
+<<<<<<< HEAD
       "name": "ruben gomez",
+=======
+      "name": "Rubén Gómez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -3202,7 +3694,11 @@
     },
     {
       "id": 14816,
+<<<<<<< HEAD
       "name": "jean ives valou",
+=======
+      "name": "Jean Ives Valou",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -3228,7 +3724,11 @@
     },
     {
       "id": 8634,
+<<<<<<< HEAD
       "name": "rafael romero",
+=======
+      "name": "Rafael Romero Rafa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -3254,7 +3754,11 @@
     },
     {
       "id": 15423,
+<<<<<<< HEAD
       "name": "lander pinillos",
+=======
+      "name": "Lander Pinillos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -3280,7 +3784,11 @@
     },
     {
       "id": 15422,
+<<<<<<< HEAD
       "name": "salvi esquivel",
+=======
+      "name": "Salvi Esquivel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -3306,7 +3814,11 @@
     },
     {
       "id": 16270,
+<<<<<<< HEAD
       "name": "cayetano romero",
+=======
+      "name": "Cayetano Romero Caye",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -3332,7 +3844,11 @@
     },
     {
       "id": 16167,
+<<<<<<< HEAD
       "name": "jofre torrents",
+=======
+      "name": "Jofre Torrents",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -3358,7 +3874,11 @@
     },
     {
       "id": 14967,
+<<<<<<< HEAD
       "name": "juanpe gil",
+=======
+      "name": "Juanpe Gil",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -3384,7 +3904,11 @@
     },
     {
       "id": 13813,
+<<<<<<< HEAD
       "name": "adrian molina",
+=======
+      "name": "Adrián Molina",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -3410,7 +3934,11 @@
     },
     {
       "id": 13870,
+<<<<<<< HEAD
       "name": "jano monserrate",
+=======
+      "name": "Jano Monserrate",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -3436,7 +3964,11 @@
     },
     {
       "id": 14159,
+<<<<<<< HEAD
       "name": "coba gomes",
+=======
+      "name": "Coba Gomes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -3462,7 +3994,11 @@
     },
     {
       "id": 267,
+<<<<<<< HEAD
       "name": "allan nyom",
+=======
+      "name": "Allan Nyom",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -3488,7 +4024,11 @@
     },
     {
       "id": 16014,
+<<<<<<< HEAD
       "name": "antonio martinez bastida",
+=======
+      "name": "Antonio Martínez Bastida",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -3514,7 +4054,11 @@
     },
     {
       "id": 9796,
+<<<<<<< HEAD
       "name": "ruben iranzo",
+=======
+      "name": "Rubén Iranzo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -3540,7 +4084,11 @@
     },
     {
       "id": 12539,
+<<<<<<< HEAD
       "name": "joselu perez",
+=======
+      "name": "Joselu Pérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -3566,7 +4114,11 @@
     },
     {
       "id": 16146,
+<<<<<<< HEAD
       "name": "samu becerra",
+=======
+      "name": "Samu Becerra",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -3592,7 +4144,11 @@
     },
     {
       "id": 16018,
+<<<<<<< HEAD
       "name": "aimar blazquez",
+=======
+      "name": "Aimar Blázquez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -3618,7 +4174,11 @@
     },
     {
       "id": 14912,
+<<<<<<< HEAD
       "name": "iliesse salhi",
+=======
+      "name": "Iliesse Salhi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -3644,7 +4204,11 @@
     },
     {
       "id": 16158,
+<<<<<<< HEAD
       "name": "mauro echegoyen",
+=======
+      "name": "Mauro Echegoyen",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -3670,7 +4234,11 @@
     },
     {
       "id": 12479,
+<<<<<<< HEAD
       "name": "ruben montero",
+=======
+      "name": "Rúben Montero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -3696,7 +4264,11 @@
     },
     {
       "id": 10586,
+<<<<<<< HEAD
       "name": "mihailo ristic",
+=======
+      "name": "Mihailo Ristic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -3722,7 +4294,11 @@
     },
     {
       "id": 13814,
+<<<<<<< HEAD
       "name": "marco de la sias",
+=======
+      "name": "Marco de la Sías",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -3748,7 +4324,11 @@
     },
     {
       "id": 14051,
+<<<<<<< HEAD
       "name": "jon de luis",
+=======
+      "name": "Jon de Luis",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -3774,7 +4354,11 @@
     },
     {
       "id": 16287,
+<<<<<<< HEAD
       "name": "ivan corralejo",
+=======
+      "name": "Iván Corralejo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -3800,7 +4384,11 @@
     },
     {
       "id": 16272,
+<<<<<<< HEAD
       "name": "marc vilaplana",
+=======
+      "name": "Marc Vilaplana",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -3826,7 +4414,11 @@
     },
     {
       "id": 16020,
+<<<<<<< HEAD
       "name": "nacho perez",
+=======
+      "name": "Nacho Pérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -3852,7 +4444,11 @@
     },
     {
       "id": 16198,
+<<<<<<< HEAD
       "name": "edu altozano",
+=======
+      "name": "Edu Altozano",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -3878,7 +4474,11 @@
     },
     {
       "id": 13748,
+<<<<<<< HEAD
       "name": "martin krug",
+=======
+      "name": "Martín Krug",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -3904,7 +4504,11 @@
     },
     {
       "id": 11554,
+<<<<<<< HEAD
       "name": "fran gonzalez",
+=======
+      "name": "Fran González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -3930,7 +4534,11 @@
     },
     {
       "id": 10767,
+<<<<<<< HEAD
       "name": "sergio mestre",
+=======
+      "name": "Sergio Mestre",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -3956,7 +4564,11 @@
     },
     {
       "id": 16151,
+<<<<<<< HEAD
       "name": "mawuli mensah",
+=======
+      "name": "Mawuli Mensah",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -3982,7 +4594,11 @@
     },
     {
       "id": 12594,
+<<<<<<< HEAD
       "name": "david otorbi",
+=======
+      "name": "David Otorbi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -4008,7 +4624,11 @@
     },
     {
       "id": 12917,
+<<<<<<< HEAD
       "name": "alberto risco",
+=======
+      "name": "Alberto Risco",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -4034,7 +4654,11 @@
     },
     {
       "id": 13032,
+<<<<<<< HEAD
       "name": "pau cabanes",
+=======
+      "name": "Pau Cabanes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -4060,7 +4684,11 @@
     },
     {
       "id": 10328,
+<<<<<<< HEAD
       "name": "marc domenech",
+=======
+      "name": "Marc Doménech",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -4086,7 +4714,11 @@
     },
     {
       "id": 13860,
+<<<<<<< HEAD
       "name": "toni fernandez",
+=======
+      "name": "Toni Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -4112,7 +4744,11 @@
     },
     {
       "id": 11707,
+<<<<<<< HEAD
       "name": "diego kochen",
+=======
+      "name": "Diego Kochen",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -4138,7 +4774,11 @@
     },
     {
       "id": 14950,
+<<<<<<< HEAD
       "name": "vladyslav krapyvtsov",
+=======
+      "name": "Vladyslav Krapyvtsov",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -4164,7 +4804,11 @@
     },
     {
       "id": 13859,
+<<<<<<< HEAD
       "name": "guille fernandez",
+=======
+      "name": "Guille Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -4190,7 +4834,11 @@
     },
     {
       "id": 13871,
+<<<<<<< HEAD
       "name": "taufik seidu",
+=======
+      "name": "Taufik Seidu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -4216,7 +4864,11 @@
     },
     {
       "id": 11507,
+<<<<<<< HEAD
       "name": "ilias kostis",
+=======
+      "name": "Ilias Kostis",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -4242,7 +4894,11 @@
     },
     {
       "id": 9824,
+<<<<<<< HEAD
       "name": "alberto flores",
+=======
+      "name": "Alberto Flores",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -4268,7 +4924,11 @@
     },
     {
       "id": 16236,
+<<<<<<< HEAD
       "name": "miguel sierra",
+=======
+      "name": "Miguel Sierra",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -4294,7 +4954,11 @@
     },
     {
       "id": 11562,
+<<<<<<< HEAD
       "name": "yago santiago",
+=======
+      "name": "Yago Santiago",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -4320,7 +4984,11 @@
     },
     {
       "id": 11888,
+<<<<<<< HEAD
       "name": "jhon solis",
+=======
+      "name": "Jhon Solís",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -4346,7 +5014,11 @@
     },
     {
       "id": 8679,
+<<<<<<< HEAD
       "name": "unai marrero",
+=======
+      "name": "Unai Marrero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -4372,7 +5044,11 @@
     },
     {
       "id": 13036,
+<<<<<<< HEAD
       "name": "yoel lago",
+=======
+      "name": "Yoel Lago",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -4398,7 +5074,11 @@
     },
     {
       "id": 16271,
+<<<<<<< HEAD
       "name": "joan ruiz",
+=======
+      "name": "Joan Ruiz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -4424,7 +5104,11 @@
     },
     {
       "id": 33,
+<<<<<<< HEAD
       "name": "raul fernandez",
+=======
+      "name": "Raúl Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -4450,7 +5134,11 @@
     },
     {
       "id": 9695,
+<<<<<<< HEAD
       "name": "ruben sanchez",
+=======
+      "name": "Rubén Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -4476,7 +5164,11 @@
     },
     {
       "id": 3833,
+<<<<<<< HEAD
       "name": "diego pampin",
+=======
+      "name": "Diego Pampín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -4502,7 +5194,11 @@
     },
     {
       "id": 16228,
+<<<<<<< HEAD
       "name": "ovie ejaria",
+=======
+      "name": "Ovie Ejaria",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4528,7 +5224,11 @@
     },
     {
       "id": 15427,
+<<<<<<< HEAD
       "name": "lamine gueye",
+=======
+      "name": "Lamine Gueye",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4554,7 +5254,11 @@
     },
     {
       "id": 10230,
+<<<<<<< HEAD
       "name": "dani perez",
+=======
+      "name": "Dani Pérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -4580,7 +5284,11 @@
     },
     {
       "id": 16235,
+<<<<<<< HEAD
       "name": "alex costa",
+=======
+      "name": "Álex Costa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -4606,7 +5314,11 @@
     },
     {
       "id": 9759,
+<<<<<<< HEAD
       "name": "alejandro iturbe",
+=======
+      "name": "Alejandro Iturbe",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -4632,7 +5344,11 @@
     },
     {
       "id": 12656,
+<<<<<<< HEAD
       "name": "alex fores",
+=======
+      "name": "Alex Forés",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4658,7 +5374,11 @@
     },
     {
       "id": 7570,
+<<<<<<< HEAD
       "name": "dani cardenas",
+=======
+      "name": "Dani Cárdenas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -4684,7 +5404,11 @@
     },
     {
       "id": 5080,
+<<<<<<< HEAD
       "name": "cristian rivero",
+=======
+      "name": "Cristian Rivero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -4710,7 +5434,11 @@
     },
     {
       "id": 16237,
+<<<<<<< HEAD
       "name": "thiago pitarch",
+=======
+      "name": "Thiago Pitarch",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -4736,7 +5464,11 @@
     },
     {
       "id": 14935,
+<<<<<<< HEAD
       "name": "youssef enriquez",
+=======
+      "name": "Youssef Enríquez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -4762,7 +5494,11 @@
     },
     {
       "id": 15961,
+<<<<<<< HEAD
       "name": "jesus fortea",
+=======
+      "name": "Jesús Fortea",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4788,7 +5524,11 @@
     },
     {
       "id": 12945,
+<<<<<<< HEAD
       "name": "marco esteban",
+=======
+      "name": "Marco Esteban",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -4814,7 +5554,11 @@
     },
     {
       "id": 5022,
+<<<<<<< HEAD
       "name": "bambo diaby",
+=======
+      "name": "Bambo Diaby",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -4840,7 +5584,11 @@
     },
     {
       "id": 14886,
+<<<<<<< HEAD
       "name": "diego aguado",
+=======
+      "name": "Diego Aguado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4866,7 +5614,11 @@
     },
     {
       "id": 13877,
+<<<<<<< HEAD
       "name": "jiri letacek",
+=======
+      "name": "Jiri Letácek",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -4892,7 +5644,11 @@
     },
     {
       "id": 9771,
+<<<<<<< HEAD
       "name": "javi llabres",
+=======
+      "name": "Javi Llabrés",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -4918,7 +5674,11 @@
     },
     {
       "id": 14700,
+<<<<<<< HEAD
       "name": "david jimenez",
+=======
+      "name": "David Jiménez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4944,7 +5704,11 @@
     },
     {
       "id": 11688,
+<<<<<<< HEAD
       "name": "adama boiro",
+=======
+      "name": "Adama Boiro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -4970,7 +5734,11 @@
     },
     {
       "id": 14016,
+<<<<<<< HEAD
       "name": "mikel santos",
+=======
+      "name": "Mikel Santos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -4996,7 +5764,11 @@
     },
     {
       "id": 12922,
+<<<<<<< HEAD
       "name": "adam boayar",
+=======
+      "name": "Adam Boayar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -5022,7 +5794,11 @@
     },
     {
       "id": 16463,
+<<<<<<< HEAD
       "name": "darling bladi",
+=======
+      "name": "Darling Bladi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -5048,7 +5824,11 @@
     },
     {
       "id": 10826,
+<<<<<<< HEAD
       "name": "german garcia",
+=======
+      "name": "Germán García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -5074,7 +5854,11 @@
     },
     {
       "id": 16155,
+<<<<<<< HEAD
       "name": "theo folgado",
+=======
+      "name": "Theo Folgado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -5100,7 +5884,11 @@
     },
     {
       "id": 11180,
+<<<<<<< HEAD
       "name": "manu bueno",
+=======
+      "name": "Manu Bueno",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -5126,7 +5914,11 @@
     },
     {
       "id": 15349,
+<<<<<<< HEAD
       "name": "omar falah",
+=======
+      "name": "Omar Falah",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -5152,7 +5944,11 @@
     },
     {
       "id": 14832,
+<<<<<<< HEAD
       "name": "albert niculaesei",
+=======
+      "name": "Albert Niculaesei",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5178,7 +5974,11 @@
     },
     {
       "id": 11712,
+<<<<<<< HEAD
       "name": "david lopez",
+=======
+      "name": "David López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -5204,7 +6004,11 @@
     },
     {
       "id": 14172,
+<<<<<<< HEAD
       "name": "matias moreno",
+=======
+      "name": "Matías Moreno",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -5230,7 +6034,11 @@
     },
     {
       "id": 2016,
+<<<<<<< HEAD
       "name": "ivan cuellar",
+=======
+      "name": "Iván Cuéllar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -5256,7 +6064,11 @@
     },
     {
       "id": 7915,
+<<<<<<< HEAD
       "name": "oier luengo",
+=======
+      "name": "Oier Luengo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -5282,7 +6094,11 @@
     },
     {
       "id": 10234,
+<<<<<<< HEAD
       "name": "marc vidal",
+=======
+      "name": "Marc Vidal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -5308,7 +6124,11 @@
     },
     {
       "id": 12870,
+<<<<<<< HEAD
       "name": "carlos espi",
+=======
+      "name": "Carlos Espí",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -5334,7 +6154,11 @@
     },
     {
       "id": 5942,
+<<<<<<< HEAD
       "name": "juan musso",
+=======
+      "name": "Juan Musso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -5360,7 +6184,11 @@
     },
     {
       "id": 9602,
+<<<<<<< HEAD
       "name": "lucas bergstrom",
+=======
+      "name": "Lucas Bergstrom",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -5386,7 +6214,11 @@
     },
     {
       "id": 12608,
+<<<<<<< HEAD
       "name": "rayane belaid",
+=======
+      "name": "Rayane Belaid",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -5412,7 +6244,11 @@
     },
     {
       "id": 14024,
+<<<<<<< HEAD
       "name": "javier hernandez",
+=======
+      "name": "Javier Hernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -5438,7 +6274,11 @@
     },
     {
       "id": 2736,
+<<<<<<< HEAD
       "name": "antonio lato",
+=======
+      "name": "Antonio Lato",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -5464,7 +6304,11 @@
     },
     {
       "id": 9755,
+<<<<<<< HEAD
       "name": "carlos martin",
+=======
+      "name": "Carlos Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -5490,7 +6334,11 @@
     },
     {
       "id": 10219,
+<<<<<<< HEAD
       "name": "angel fortuño",
+=======
+      "name": "Ángel Fortuño",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -5516,7 +6364,11 @@
     },
     {
       "id": 572,
+<<<<<<< HEAD
       "name": "adrian san miguel",
+=======
+      "name": "Adrián San Miguel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -5542,7 +6394,11 @@
     },
     {
       "id": 16001,
+<<<<<<< HEAD
       "name": "brandon domingues",
+=======
+      "name": "Brandon Dominguès",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -5568,7 +6424,11 @@
     },
     {
       "id": 12355,
+<<<<<<< HEAD
       "name": "moussa diarra",
+=======
+      "name": "Moussa Diarra",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -5594,7 +6454,11 @@
     },
     {
       "id": 15409,
+<<<<<<< HEAD
       "name": "alejandro rego",
+=======
+      "name": "Alejandro Rego",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -5620,7 +6484,11 @@
     },
     {
       "id": 10552,
+<<<<<<< HEAD
       "name": "abdul mumin",
+=======
+      "name": "Abdul Mumin",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -5646,7 +6514,11 @@
     },
     {
       "id": 8680,
+<<<<<<< HEAD
       "name": "john chetauya",
+=======
+      "name": "John Chetauya",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5672,7 +6544,11 @@
     },
     {
       "id": 9872,
+<<<<<<< HEAD
       "name": "iker benito",
+=======
+      "name": "Iker Benito",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -5698,7 +6574,11 @@
     },
     {
       "id": 14004,
+<<<<<<< HEAD
       "name": "jozhua vertrouwd",
+=======
+      "name": "Jozhua Vertrouwd",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -5724,7 +6604,11 @@
     },
     {
       "id": 10476,
+<<<<<<< HEAD
       "name": "abde rebbach",
+=======
+      "name": "Abde Rebbach",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -5750,7 +6634,11 @@
     },
     {
       "id": 9314,
+<<<<<<< HEAD
       "name": "javi serrano",
+=======
+      "name": "Javi Serrano",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -5776,7 +6664,11 @@
     },
     {
       "id": 3318,
+<<<<<<< HEAD
       "name": "franco cervi",
+=======
+      "name": "Franco Cervi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -5802,7 +6694,11 @@
     },
     {
       "id": 8961,
+<<<<<<< HEAD
       "name": "jon ander olasagasti",
+=======
+      "name": "Jon Ander Olasagasti",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -5828,7 +6724,11 @@
     },
     {
       "id": 16723,
+<<<<<<< HEAD
       "name": "eder aller",
+=======
+      "name": "Eder Aller",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -5854,7 +6754,11 @@
     },
     {
       "id": 4715,
+<<<<<<< HEAD
       "name": "nikola maras",
+=======
+      "name": "Nikola Maras",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -5880,7 +6784,11 @@
     },
     {
       "id": 10191,
+<<<<<<< HEAD
       "name": "alejandro primo",
+=======
+      "name": "Alejandro Primo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -5906,7 +6814,11 @@
     },
     {
       "id": 12879,
+<<<<<<< HEAD
       "name": "jorge cabello",
+=======
+      "name": "Jorge Cabello",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -5932,7 +6844,11 @@
     },
     {
       "id": 3206,
+<<<<<<< HEAD
       "name": "kike barja",
+=======
+      "name": "Kike Barja",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -5958,7 +6874,11 @@
     },
     {
       "id": 16160,
+<<<<<<< HEAD
       "name": "leo petrot",
+=======
+      "name": "Léo Pétrot",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5984,7 +6904,11 @@
     },
     {
       "id": 6346,
+<<<<<<< HEAD
       "name": "adrian de la fuente",
+=======
+      "name": "Adrián de la Fuente",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -6010,7 +6934,11 @@
     },
     {
       "id": 3255,
+<<<<<<< HEAD
       "name": "ivan villar",
+=======
+      "name": "Iván Villar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -6036,7 +6964,11 @@
     },
     {
       "id": 16758,
+<<<<<<< HEAD
       "name": "carlos ballestero",
+=======
+      "name": "Carlos Ballestero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -6062,7 +6994,11 @@
     },
     {
       "id": 16757,
+<<<<<<< HEAD
       "name": "diego morcillo",
+=======
+      "name": "Diego Morcillo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -6088,7 +7024,11 @@
     },
     {
       "id": 1972,
+<<<<<<< HEAD
       "name": "yeray alvarez",
+=======
+      "name": "Yeray Álvarez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -6114,7 +7054,11 @@
     },
     {
       "id": 9638,
+<<<<<<< HEAD
       "name": "coke carrillo",
+=======
+      "name": "Coke Carrillo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -6140,7 +7084,11 @@
     },
     {
       "id": 10329,
+<<<<<<< HEAD
       "name": "gorka rivera",
+=======
+      "name": "Gorka Rivera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -6166,7 +7114,11 @@
     },
     {
       "id": 10265,
+<<<<<<< HEAD
       "name": "diego mendez",
+=======
+      "name": "Diego Méndez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -6192,7 +7144,11 @@
     },
     {
       "id": 11816,
+<<<<<<< HEAD
       "name": "aitor fraga",
+=======
+      "name": "Aitor Fraga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -6218,7 +7174,11 @@
     },
     {
       "id": 9994,
+<<<<<<< HEAD
       "name": "ricard artero",
+=======
+      "name": "Ricard Artero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6244,7 +7204,11 @@
     },
     {
       "id": 12948,
+<<<<<<< HEAD
       "name": "jose luis catala",
+=======
+      "name": "José Luis Català",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -6270,7 +7234,11 @@
     },
     {
       "id": 12891,
+<<<<<<< HEAD
       "name": "llorenç serred",
+=======
+      "name": "Llorenç Serred",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -6296,7 +7264,11 @@
     },
     {
       "id": 8986,
+<<<<<<< HEAD
       "name": "eneko ortiz",
+=======
+      "name": "Eneko Ortiz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -6322,7 +7294,11 @@
     },
     {
       "id": 13876,
+<<<<<<< HEAD
       "name": "diego ferrer",
+=======
+      "name": "Diego Ferrer",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -6348,7 +7324,11 @@
     },
     {
       "id": 10764,
+<<<<<<< HEAD
       "name": "egoitz arana",
+=======
+      "name": "Egoitz Arana",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -6374,7 +7354,11 @@
     },
     {
       "id": 13887,
+<<<<<<< HEAD
       "name": "pablo rivera",
+=======
+      "name": "Pablo Rivera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -6400,7 +7384,11 @@
     },
     {
       "id": 12611,
+<<<<<<< HEAD
       "name": "alberto collado",
+=======
+      "name": "Alberto Collado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -6426,7 +7414,11 @@
     },
     {
       "id": 14100,
+<<<<<<< HEAD
       "name": "raul jimenez",
+=======
+      "name": "Raúl Jiménez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -6452,7 +7444,11 @@
     },
     {
       "id": 13861,
+<<<<<<< HEAD
       "name": "andres cuenca",
+=======
+      "name": "Andrés Cuenca",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -6478,7 +7474,11 @@
     },
     {
       "id": 13872,
+<<<<<<< HEAD
       "name": "geronimo spina",
+=======
+      "name": "Gerónimo Spina",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -6504,7 +7504,11 @@
     },
     {
       "id": 14882,
+<<<<<<< HEAD
       "name": "alvaro cortes",
+=======
+      "name": "Álvaro Cortés",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -6530,7 +7534,11 @@
     },
     {
       "id": 12695,
+<<<<<<< HEAD
       "name": "djordjije medenica",
+=======
+      "name": "Djordjije Medenica",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -6556,7 +7564,11 @@
     },
     {
       "id": 12601,
+<<<<<<< HEAD
       "name": "juan arango",
+=======
+      "name": "Juan Arango",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -6582,7 +7594,11 @@
     },
     {
       "id": 12600,
+<<<<<<< HEAD
       "name": "enric garcia",
+=======
+      "name": "Enric García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6608,7 +7624,11 @@
     },
     {
       "id": 14831,
+<<<<<<< HEAD
       "name": "aleksandar andreev",
+=======
+      "name": "Aleksandar Andreev",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -6634,7 +7654,11 @@
     },
     {
       "id": 14817,
+<<<<<<< HEAD
       "name": "ferran ruiz",
+=======
+      "name": "Ferrán Ruiz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6660,7 +7684,11 @@
     },
     {
       "id": 10192,
+<<<<<<< HEAD
       "name": "carlos gimenez",
+=======
+      "name": "Carlos Giménez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -6686,7 +7714,11 @@
     },
     {
       "id": 11181,
+<<<<<<< HEAD
       "name": "aitor gismera",
+=======
+      "name": "Aitor Gismera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -6712,7 +7744,11 @@
     },
     {
       "id": 10276,
+<<<<<<< HEAD
       "name": "alex almansa",
+=======
+      "name": "Alex Almansa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -6738,7 +7774,11 @@
     },
     {
       "id": 12536,
+<<<<<<< HEAD
       "name": "isra dominguez",
+=======
+      "name": "Isra Domínguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -6764,7 +7804,11 @@
     },
     {
       "id": 11788,
+<<<<<<< HEAD
       "name": "egoitz muñoz",
+=======
+      "name": "Egoitz Muñoz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -6790,7 +7834,11 @@
     },
     {
       "id": 12441,
+<<<<<<< HEAD
       "name": "pablo busto",
+=======
+      "name": "Pablo Busto",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -6816,7 +7864,11 @@
     },
     {
       "id": 14946,
+<<<<<<< HEAD
       "name": "carlos reina",
+=======
+      "name": "Carlos Reina",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -6842,7 +7894,11 @@
     },
     {
       "id": 7860,
+<<<<<<< HEAD
       "name": "pere joan garcia",
+=======
+      "name": "Pere Joan García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -6868,7 +7924,11 @@
     },
     {
       "id": 14836,
+<<<<<<< HEAD
       "name": "diego espejo",
+=======
+      "name": "Diego Espejo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -6894,7 +7954,11 @@
     },
     {
       "id": 14904,
+<<<<<<< HEAD
       "name": "daniel yañez",
+=======
+      "name": "Daniel Yáñez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -6920,7 +7984,11 @@
     },
     {
       "id": 14903,
+<<<<<<< HEAD
       "name": "hugo de llanos",
+=======
+      "name": "Hugo de Llanos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -6946,7 +8014,11 @@
     },
     {
       "id": 14020,
+<<<<<<< HEAD
       "name": "arkaitz mariezkurrena",
+=======
+      "name": "Arkaitz Mariezkurrena",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -6972,7 +8044,11 @@
     },
     {
       "id": 12694,
+<<<<<<< HEAD
       "name": "iñaki ruperez",
+=======
+      "name": "Iñaki Rupérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -6998,7 +8074,11 @@
     },
     {
       "id": 13040,
+<<<<<<< HEAD
       "name": "jon balda",
+=======
+      "name": "Jon Balda",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -7024,7 +8104,11 @@
     },
     {
       "id": 14022,
+<<<<<<< HEAD
       "name": "alassane diatta",
+=======
+      "name": "Alassane Diatta",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -7050,7 +8134,11 @@
     },
     {
       "id": 15122,
+<<<<<<< HEAD
       "name": "leandro antonetti",
+=======
+      "name": "Leandro Antonetti",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -7076,7 +8164,11 @@
     },
     {
       "id": 15228,
+<<<<<<< HEAD
       "name": "endika bujan",
+=======
+      "name": "Endika Buján",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -7102,7 +8194,11 @@
     },
     {
       "id": 10894,
+<<<<<<< HEAD
       "name": "xavi pleguezuelo",
+=======
+      "name": "Xavi Pleguezuelo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -7128,7 +8224,11 @@
     },
     {
       "id": 14977,
+<<<<<<< HEAD
       "name": "martin cuellar",
+=======
+      "name": "Martín Cuéllar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -7154,7 +8254,11 @@
     },
     {
       "id": 12823,
+<<<<<<< HEAD
       "name": "iñigo arguibide",
+=======
+      "name": "Iñigo Arguibide",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -7180,7 +8284,11 @@
     },
     {
       "id": 15006,
+<<<<<<< HEAD
       "name": "carlos lumbreras",
+=======
+      "name": "Carlos Lumbreras",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -7206,7 +8314,11 @@
     },
     {
       "id": 15135,
+<<<<<<< HEAD
       "name": "pol fortuny",
+=======
+      "name": "Pol Fortuny",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -7232,7 +8344,11 @@
     },
     {
       "id": 15227,
+<<<<<<< HEAD
       "name": "mario rivas",
+=======
+      "name": "Mario Rivas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -7258,7 +8374,11 @@
     },
     {
       "id": 13007,
+<<<<<<< HEAD
       "name": "vicent abril",
+=======
+      "name": "Vicent Abril",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -7284,7 +8404,11 @@
     },
     {
       "id": 11676,
+<<<<<<< HEAD
       "name": "unai egiluz",
+=======
+      "name": "Unai Egiluz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -7310,7 +8434,11 @@
     },
     {
       "id": 3172,
+<<<<<<< HEAD
       "name": "alvaro lemos",
+=======
+      "name": "Álvaro Lemos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -7336,7 +8464,11 @@
     },
     {
       "id": 10003,
+<<<<<<< HEAD
       "name": "joseda alvarez",
+=======
+      "name": "Joseda Álvarez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -7362,7 +8494,11 @@
     },
     {
       "id": 11852,
+<<<<<<< HEAD
       "name": "ander sanchez",
+=======
+      "name": "Ander Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -7388,7 +8524,11 @@
     },
     {
       "id": 11718,
+<<<<<<< HEAD
       "name": "gaizka garcia",
+=======
+      "name": "Gaizka García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -7414,7 +8554,11 @@
     },
     {
       "id": 10166,
+<<<<<<< HEAD
       "name": "mario dominguez",
+=======
+      "name": "Mario Domínguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -7440,7 +8584,11 @@
     },
     {
       "id": 9744,
+<<<<<<< HEAD
       "name": "hugo gonzalez",
+=======
+      "name": "Hugo González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -7466,7 +8614,11 @@
     },
     {
       "id": 12883,
+<<<<<<< HEAD
       "name": "ian forns",
+=======
+      "name": "Ian Forns",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -7492,7 +8644,11 @@
     },
     {
       "id": 11790,
+<<<<<<< HEAD
       "name": "mario gonzalez",
+=======
+      "name": "Mario González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -7518,7 +8674,11 @@
     },
     {
       "id": 11524,
+<<<<<<< HEAD
       "name": "unai gomez",
+=======
+      "name": "Unai Gómez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -7544,7 +8704,11 @@
     },
     {
       "id": 7737,
+<<<<<<< HEAD
       "name": "unai vencedor",
+=======
+      "name": "Unai Vencedor",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -7570,7 +8734,11 @@
     },
     {
       "id": 8250,
+<<<<<<< HEAD
       "name": "jose salinas",
+=======
+      "name": "José Salinas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -7596,7 +8764,11 @@
     },
     {
       "id": 12534,
+<<<<<<< HEAD
       "name": "javi rodriguez",
+=======
+      "name": "Javi Rodríguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -7622,7 +8794,11 @@
     },
     {
       "id": 10193,
+<<<<<<< HEAD
       "name": "damian rodriguez",
+=======
+      "name": "Damián Rodríguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -7648,7 +8824,11 @@
     },
     {
       "id": 12560,
+<<<<<<< HEAD
       "name": "victor parada",
+=======
+      "name": "Victor Parada",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -7674,7 +8854,11 @@
     },
     {
       "id": 11362,
+<<<<<<< HEAD
       "name": "iker muñoz",
+=======
+      "name": "Iker Muñoz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -7700,7 +8884,11 @@
     },
     {
       "id": 7386,
+<<<<<<< HEAD
       "name": "tanguy nianzou",
+=======
+      "name": "Tanguy Nianzou",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -7726,7 +8914,11 @@
     },
     {
       "id": 785,
+<<<<<<< HEAD
       "name": "omar mascarell",
+=======
+      "name": "Omar Mascarell",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -7752,7 +8944,11 @@
     },
     {
       "id": 605,
+<<<<<<< HEAD
       "name": "abdon prats",
+=======
+      "name": "Abdon Prats",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -7778,7 +8974,11 @@
     },
     {
       "id": 7644,
+<<<<<<< HEAD
       "name": "victor garcia",
+=======
+      "name": "Víctor García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -7804,7 +9004,11 @@
     },
     {
       "id": 14773,
+<<<<<<< HEAD
       "name": "miguel narvaez",
+=======
+      "name": "Miguel Narvaez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -7830,7 +9034,11 @@
     },
     {
       "id": 829,
+<<<<<<< HEAD
       "name": "aitor fernandez",
+=======
+      "name": "Aitor Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -7856,7 +9064,11 @@
     },
     {
       "id": 8702,
+<<<<<<< HEAD
       "name": "carlos dominguez",
+=======
+      "name": "Carlos Dominguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -7882,7 +9094,11 @@
     },
     {
       "id": 9124,
+<<<<<<< HEAD
       "name": "eray comert",
+=======
+      "name": "Eray Cömert",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -7908,7 +9124,11 @@
     },
     {
       "id": 11677,
+<<<<<<< HEAD
       "name": "hugo rincon",
+=======
+      "name": "Hugo Rincón",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -7934,7 +9154,11 @@
     },
     {
       "id": 16162,
+<<<<<<< HEAD
       "name": "lass kourouma",
+=======
+      "name": "Lass Kourouma",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -7960,7 +9184,11 @@
     },
     {
       "id": 7993,
+<<<<<<< HEAD
       "name": "alejandro frances",
+=======
+      "name": "Alejandro Francés",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -7986,7 +9214,11 @@
     },
     {
       "id": 16200,
+<<<<<<< HEAD
       "name": "calebe gonçalves",
+=======
+      "name": "Calebe Gonçalves",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -8012,7 +9244,11 @@
     },
     {
       "id": 7291,
+<<<<<<< HEAD
       "name": "antonio sanchez",
+=======
+      "name": "Antonio Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -8038,7 +9274,11 @@
     },
     {
       "id": 14118,
+<<<<<<< HEAD
       "name": "ali houary",
+=======
+      "name": "Ali Houary",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -8064,7 +9304,11 @@
     },
     {
       "id": 13875,
+<<<<<<< HEAD
       "name": "ismael bekhoucha",
+=======
+      "name": "Ismael Bekhoucha",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -8090,7 +9334,11 @@
     },
     {
       "id": 12706,
+<<<<<<< HEAD
       "name": "horatiu moldovan",
+=======
+      "name": "Horatiu Moldovan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -8116,7 +9364,11 @@
     },
     {
       "id": 12860,
+<<<<<<< HEAD
       "name": "pau navarro",
+=======
+      "name": "Pau Navarro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8142,7 +9394,11 @@
     },
     {
       "id": 14980,
+<<<<<<< HEAD
       "name": "jones el-abdellaoui",
+=======
+      "name": "Jones El-Abdellaoui",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -8168,7 +9424,11 @@
     },
     {
       "id": 16202,
+<<<<<<< HEAD
       "name": "tyrhys dolan",
+=======
+      "name": "Tyrhys Dolan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -8194,7 +9454,11 @@
     },
     {
       "id": 1833,
+<<<<<<< HEAD
       "name": "juan carlos martin",
+=======
+      "name": "Juan Carlos Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -8220,7 +9484,11 @@
     },
     {
       "id": 7920,
+<<<<<<< HEAD
       "name": "nico serrano",
+=======
+      "name": "Nico Serrano",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -8246,7 +9514,11 @@
     },
     {
       "id": 10822,
+<<<<<<< HEAD
       "name": "pablo duran",
+=======
+      "name": "Pablo Durán",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -8272,7 +9544,11 @@
     },
     {
       "id": 6853,
+<<<<<<< HEAD
       "name": "randy nteka",
+=======
+      "name": "Randy Nteka",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -8298,7 +9574,11 @@
     },
     {
       "id": 9423,
+<<<<<<< HEAD
       "name": "jon karrikaburu",
+=======
+      "name": "Jon Karrikaburu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -8324,7 +9604,11 @@
     },
     {
       "id": 9850,
+<<<<<<< HEAD
       "name": "jofre carreras",
+=======
+      "name": "Jofre Carreras",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -8350,7 +9634,11 @@
     },
     {
       "id": 6977,
+<<<<<<< HEAD
       "name": "lucas ahijado",
+=======
+      "name": "Lucas Ahijado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -8376,7 +9664,11 @@
     },
     {
       "id": 2807,
+<<<<<<< HEAD
       "name": "alvaro odriozola",
+=======
+      "name": "Álvaro Odriozola",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -8402,7 +9694,11 @@
     },
     {
       "id": 14048,
+<<<<<<< HEAD
       "name": "urko izeta",
+=======
+      "name": "Urko Izeta",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -8428,7 +9724,11 @@
     },
     {
       "id": 3249,
+<<<<<<< HEAD
       "name": "mikel vesga",
+=======
+      "name": "Mikel Vesga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -8454,7 +9754,11 @@
     },
     {
       "id": 5587,
+<<<<<<< HEAD
       "name": "adria pedrosa",
+=======
+      "name": "Adrià Pedrosa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -8480,7 +9784,11 @@
     },
     {
       "id": 1859,
+<<<<<<< HEAD
       "name": "josan ferrandez",
+=======
+      "name": "Josan Ferrández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -8506,7 +9814,11 @@
     },
     {
       "id": 7781,
+<<<<<<< HEAD
       "name": "javi lopez",
+=======
+      "name": "Javi López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -8532,7 +9844,11 @@
     },
     {
       "id": 6538,
+<<<<<<< HEAD
       "name": "abel ruiz",
+=======
+      "name": "Abel Ruiz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -8558,7 +9874,11 @@
     },
     {
       "id": 3998,
+<<<<<<< HEAD
       "name": "domingos duarte",
+=======
+      "name": "Domingos Duarte",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -8584,7 +9904,11 @@
     },
     {
       "id": 16168,
+<<<<<<< HEAD
       "name": "dro ferna ́ndez",
+=======
+      "name": "Dro Ferna ́ndez Dro Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -8610,7 +9934,11 @@
     },
     {
       "id": 12354,
+<<<<<<< HEAD
       "name": "logan costa",
+=======
+      "name": "Logan Costa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8636,7 +9964,11 @@
     },
     {
       "id": 6804,
+<<<<<<< HEAD
       "name": "alfonso espino",
+=======
+      "name": "Alfonso Espino",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -8662,7 +9994,11 @@
     },
     {
       "id": 1940,
+<<<<<<< HEAD
       "name": "aritz elustondo",
+=======
+      "name": "Aritz Elustondo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -8688,7 +10024,11 @@
     },
     {
       "id": 4208,
+<<<<<<< HEAD
       "name": "marcao",
+=======
+      "name": "Marcão",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -8714,7 +10054,11 @@
     },
     {
       "id": 7082,
+<<<<<<< HEAD
       "name": "jorge herrando",
+=======
+      "name": "Jorge Herrando",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -8740,7 +10084,11 @@
     },
     {
       "id": 10214,
+<<<<<<< HEAD
       "name": "alex padilla",
+=======
+      "name": "Alex Padilla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -8766,7 +10114,11 @@
     },
     {
       "id": 10207,
+<<<<<<< HEAD
       "name": "williot swedberg",
+=======
+      "name": "Williot Swedberg",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -8792,7 +10144,11 @@
     },
     {
       "id": 1887,
+<<<<<<< HEAD
       "name": "joan jordan",
+=======
+      "name": "Joan Jordan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -8818,7 +10174,11 @@
     },
     {
       "id": 2128,
+<<<<<<< HEAD
       "name": "gerard gumbau",
+=======
+      "name": "Gerard Gumbau",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -8844,7 +10204,11 @@
     },
     {
       "id": 12634,
+<<<<<<< HEAD
       "name": "willy kambwala",
+=======
+      "name": "Willy Kambwala",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8870,7 +10234,11 @@
     },
     {
       "id": 7201,
+<<<<<<< HEAD
       "name": "iker losada",
+=======
+      "name": "Iker Losada",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -8896,7 +10264,11 @@
     },
     {
       "id": 10448,
+<<<<<<< HEAD
       "name": "carlos benavidez",
+=======
+      "name": "Carlos Benavidez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -8922,7 +10294,11 @@
     },
     {
       "id": 7917,
+<<<<<<< HEAD
       "name": "beñat prados",
+=======
+      "name": "Beñat Prados",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -8948,7 +10324,11 @@
     },
     {
       "id": 7055,
+<<<<<<< HEAD
       "name": "santiago colombatto",
+=======
+      "name": "Santiago Colombatto",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -8974,7 +10354,11 @@
     },
     {
       "id": 10341,
+<<<<<<< HEAD
       "name": "peque",
+=======
+      "name": "Peque",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -9000,7 +10384,11 @@
     },
     {
       "id": 664,
+<<<<<<< HEAD
       "name": "cristian portu",
+=======
+      "name": "Cristian Portu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -9026,7 +10414,11 @@
     },
     {
       "id": 3158,
+<<<<<<< HEAD
       "name": "unai elgezabal",
+=======
+      "name": "Unai Elgezabal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -9052,7 +10444,11 @@
     },
     {
       "id": 5061,
+<<<<<<< HEAD
       "name": "manuel morlanes",
+=======
+      "name": "Manuel Morlanes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -9078,7 +10474,11 @@
     },
     {
       "id": 6846,
+<<<<<<< HEAD
       "name": "joseph aidoo",
+=======
+      "name": "Joseph Aidoo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -9104,7 +10504,11 @@
     },
     {
       "id": 1778,
+<<<<<<< HEAD
       "name": "denis suarez",
+=======
+      "name": "Denis Suárez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -9130,7 +10534,11 @@
     },
     {
       "id": 3612,
+<<<<<<< HEAD
       "name": "alvaro fernandez",
+=======
+      "name": "Álvaro Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -9156,7 +10564,11 @@
     },
     {
       "id": 6209,
+<<<<<<< HEAD
       "name": "donny van de beek",
+=======
+      "name": "Donny van de Beek",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -9182,7 +10594,11 @@
     },
     {
       "id": 10357,
+<<<<<<< HEAD
       "name": "adria altimira",
+=======
+      "name": "Adrià Altimira",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -9208,7 +10624,11 @@
     },
     {
       "id": 6704,
+<<<<<<< HEAD
       "name": "takuma asano",
+=======
+      "name": "Takuma Asano",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -9234,7 +10654,11 @@
     },
     {
       "id": 10233,
+<<<<<<< HEAD
       "name": "angel ortiz",
+=======
+      "name": "Ángel Ortiz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -9260,7 +10684,11 @@
     },
     {
       "id": 935,
+<<<<<<< HEAD
       "name": "david costas",
+=======
+      "name": "David Costas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9286,7 +10714,11 @@
     },
     {
       "id": 9763,
+<<<<<<< HEAD
       "name": "ilias akhomach",
+=======
+      "name": "Ilias Akhomach",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -9312,7 +10744,11 @@
     },
     {
       "id": 8273,
+<<<<<<< HEAD
       "name": "victor chust",
+=======
+      "name": "Víctor Chust",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -9338,7 +10774,11 @@
     },
     {
       "id": 6394,
+<<<<<<< HEAD
       "name": "aihen muñoz",
+=======
+      "name": "Aihen Muñoz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -9364,7 +10804,11 @@
     },
     {
       "id": 7199,
+<<<<<<< HEAD
       "name": "sergio carreira",
+=======
+      "name": "Sergio Carreira",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -9390,7 +10834,11 @@
     },
     {
       "id": 3802,
+<<<<<<< HEAD
       "name": "ander guevara",
+=======
+      "name": "Ander Guevara",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -9416,7 +10864,11 @@
     },
     {
       "id": 1923,
+<<<<<<< HEAD
       "name": "eric bailly",
+=======
+      "name": "Eric Bailly",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9442,7 +10894,11 @@
     },
     {
       "id": 6783,
+<<<<<<< HEAD
       "name": "kwasi sibo",
+=======
+      "name": "Kwasi Sibo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9468,7 +10924,11 @@
     },
     {
       "id": 7251,
+<<<<<<< HEAD
       "name": "ivan balliu",
+=======
+      "name": "Iván Balliu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -9494,7 +10954,11 @@
     },
     {
       "id": 7569,
+<<<<<<< HEAD
       "name": "arnau tenas",
+=======
+      "name": "Arnau Tenas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -9520,7 +10984,11 @@
     },
     {
       "id": 9011,
+<<<<<<< HEAD
       "name": "arsen zakharyan",
+=======
+      "name": "Arsen Zakharyan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -9546,7 +11014,11 @@
     },
     {
       "id": 3357,
+<<<<<<< HEAD
       "name": "djibril sow",
+=======
+      "name": "Djibril Sow",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -9572,7 +11044,11 @@
     },
     {
       "id": 2114,
+<<<<<<< HEAD
       "name": "iñigo lekue",
+=======
+      "name": "Íñigo Lekue",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -9598,7 +11074,11 @@
     },
     {
       "id": 14989,
+<<<<<<< HEAD
       "name": "kervin arriaga",
+=======
+      "name": "Kervin Arriaga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -9624,7 +11104,11 @@
     },
     {
       "id": 339,
+<<<<<<< HEAD
       "name": "salomon rondon",
+=======
+      "name": "Salomón Rondón",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -9650,7 +11134,11 @@
     },
     {
       "id": 5385,
+<<<<<<< HEAD
       "name": "duje caleta-car",
+=======
+      "name": "Duje Caleta-Car",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -9676,7 +11164,11 @@
     },
     {
       "id": 9157,
+<<<<<<< HEAD
       "name": "roger brugue",
+=======
+      "name": "Roger Brugué Brugui",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -9702,7 +11194,11 @@
     },
     {
       "id": 7926,
+<<<<<<< HEAD
       "name": "luka ilic",
+=======
+      "name": "Luka Ilic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9728,7 +11224,11 @@
     },
     {
       "id": 11756,
+<<<<<<< HEAD
       "name": "alberto reina",
+=======
+      "name": "Alberto Reina",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9754,7 +11254,11 @@
     },
     {
       "id": 10435,
+<<<<<<< HEAD
       "name": "charles pickel",
+=======
+      "name": "Charles Pickel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -9780,7 +11284,11 @@
     },
     {
       "id": 14000,
+<<<<<<< HEAD
       "name": "rahim alhassane",
+=======
+      "name": "Rahim Alhassane",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9806,7 +11314,11 @@
     },
     {
       "id": 5545,
+<<<<<<< HEAD
       "name": "chimy avila",
+=======
+      "name": "Chimy Ávila",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -9832,7 +11344,11 @@
     },
     {
       "id": 6562,
+<<<<<<< HEAD
       "name": "sergio camello",
+=======
+      "name": "Sergio Camello",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -9858,7 +11374,11 @@
     },
     {
       "id": 626,
+<<<<<<< HEAD
       "name": "christian stuani",
+=======
+      "name": "Christian Stuani",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -9884,7 +11404,11 @@
     },
     {
       "id": 83,
+<<<<<<< HEAD
       "name": "alexis sanchez",
+=======
+      "name": "Alexis Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -9910,7 +11434,11 @@
     },
     {
       "id": 5548,
+<<<<<<< HEAD
       "name": "oscar trejo",
+=======
+      "name": "Óscar Trejo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -9936,7 +11464,11 @@
     },
     {
       "id": 9017,
+<<<<<<< HEAD
       "name": "josip brekalo",
+=======
+      "name": "Josip Brekalo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9962,7 +11494,11 @@
     },
     {
       "id": 11627,
+<<<<<<< HEAD
       "name": "alan matturro",
+=======
+      "name": "Alan Matturro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -9988,7 +11524,11 @@
     },
     {
       "id": 7725,
+<<<<<<< HEAD
       "name": "jon pacheco",
+=======
+      "name": "Jon Pacheco",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -10014,7 +11554,11 @@
     },
     {
       "id": 8651,
+<<<<<<< HEAD
       "name": "beñat turrientes",
+=======
+      "name": "Beñat Turrientes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -10040,7 +11584,11 @@
     },
     {
       "id": 3623,
+<<<<<<< HEAD
       "name": "pedro diaz",
+=======
+      "name": "Pedro Díaz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -10066,7 +11614,11 @@
     },
     {
       "id": 8120,
+<<<<<<< HEAD
       "name": "nahuel molina",
+=======
+      "name": "Nahuel Molina",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10092,7 +11644,11 @@
     },
     {
       "id": 5220,
+<<<<<<< HEAD
       "name": "miguel angel rubio",
+=======
+      "name": "Miguel Ángel Rubio",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -10118,7 +11674,11 @@
     },
     {
       "id": 8088,
+<<<<<<< HEAD
       "name": "oriol rey",
+=======
+      "name": "Oriol Rey",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -10144,7 +11704,11 @@
     },
     {
       "id": 7100,
+<<<<<<< HEAD
       "name": "marash kumbulla",
+=======
+      "name": "Marash Kumbulla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10170,7 +11734,11 @@
     },
     {
       "id": 5526,
+<<<<<<< HEAD
       "name": "andriy lunin",
+=======
+      "name": "Andriy Lunin",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -10196,7 +11764,11 @@
     },
     {
       "id": 7413,
+<<<<<<< HEAD
       "name": "mateu morey",
+=======
+      "name": "Mateu Morey",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10222,7 +11794,11 @@
     },
     {
       "id": 1981,
+<<<<<<< HEAD
       "name": "javi muñoz",
+=======
+      "name": "Javi Muñoz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -10248,7 +11824,11 @@
     },
     {
       "id": 16003,
+<<<<<<< HEAD
       "name": "manu fernandez",
+=======
+      "name": "Manu Fernández",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -10274,7 +11854,11 @@
     },
     {
       "id": 10210,
+<<<<<<< HEAD
       "name": "fran perez",
+=======
+      "name": "Fran Pérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -10300,7 +11884,11 @@
     },
     {
       "id": 7027,
+<<<<<<< HEAD
       "name": "raul garcia",
+=======
+      "name": "Raúl García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -10326,7 +11914,11 @@
     },
     {
       "id": 14156,
+<<<<<<< HEAD
       "name": "federico viñas",
+=======
+      "name": "Federico Viñas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -10352,7 +11944,11 @@
     },
     {
       "id": 11766,
+<<<<<<< HEAD
       "name": "alex sancris",
+=======
+      "name": "Álex Sancris",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -10378,7 +11974,11 @@
     },
     {
       "id": 1978,
+<<<<<<< HEAD
       "name": "alfonso pedraza",
+=======
+      "name": "Alfonso Pedraza",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -10404,7 +12004,11 @@
     },
     {
       "id": 15505,
+<<<<<<< HEAD
       "name": "federico redondo",
+=======
+      "name": "Federico Redondo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -10430,7 +12034,11 @@
     },
     {
       "id": 3215,
+<<<<<<< HEAD
       "name": "marc roca",
+=======
+      "name": "Marc Roca",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -10456,7 +12064,11 @@
     },
     {
       "id": 8228,
+<<<<<<< HEAD
       "name": "urko gonzalez de zarate",
+=======
+      "name": "Urko González de Zarate",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -10482,7 +12094,11 @@
     },
     {
       "id": 16224,
+<<<<<<< HEAD
       "name": "goduine koyalipou",
+=======
+      "name": "Goduine Koyalipou",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -10508,7 +12124,11 @@
     },
     {
       "id": 2118,
+<<<<<<< HEAD
       "name": "cedric bakambu",
+=======
+      "name": "Cédric Bakambu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -10534,7 +12154,11 @@
     },
     {
       "id": 2223,
+<<<<<<< HEAD
       "name": "david alaba",
+=======
+      "name": "David Alaba",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -10560,7 +12184,11 @@
     },
     {
       "id": 1715,
+<<<<<<< HEAD
       "name": "adnan januzaj",
+=======
+      "name": "Adnan Januzaj",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -10586,7 +12214,11 @@
     },
     {
       "id": 989,
+<<<<<<< HEAD
       "name": "stole dimitrievski",
+=======
+      "name": "Stole Dimitrievski",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -10612,7 +12244,11 @@
     },
     {
       "id": 7294,
+<<<<<<< HEAD
       "name": "thierry correia",
+=======
+      "name": "Thierry Correia",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -10638,7 +12274,11 @@
     },
     {
       "id": 3799,
+<<<<<<< HEAD
       "name": "andoni gorosabel",
+=======
+      "name": "Andoni Gorosabel",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -10664,7 +12304,11 @@
     },
     {
       "id": 8686,
+<<<<<<< HEAD
       "name": "juan iglesias",
+=======
+      "name": "Juan Iglesias",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -10690,7 +12334,11 @@
     },
     {
       "id": 10041,
+<<<<<<< HEAD
       "name": "david carmo",
+=======
+      "name": "David Carmo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10716,7 +12364,11 @@
     },
     {
       "id": 6634,
+<<<<<<< HEAD
       "name": "martin valjent",
+=======
+      "name": "Martin Valjent",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10742,7 +12394,11 @@
     },
     {
       "id": 9823,
+<<<<<<< HEAD
       "name": "marc pubill",
+=======
+      "name": "Marc Pubill",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10768,7 +12424,11 @@
     },
     {
       "id": 7554,
+<<<<<<< HEAD
       "name": "diego conde",
+=======
+      "name": "Diego Conde",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -10794,7 +12454,11 @@
     },
     {
       "id": 2721,
+<<<<<<< HEAD
       "name": "dani calvo",
+=======
+      "name": "Dani Calvo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10820,7 +12484,11 @@
     },
     {
       "id": 2534,
+<<<<<<< HEAD
       "name": "wojciech szczesny",
+=======
+      "name": "Wojciech Szczesny",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -10846,7 +12514,11 @@
     },
     {
       "id": 6487,
+<<<<<<< HEAD
       "name": "javi galan",
+=======
+      "name": "Javi Galán",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10872,7 +12544,11 @@
     },
     {
       "id": 3742,
+<<<<<<< HEAD
       "name": "nacho vidal",
+=======
+      "name": "Nacho Vidal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10898,7 +12574,11 @@
     },
     {
       "id": 5547,
+<<<<<<< HEAD
       "name": "fran beltran",
+=======
+      "name": "Fran Beltrán",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -10924,7 +12604,11 @@
     },
     {
       "id": 7204,
+<<<<<<< HEAD
       "name": "jon moncayola",
+=======
+      "name": "Jon Moncayola",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -10950,7 +12634,11 @@
     },
     {
       "id": 10272,
+<<<<<<< HEAD
       "name": "joel roca",
+=======
+      "name": "Joel Roca",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -10976,7 +12664,11 @@
     },
     {
       "id": 13564,
+<<<<<<< HEAD
       "name": "endrick",
+=======
+      "name": "Endrick",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -11002,7 +12694,11 @@
     },
     {
       "id": 8944,
+<<<<<<< HEAD
       "name": "ramon terrats",
+=======
+      "name": "Ramón Terrats",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -11028,7 +12724,11 @@
     },
     {
       "id": 13888,
+<<<<<<< HEAD
       "name": "andres castrin",
+=======
+      "name": "Andrés Castrín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -11054,7 +12754,11 @@
     },
     {
       "id": 11792,
+<<<<<<< HEAD
       "name": "jon martin",
+=======
+      "name": "Jon Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -11080,7 +12784,11 @@
     },
     {
       "id": 16004,
+<<<<<<< HEAD
       "name": "davinchi",
+=======
+      "name": "Davinchi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -11106,7 +12814,11 @@
     },
     {
       "id": 841,
+<<<<<<< HEAD
       "name": "moi gomez",
+=======
+      "name": "Moi Gómez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11132,7 +12844,11 @@
     },
     {
       "id": 10533,
+<<<<<<< HEAD
       "name": "andre almeida",
+=======
+      "name": "André Almeida",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -11158,7 +12874,11 @@
     },
     {
       "id": 9612,
+<<<<<<< HEAD
       "name": "carl starfelt",
+=======
+      "name": "Carl Starfelt",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -11184,7 +12904,11 @@
     },
     {
       "id": 6651,
+<<<<<<< HEAD
       "name": "dani rodriguez",
+=======
+      "name": "Dani Rodríguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -11210,7 +12934,11 @@
     },
     {
       "id": 3226,
+<<<<<<< HEAD
       "name": "mariano diaz",
+=======
+      "name": "Mariano Díaz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -11236,7 +12964,11 @@
     },
     {
       "id": 3736,
+<<<<<<< HEAD
       "name": "jon guridi",
+=======
+      "name": "Jon Guridi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -11262,7 +12994,11 @@
     },
     {
       "id": 16203,
+<<<<<<< HEAD
       "name": "valentin gomez",
+=======
+      "name": "Valentín Gómez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -11288,7 +13024,11 @@
     },
     {
       "id": 10258,
+<<<<<<< HEAD
       "name": "pablo ibañez",
+=======
+      "name": "Pablo Ibáñez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -11314,7 +13054,11 @@
     },
     {
       "id": 10960,
+<<<<<<< HEAD
       "name": "azzedine ounahi",
+=======
+      "name": "Azzedine Ounahi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -11340,7 +13084,11 @@
     },
     {
       "id": 843,
+<<<<<<< HEAD
       "name": "gerard moreno",
+=======
+      "name": "Gerard Moreno",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -11366,7 +13114,11 @@
     },
     {
       "id": 1743,
+<<<<<<< HEAD
       "name": "mathew ryan",
+=======
+      "name": "Mathew Ryan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -11392,7 +13144,11 @@
     },
     {
       "id": 3427,
+<<<<<<< HEAD
       "name": "thomas lemar",
+=======
+      "name": "Thomas Lemar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -11418,7 +13174,11 @@
     },
     {
       "id": 11353,
+<<<<<<< HEAD
       "name": "sheraldo becker",
+=======
+      "name": "Sheraldo Becker",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11444,7 +13204,11 @@
     },
     {
       "id": 5124,
+<<<<<<< HEAD
       "name": "lucas boye",
+=======
+      "name": "Lucas Boyé",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -11470,7 +13234,11 @@
     },
     {
       "id": 6158,
+<<<<<<< HEAD
       "name": "ferland mendy",
+=======
+      "name": "Ferland Mendy",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -11496,7 +13264,11 @@
     },
     {
       "id": 7614,
+<<<<<<< HEAD
       "name": "pablo martinez",
+=======
+      "name": "Pablo Martínez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -11522,7 +13294,11 @@
     },
     {
       "id": 11807,
+<<<<<<< HEAD
       "name": "pablo campos",
+=======
+      "name": "Pablo Campos Cuñat",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -11548,7 +13324,11 @@
     },
     {
       "id": 660,
+<<<<<<< HEAD
       "name": "ruben garcia",
+=======
+      "name": "Rubén García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11574,7 +13354,11 @@
     },
     {
       "id": 9500,
+<<<<<<< HEAD
       "name": "fabio cardoso",
+=======
+      "name": "Fábio Cardoso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -11600,7 +13384,11 @@
     },
     {
       "id": 658,
+<<<<<<< HEAD
       "name": "david lopez",
+=======
+      "name": "David López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -11626,7 +13414,11 @@
     },
     {
       "id": 11580,
+<<<<<<< HEAD
       "name": "ilyas chaira",
+=======
+      "name": "Ilyas Chaira",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -11652,7 +13444,11 @@
     },
     {
       "id": 12025,
+<<<<<<< HEAD
       "name": "filip ugrinic",
+=======
+      "name": "Filip Ugrinic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -11678,7 +13474,11 @@
     },
     {
       "id": 8294,
+<<<<<<< HEAD
       "name": "umar sadiq",
+=======
+      "name": "Umar Sadiq",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -11704,7 +13504,11 @@
     },
     {
       "id": 10830,
+<<<<<<< HEAD
       "name": "pablo marin",
+=======
+      "name": "Pablo Marín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -11730,7 +13534,11 @@
     },
     {
       "id": 328,
+<<<<<<< HEAD
       "name": "santi cazorla",
+=======
+      "name": "Santi Cazorla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -11756,7 +13564,11 @@
     },
     {
       "id": 15696,
+<<<<<<< HEAD
       "name": "nelson deossa",
+=======
+      "name": "Nelson Deossa",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -11782,7 +13594,11 @@
     },
     {
       "id": 3178,
+<<<<<<< HEAD
       "name": "kiko femenia",
+=======
+      "name": "Kiko Femenia",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -11808,7 +13624,11 @@
     },
     {
       "id": 10217,
+<<<<<<< HEAD
       "name": "marc casado",
+=======
+      "name": "Marc Casadó",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -11834,7 +13654,11 @@
     },
     {
       "id": 10237,
+<<<<<<< HEAD
       "name": "rodrigo mendoza",
+=======
+      "name": "Rodrigo Mendoza",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -11860,7 +13684,11 @@
     },
     {
       "id": 10153,
+<<<<<<< HEAD
       "name": "abu kamara",
+=======
+      "name": "Abu Kamara",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -11886,7 +13714,11 @@
     },
     {
       "id": 707,
+<<<<<<< HEAD
       "name": "diego javier llorente",
+=======
+      "name": "Diego Javier Llorente",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -11912,7 +13744,11 @@
     },
     {
       "id": 10564,
+<<<<<<< HEAD
       "name": "yvan neyou",
+=======
+      "name": "Yvan Neyou",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -11938,7 +13774,11 @@
     },
     {
       "id": 10660,
+<<<<<<< HEAD
       "name": "orri steinn oskarsson",
+=======
+      "name": "Orri Steinn Óskarsson",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -11964,7 +13804,11 @@
     },
     {
       "id": 6605,
+<<<<<<< HEAD
       "name": "manu sanchez",
+=======
+      "name": "Manu Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -11990,7 +13834,11 @@
     },
     {
       "id": 1382,
+<<<<<<< HEAD
       "name": "daley blind",
+=======
+      "name": "Daley Blind",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -12016,7 +13864,11 @@
     },
     {
       "id": 6446,
+<<<<<<< HEAD
       "name": "yangel herrera",
+=======
+      "name": "Yangel Herrera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12042,7 +13894,11 @@
     },
     {
       "id": 13822,
+<<<<<<< HEAD
       "name": "pablo garcia",
+=======
+      "name": "Pablo García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -12068,7 +13924,11 @@
     },
     {
       "id": 12042,
+<<<<<<< HEAD
       "name": "chidera ejuke",
+=======
+      "name": "Chidera Ejuke",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12094,7 +13954,11 @@
     },
     {
       "id": 9234,
+<<<<<<< HEAD
       "name": "jose manuel copete",
+=======
+      "name": "José Manuel Copete",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -12120,7 +13984,11 @@
     },
     {
       "id": 1928,
+<<<<<<< HEAD
       "name": "lucas torro",
+=======
+      "name": "Lucas Torró",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -12146,7 +14014,11 @@
     },
     {
       "id": 11758,
+<<<<<<< HEAD
       "name": "alemao",
+=======
+      "name": "Alemão",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -12172,7 +14044,11 @@
     },
     {
       "id": 5194,
+<<<<<<< HEAD
       "name": "grady diangana",
+=======
+      "name": "Grady Diangana",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -12198,7 +14074,11 @@
     },
     {
       "id": 1825,
+<<<<<<< HEAD
       "name": "alex moreno",
+=======
+      "name": "Álex Moreno",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -12224,7 +14104,11 @@
     },
     {
       "id": 16332,
+<<<<<<< HEAD
       "name": "batista mendy",
+=======
+      "name": "Batista Mendy",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12250,7 +14134,11 @@
     },
     {
       "id": 10197,
+<<<<<<< HEAD
       "name": "luca koleosho",
+=======
+      "name": "Luca Koleosho",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -12276,7 +14164,11 @@
     },
     {
       "id": 13440,
+<<<<<<< HEAD
       "name": "tani oluwaseyi",
+=======
+      "name": "Tani Oluwaseyi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -12302,7 +14194,11 @@
     },
     {
       "id": 12538,
+<<<<<<< HEAD
       "name": "jon aramburu",
+=======
+      "name": "Jon Aramburu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -12328,7 +14224,11 @@
     },
     {
       "id": 63,
+<<<<<<< HEAD
       "name": "koke resurreccion",
+=======
+      "name": "Koke Resurrección",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -12354,7 +14254,11 @@
     },
     {
       "id": 8392,
+<<<<<<< HEAD
       "name": "luka sucic",
+=======
+      "name": "Luka Sucic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12380,7 +14284,11 @@
     },
     {
       "id": 11202,
+<<<<<<< HEAD
       "name": "mario martin",
+=======
+      "name": "Mario Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -12406,7 +14314,11 @@
     },
     {
       "id": 13864,
+<<<<<<< HEAD
       "name": "marc bernal",
+=======
+      "name": "Marc Bernal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -12432,7 +14344,11 @@
     },
     {
       "id": 1263,
+<<<<<<< HEAD
       "name": "marc-andre ter stegen",
+=======
+      "name": "Marc-André ter Stegen",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -12458,7 +14374,11 @@
     },
     {
       "id": 8684,
+<<<<<<< HEAD
       "name": "jesus vazquez",
+=======
+      "name": "Jesús Vázquez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -12484,7 +14404,11 @@
     },
     {
       "id": 11680,
+<<<<<<< HEAD
       "name": "isaac romero",
+=======
+      "name": "Isaac Romero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12510,7 +14434,11 @@
     },
     {
       "id": 7779,
+<<<<<<< HEAD
       "name": "juanlu sanchez",
+=======
+      "name": "Juanlu Sánchez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12536,7 +14464,11 @@
     },
     {
       "id": 15134,
+<<<<<<< HEAD
       "name": "akor adams",
+=======
+      "name": "Akor Adams",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12562,7 +14494,11 @@
     },
     {
       "id": 2799,
+<<<<<<< HEAD
       "name": "carlos soler",
+=======
+      "name": "Carlos Soler",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12588,7 +14524,11 @@
     },
     {
       "id": 340,
+<<<<<<< HEAD
       "name": "juanmi jimenez",
+=======
+      "name": "Juanmi Jiménez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -12614,7 +14554,11 @@
     },
     {
       "id": 5705,
+<<<<<<< HEAD
       "name": "luiz felipe",
+=======
+      "name": "Luiz Felipe",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -12640,7 +14584,11 @@
     },
     {
       "id": 5051,
+<<<<<<< HEAD
       "name": "aitor ruibal",
+=======
+      "name": "Aitor Ruibal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -12666,7 +14614,11 @@
     },
     {
       "id": 7293,
+<<<<<<< HEAD
       "name": "robert navarro",
+=======
+      "name": "Robert Navarro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -12692,7 +14644,11 @@
     },
     {
       "id": 1934,
+<<<<<<< HEAD
       "name": "iñaki williams",
+=======
+      "name": "Iñaki Williams",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -12718,7 +14674,11 @@
     },
     {
       "id": 851,
+<<<<<<< HEAD
       "name": "jose luis morales",
+=======
+      "name": "José Luis Morales",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -12744,7 +14704,11 @@
     },
     {
       "id": 5553,
+<<<<<<< HEAD
       "name": "fernando calero",
+=======
+      "name": "Fernando Calero",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -12770,7 +14734,11 @@
     },
     {
       "id": 9924,
+<<<<<<< HEAD
       "name": "yaser asprilla",
+=======
+      "name": "Yaser Asprilla",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -12796,7 +14764,11 @@
     },
     {
       "id": 7028,
+<<<<<<< HEAD
       "name": "nemanja gudelj",
+=======
+      "name": "Nemanja Gudelj",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12822,7 +14794,11 @@
     },
     {
       "id": 8930,
+<<<<<<< HEAD
       "name": "vladyslav vanat",
+=======
+      "name": "Vladyslav Vanat",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -12848,7 +14824,11 @@
     },
     {
       "id": 2153,
+<<<<<<< HEAD
       "name": "hector bellerin",
+=======
+      "name": "Héctor Bellerín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -12874,7 +14854,11 @@
     },
     {
       "id": 6392,
+<<<<<<< HEAD
       "name": "fran garcia",
+=======
+      "name": "Fran García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -12900,7 +14884,11 @@
     },
     {
       "id": 1945,
+<<<<<<< HEAD
       "name": "borja iglesias",
+=======
+      "name": "Borja Iglesias",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -12926,7 +14914,11 @@
     },
     {
       "id": 1062,
+<<<<<<< HEAD
       "name": "dani ceballos",
+=======
+      "name": "Dani Ceballos",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -12952,7 +14944,11 @@
     },
     {
       "id": 7842,
+<<<<<<< HEAD
       "name": "ferran jutgla",
+=======
+      "name": "Ferran Jutglà",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -12978,7 +14974,11 @@
     },
     {
       "id": 8082,
+<<<<<<< HEAD
       "name": "ilaix moriba",
+=======
+      "name": "Ilaix Moriba",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -13004,7 +15004,11 @@
     },
     {
       "id": 137,
+<<<<<<< HEAD
       "name": "dani parejo",
+=======
+      "name": "Dani Parejo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -13030,7 +15034,11 @@
     },
     {
       "id": 6631,
+<<<<<<< HEAD
       "name": "rodrygo goes",
+=======
+      "name": "Rodrygo Goes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -13056,7 +15064,11 @@
     },
     {
       "id": 11577,
+<<<<<<< HEAD
       "name": "hector fort",
+=======
+      "name": "Héctor Fort",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -13082,7 +15094,11 @@
     },
     {
       "id": 6563,
+<<<<<<< HEAD
       "name": "ivan martin",
+=======
+      "name": "Iván Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -13108,7 +15124,11 @@
     },
     {
       "id": 3650,
+<<<<<<< HEAD
       "name": "brais mendez",
+=======
+      "name": "Brais Méndez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -13134,7 +15154,11 @@
     },
     {
       "id": 6820,
+<<<<<<< HEAD
       "name": "juan cruz",
+=======
+      "name": "Juan Cruz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -13160,7 +15184,11 @@
     },
     {
       "id": 5859,
+<<<<<<< HEAD
       "name": "gorka guruzeta",
+=======
+      "name": "Gorka Guruzeta",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -13186,7 +15214,11 @@
     },
     {
       "id": 13830,
+<<<<<<< HEAD
       "name": "maroan sannadi",
+=======
+      "name": "Maroan Sannadi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -13212,7 +15244,11 @@
     },
     {
       "id": 9740,
+<<<<<<< HEAD
       "name": "hugo alvarez",
+=======
+      "name": "Hugo Álvarez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -13238,7 +15274,11 @@
     },
     {
       "id": 3524,
+<<<<<<< HEAD
       "name": "viktor tsygankov",
+=======
+      "name": "Viktor Tsygankov",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -13264,7 +15304,11 @@
     },
     {
       "id": 4976,
+<<<<<<< HEAD
       "name": "jeremy toljan",
+=======
+      "name": "Jeremy Toljan",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -13290,7 +15334,11 @@
     },
     {
       "id": 10658,
+<<<<<<< HEAD
       "name": "roony bardghji",
+=======
+      "name": "Roony Bardghji",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -13316,7 +15364,11 @@
     },
     {
       "id": 2417,
+<<<<<<< HEAD
       "name": "andreas christensen",
+=======
+      "name": "Andreas Christensen",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -13342,7 +15394,11 @@
     },
     {
       "id": 4793,
+<<<<<<< HEAD
       "name": "leander dendoncker",
+=======
+      "name": "Leander Dendoncker",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -13368,7 +15424,11 @@
     },
     {
       "id": 189,
+<<<<<<< HEAD
       "name": "jonny castro",
+=======
+      "name": "Jonny Castro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13394,7 +15454,11 @@
     },
     {
       "id": 7934,
+<<<<<<< HEAD
       "name": "largie ramazani",
+=======
+      "name": "Largie Ramazani",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -13420,7 +15484,11 @@
     },
     {
       "id": 6551,
+<<<<<<< HEAD
       "name": "giacomo raspadori",
+=======
+      "name": "Giacomo Raspadori",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -13446,7 +15514,11 @@
     },
     {
       "id": 6705,
+<<<<<<< HEAD
       "name": "Örjan nyland",
+=======
+      "name": "Örjan Nyland",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -13472,7 +15544,11 @@
     },
     {
       "id": 3691,
+<<<<<<< HEAD
       "name": "clement lenglet",
+=======
+      "name": "Clément Lenglet",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -13498,7 +15574,11 @@
     },
     {
       "id": 11289,
+<<<<<<< HEAD
       "name": "baptiste santamaria",
+=======
+      "name": "Baptiste Santamaria",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -13524,7 +15604,11 @@
     },
     {
       "id": 11885,
+<<<<<<< HEAD
       "name": "gonzalo garcia",
+=======
+      "name": "Gonzalo García",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -13550,7 +15634,11 @@
     },
     {
       "id": 5245,
+<<<<<<< HEAD
       "name": "dani vivian",
+=======
+      "name": "Dani Vivian",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -13576,7 +15664,11 @@
     },
     {
       "id": 2715,
+<<<<<<< HEAD
       "name": "pepelu",
+=======
+      "name": "Pepelu",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -13602,7 +15694,11 @@
     },
     {
       "id": 8737,
+<<<<<<< HEAD
       "name": "antonio blanco",
+=======
+      "name": "Antonio Blanco",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -13628,7 +15724,11 @@
     },
     {
       "id": 9931,
+<<<<<<< HEAD
       "name": "kike salas",
+=======
+      "name": "Kike Salas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -13654,7 +15754,11 @@
     },
     {
       "id": 663,
+<<<<<<< HEAD
       "name": "jose gaya",
+=======
+      "name": "José Gayà",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -13680,7 +15784,11 @@
     },
     {
       "id": 6624,
+<<<<<<< HEAD
       "name": "conor gallagher",
+=======
+      "name": "Conor Gallagher",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -13706,7 +15814,11 @@
     },
     {
       "id": 7249,
+<<<<<<< HEAD
       "name": "lucien agoume",
+=======
+      "name": "Lucien Agoume",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -13732,7 +15844,11 @@
     },
     {
       "id": 4639,
+<<<<<<< HEAD
       "name": "mauro arambarri",
+=======
+      "name": "Mauro Arambarri",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -13758,7 +15874,11 @@
     },
     {
       "id": 14045,
+<<<<<<< HEAD
       "name": "facundo garces",
+=======
+      "name": "Facundo Garcés",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13784,7 +15904,11 @@
     },
     {
       "id": 1989,
+<<<<<<< HEAD
       "name": "borja mayoral",
+=======
+      "name": "Borja Mayoral",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -13810,7 +15934,11 @@
     },
     {
       "id": 8646,
+<<<<<<< HEAD
       "name": "carlos alvarez",
+=======
+      "name": "Carlos Álvarez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -13836,7 +15964,11 @@
     },
     {
       "id": 12639,
+<<<<<<< HEAD
       "name": "raul asencio",
+=======
+      "name": "Raúl Asencio",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -13862,7 +15994,11 @@
     },
     {
       "id": 9909,
+<<<<<<< HEAD
       "name": "nahuel tenaglia",
+=======
+      "name": "Nahuel Tenaglia",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13888,7 +16024,11 @@
     },
     {
       "id": 8703,
+<<<<<<< HEAD
       "name": "alfonso gonzalez",
+=======
+      "name": "Alfonso González Alfon",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -13914,7 +16054,11 @@
     },
     {
       "id": 767,
+<<<<<<< HEAD
       "name": "thomas teye",
+=======
+      "name": "Thomas Teye",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -13940,7 +16084,11 @@
     },
     {
       "id": 10859,
+<<<<<<< HEAD
       "name": "alvaro rodriguez",
+=======
+      "name": "Alvaro Rodríguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -13966,7 +16114,11 @@
     },
     {
       "id": 13035,
+<<<<<<< HEAD
       "name": "javi rueda",
+=======
+      "name": "Javi Rueda",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -13992,7 +16144,11 @@
     },
     {
       "id": 9161,
+<<<<<<< HEAD
       "name": "matias dituro",
+=======
+      "name": "Matías Dituro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -14018,7 +16174,11 @@
     },
     {
       "id": 6436,
+<<<<<<< HEAD
       "name": "bryan gil",
+=======
+      "name": "Bryan Gil",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -14044,7 +16204,11 @@
     },
     {
       "id": 7882,
+<<<<<<< HEAD
       "name": "oscar mingueza",
+=======
+      "name": "Óscar Mingueza",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -14070,7 +16234,11 @@
     },
     {
       "id": 3881,
+<<<<<<< HEAD
       "name": "dakonam djene",
+=======
+      "name": "Dakonam Djené",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14096,7 +16264,11 @@
     },
     {
       "id": 1998,
+<<<<<<< HEAD
       "name": "antonio raillo",
+=======
+      "name": "Antonio Raíllo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -14122,7 +16294,11 @@
     },
     {
       "id": 4511,
+<<<<<<< HEAD
       "name": "ayoze perez",
+=======
+      "name": "Ayoze Pérez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -14148,7 +16324,11 @@
     },
     {
       "id": 3235,
+<<<<<<< HEAD
       "name": "diego rico",
+=======
+      "name": "Diego Rico",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14174,7 +16354,11 @@
     },
     {
       "id": 3589,
+<<<<<<< HEAD
       "name": "dominik livakovic",
+=======
+      "name": "Dominik Livakovic",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -14200,7 +16384,11 @@
     },
     {
       "id": 1059,
+<<<<<<< HEAD
       "name": "antonio sivera",
+=======
+      "name": "Antonio Sivera",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -14226,7 +16414,11 @@
     },
     {
       "id": 6665,
+<<<<<<< HEAD
       "name": "luis rioja",
+=======
+      "name": "Luis Rioja",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -14252,7 +16444,11 @@
     },
     {
       "id": 7203,
+<<<<<<< HEAD
       "name": "aimar oroz",
+=======
+      "name": "Aimar Oroz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -14278,7 +16474,11 @@
     },
     {
       "id": 5083,
+<<<<<<< HEAD
       "name": "abdel abqar",
+=======
+      "name": "Abdel Abqar",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14304,7 +16504,11 @@
     },
     {
       "id": 1239,
+<<<<<<< HEAD
       "name": "ricardo rodriguez",
+=======
+      "name": "Ricardo Rodriguez",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -14330,7 +16534,11 @@
     },
     {
       "id": 4955,
+<<<<<<< HEAD
       "name": "sofyan amrabat",
+=======
+      "name": "Sofyan Amrabat",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -14356,7 +16564,11 @@
     },
     {
       "id": 9273,
+<<<<<<< HEAD
       "name": "pablo gavi",
+=======
+      "name": "Pablo Gavi",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -14382,7 +16594,11 @@
     },
     {
       "id": 943,
+<<<<<<< HEAD
       "name": "dimitri foulquier",
+=======
+      "name": "Dimitri Foulquier",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14408,7 +16624,11 @@
     },
     {
       "id": 1375,
+<<<<<<< HEAD
       "name": "cesar azpilicueta",
+=======
+      "name": "César Azpilicueta",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -14434,7 +16654,11 @@
     },
     {
       "id": 3686,
+<<<<<<< HEAD
       "name": "alvaro valles",
+=======
+      "name": "Álvaro Valles",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -14460,7 +16684,11 @@
     },
     {
       "id": 10114,
+<<<<<<< HEAD
       "name": "renato veiga",
+=======
+      "name": "Renato Veiga",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -14486,7 +16714,11 @@
     },
     {
       "id": 1919,
+<<<<<<< HEAD
       "name": "david soria",
+=======
+      "name": "David Soria",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -14512,7 +16744,11 @@
     },
     {
       "id": 11833,
+<<<<<<< HEAD
       "name": "lucas beltran",
+=======
+      "name": "Lucas Beltrán",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -14538,7 +16774,11 @@
     },
     {
       "id": 3732,
+<<<<<<< HEAD
       "name": "daniel raba",
+=======
+      "name": "Daniel Raba",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -14564,7 +16804,11 @@
     },
     {
       "id": 10205,
+<<<<<<< HEAD
       "name": "pablo torre",
+=======
+      "name": "Pablo Torre",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -14590,7 +16834,11 @@
     },
     {
       "id": 8695,
+<<<<<<< HEAD
       "name": "boyomo",
+=======
+      "name": "Boyomo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -14616,7 +16864,11 @@
     },
     {
       "id": 3607,
+<<<<<<< HEAD
       "name": "mouctar diakhaby",
+=======
+      "name": "Mouctar Diakhaby",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14642,7 +16894,11 @@
     },
     {
       "id": 8256,
+<<<<<<< HEAD
       "name": "matteo ruggeri",
+=======
+      "name": "Matteo Ruggeri",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -14668,7 +16924,11 @@
     },
     {
       "id": 930,
+<<<<<<< HEAD
       "name": "sergi darder",
+=======
+      "name": "Sergi Darder",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -14694,7 +16954,11 @@
     },
     {
       "id": 2536,
+<<<<<<< HEAD
       "name": "antonio rudiger",
+=======
+      "name": "Antonio Rüdiger",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -14720,7 +16984,11 @@
     },
     {
       "id": 12892,
+<<<<<<< HEAD
       "name": "adrian liso",
+=======
+      "name": "Adrián Liso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -14746,7 +17014,11 @@
     },
     {
       "id": 9779,
+<<<<<<< HEAD
       "name": "bryan zaragoza",
+=======
+      "name": "Bryan Zaragoza",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -14772,7 +17044,11 @@
     },
     {
       "id": 336,
+<<<<<<< HEAD
       "name": "isco alarcon",
+=======
+      "name": "Isco Alarcón",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -14798,7 +17074,11 @@
     },
     {
       "id": 12641,
+<<<<<<< HEAD
       "name": "gerard martin",
+=======
+      "name": "Gerard Martín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -14824,7 +17104,11 @@
     },
     {
       "id": 9762,
+<<<<<<< HEAD
       "name": "cesar tarrega",
+=======
+      "name": "César Tárrega",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14850,7 +17134,11 @@
     },
     {
       "id": 2802,
+<<<<<<< HEAD
       "name": "igor zubeldia",
+=======
+      "name": "Igor Zubeldia",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -14876,7 +17164,11 @@
     },
     {
       "id": 1975,
+<<<<<<< HEAD
       "name": "alex remiro",
+=======
+      "name": "Álex Remiro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -14902,7 +17194,11 @@
     },
     {
       "id": 7395,
+<<<<<<< HEAD
       "name": "manor solomon",
+=======
+      "name": "Manor Solomon",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -14928,7 +17224,11 @@
     },
     {
       "id": 8988,
+<<<<<<< HEAD
       "name": "hugo sotelo",
+=======
+      "name": "Hugo Sotelo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -14954,7 +17254,11 @@
     },
     {
       "id": 9213,
+<<<<<<< HEAD
       "name": "julen agirrezabala",
+=======
+      "name": "Julen Agirrezabala",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -14980,7 +17284,11 @@
     },
     {
       "id": 465,
+<<<<<<< HEAD
       "name": "antoine griezmann",
+=======
+      "name": "Antoine Griezmann",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -15006,7 +17314,11 @@
     },
     {
       "id": 9304,
+<<<<<<< HEAD
       "name": "diego lopez",
+=======
+      "name": "Diego López",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -15032,7 +17344,11 @@
     },
     {
       "id": 5035,
+<<<<<<< HEAD
       "name": "brahim diaz",
+=======
+      "name": "Brahim Díaz",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15058,7 +17374,11 @@
     },
     {
       "id": 3204,
+<<<<<<< HEAD
       "name": "alex berenguer",
+=======
+      "name": "Álex Berenguer",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -15084,7 +17404,11 @@
     },
     {
       "id": 12647,
+<<<<<<< HEAD
       "name": "johnny cardoso",
+=======
+      "name": "Johnny Cardoso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -15110,7 +17434,11 @@
     },
     {
       "id": 175,
+<<<<<<< HEAD
       "name": "iago aspas",
+=======
+      "name": "Iago Aspas",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -15136,7 +17464,11 @@
     },
     {
       "id": 4620,
+<<<<<<< HEAD
       "name": "junior firpo",
+=======
+      "name": "Junior Firpo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -15162,7 +17494,11 @@
     },
     {
       "id": 7006,
+<<<<<<< HEAD
       "name": "oihan sancet",
+=======
+      "name": "Oihan Sancet",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -15188,7 +17524,11 @@
     },
     {
       "id": 11673,
+<<<<<<< HEAD
       "name": "sergi altimira",
+=======
+      "name": "Sergi Altimira",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -15214,7 +17554,11 @@
     },
     {
       "id": 322,
+<<<<<<< HEAD
       "name": "marc bartra",
+=======
+      "name": "Marc Bartra",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -15240,7 +17584,11 @@
     },
     {
       "id": 5019,
+<<<<<<< HEAD
       "name": "hugo duro",
+=======
+      "name": "Hugo Duro",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -15266,7 +17614,11 @@
     },
     {
       "id": 4705,
+<<<<<<< HEAD
       "name": "juan foyth",
+=======
+      "name": "Juan Foyth",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15292,7 +17644,11 @@
     },
     {
       "id": 11706,
+<<<<<<< HEAD
       "name": "pau cubarsi",
+=======
+      "name": "Pau Cubarsí",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -15318,7 +17674,11 @@
     },
     {
       "id": 5134,
+<<<<<<< HEAD
       "name": "alexander sorloth",
+=======
+      "name": "Alexander Sorloth",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -15344,7 +17704,11 @@
     },
     {
       "id": 9927,
+<<<<<<< HEAD
       "name": "javi guerra",
+=======
+      "name": "Javi Guerra",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -15370,7 +17734,11 @@
     },
     {
       "id": 11439,
+<<<<<<< HEAD
       "name": "arda guler",
+=======
+      "name": "Arda Güler",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15396,7 +17764,11 @@
     },
     {
       "id": 11678,
+<<<<<<< HEAD
       "name": "santiago mouriño",
+=======
+      "name": "Santiago Mouriño",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15422,7 +17794,11 @@
     },
     {
       "id": 4480,
+<<<<<<< HEAD
       "name": "trent alexander-arnold",
+=======
+      "name": "Trent Alexander-Arnold",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15448,7 +17824,11 @@
     },
     {
       "id": 10176,
+<<<<<<< HEAD
       "name": "alvaro f. carreras",
+=======
+      "name": "Álvaro F. Carreras",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15474,7 +17854,11 @@
     },
     {
       "id": 8693,
+<<<<<<< HEAD
       "name": "nico williams",
+=======
+      "name": "Nico Williams",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -15500,7 +17884,11 @@
     },
     {
       "id": 6635,
+<<<<<<< HEAD
       "name": "ante budimir",
+=======
+      "name": "Ante Budimir",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -15526,7 +17914,11 @@
     },
     {
       "id": 9844,
+<<<<<<< HEAD
       "name": "rafa marin",
+=======
+      "name": "Rafa Marín",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15552,7 +17944,11 @@
     },
     {
       "id": 6450,
+<<<<<<< HEAD
       "name": "rodrigo riquelme",
+=======
+      "name": "Rodrigo Riquelme",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -15578,7 +17974,11 @@
     },
     {
       "id": 14125,
+<<<<<<< HEAD
       "name": "luiz junior",
+=======
+      "name": "Luiz Junior",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -15604,7 +18004,11 @@
     },
     {
       "id": 790,
+<<<<<<< HEAD
       "name": "daniel carvajal",
+=======
+      "name": "Daniel Carvajal",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15630,7 +18034,11 @@
     },
     {
       "id": 9669,
+<<<<<<< HEAD
       "name": "aurelien tchouameni",
+=======
+      "name": "Aurélien Tchouaméni",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15656,7 +18064,11 @@
     },
     {
       "id": 9531,
+<<<<<<< HEAD
       "name": "valentin rosier",
+=======
+      "name": "Valentin Rosier",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -15682,7 +18094,11 @@
     },
     {
       "id": 12139,
+<<<<<<< HEAD
       "name": "georges mikautadze",
+=======
+      "name": "Georges Mikautadze",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -15708,7 +18124,11 @@
     },
     {
       "id": 7916,
+<<<<<<< HEAD
       "name": "aitor paredes",
+=======
+      "name": "Aitor Paredes",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -15734,7 +18154,11 @@
     },
     {
       "id": 59,
+<<<<<<< HEAD
       "name": "thibaut courtois",
+=======
+      "name": "Thibaut Courtois",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -15760,7 +18184,11 @@
     },
     {
       "id": 9352,
+<<<<<<< HEAD
       "name": "nicolas gonzalez",
+=======
+      "name": "Nicolás González",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -15786,7 +18214,11 @@
     },
     {
       "id": 8413,
+<<<<<<< HEAD
       "name": "pape gueye",
+=======
+      "name": "Pape Gueye",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -15812,7 +18244,11 @@
     },
     {
       "id": 15437,
+<<<<<<< HEAD
       "name": "franco mastantuono",
+=======
+      "name": "Franco Mastantuono",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -15838,7 +18274,11 @@
     },
     {
       "id": 9989,
+<<<<<<< HEAD
       "name": "sergi cardona",
+=======
+      "name": "Sergi Cardona",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15864,7 +18304,11 @@
     },
     {
       "id": 6957,
+<<<<<<< HEAD
       "name": "isi palazon",
+=======
+      "name": "Isi Palazón",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -15890,7 +18334,11 @@
     },
     {
       "id": 5565,
+<<<<<<< HEAD
       "name": "vinicius junior",
+=======
+      "name": "Vinicius Junior",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -15916,7 +18364,11 @@
     },
     {
       "id": 3807,
+<<<<<<< HEAD
       "name": "javi puado",
+=======
+      "name": "Javi Puado",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -15942,7 +18394,11 @@
     },
     {
       "id": 6674,
+<<<<<<< HEAD
       "name": "jules kounde",
+=======
+      "name": "Jules Koundé",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -15968,7 +18424,11 @@
     },
     {
       "id": 7091,
+<<<<<<< HEAD
       "name": "takefusa kubo",
+=======
+      "name": "Takefusa Kubo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -15994,7 +18454,11 @@
     },
     {
       "id": 7279,
+<<<<<<< HEAD
       "name": "joan garcia",
+=======
+      "name": "Joan Garcia",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -16020,7 +18484,11 @@
     },
     {
       "id": 2288,
+<<<<<<< HEAD
       "name": "dani olmo",
+=======
+      "name": "Dani Olmo",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -16046,7 +18514,11 @@
     },
     {
       "id": 11830,
+<<<<<<< HEAD
       "name": "dean huijsen",
+=======
+      "name": "Dean Huijsen",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -16072,7 +18544,11 @@
     },
     {
       "id": 3717,
+<<<<<<< HEAD
       "name": "giovani lo celso",
+=======
+      "name": "Giovani Lo Celso",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -16098,7 +18574,11 @@
     },
     {
       "id": 5050,
+<<<<<<< HEAD
       "name": "ferran torres",
+=======
+      "name": "Ferrán Torres",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -16124,7 +18604,11 @@
     },
     {
       "id": 2225,
+<<<<<<< HEAD
       "name": "robert lewandowski",
+=======
+      "name": "Robert Lewandowski",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -16150,7 +18634,11 @@
     },
     {
       "id": 7209,
+<<<<<<< HEAD
       "name": "nicolas pepe",
+=======
+      "name": "Nicolas Pépé",
+>>>>>>> origin/codex/review-my-code-c4k5mh
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",

@@ -20,6 +20,366 @@ def to_int(s: str | None) -> int:
     except:
         return 0
 
+<<<<<<< HEAD
+=======
+def to_float(s: str | None) -> float | None:
+    if s is None:
+        return None
+    cleaned = (str(s)
+               .replace("\xa0", " ")
+               .replace("%", "")
+               .strip())
+    if not cleaned:
+        return None
+    if "," in cleaned:
+        cleaned = cleaned.replace(".", "").replace(",", ".")
+    cleaned = re.sub(r"[^0-9.+-]", "", cleaned)
+    if not cleaned:
+        return None
+    try:
+        return float(cleaned)
+    except:
+        return None
+
+
+def parse_points_value(value) -> float | None:
+    if isinstance(value, (int, float)):
+        try:
+            return float(value)
+        except Exception:
+            return None
+    return to_float(value)
+
+
+def parse_matchday(value) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        try:
+            ivalue = int(float(value))
+            return ivalue if ivalue > 0 else None
+        except Exception:
+            return None
+    text = normalize_name_text(value)
+    if not text:
+        return None
+    m = re.search(r"([0-9]{1,3})", text)
+    if not m:
+        return None
+    try:
+        ivalue = int(m.group(1))
+        return ivalue if ivalue > 0 else None
+    except Exception:
+        return None
+
+
+def dedupe_points_history(entries: list[dict]) -> list[dict]:
+    if not entries:
+        return []
+    dedup: dict[int, dict] = {}
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        md = parse_matchday(
+            entry.get("matchday")
+            or entry.get("jornada")
+            or entry.get("round")
+            or entry.get("day")
+            or entry.get("gw")
+        )
+        points = parse_points_value(
+            entry.get("points")
+            or entry.get("puntos")
+            or entry.get("score")
+            or entry.get("valor")
+            or entry.get("value")
+        )
+        if md is None or points is None:
+            continue
+        dedup[md] = {"matchday": md, "points": points}
+    return [dedup[k] for k in sorted(dedup.keys())]
+
+
+def parse_points_history_payload(payload) -> list[dict]:
+    results: list[dict] = []
+
+    def add_entry(matchday, points):
+        md = parse_matchday(matchday)
+        pts = parse_points_value(points)
+        if md is None or pts is None:
+            return
+        results.append({"matchday": md, "points": pts})
+
+    def handle(obj):
+        if obj is None:
+            return
+        if isinstance(obj, (int, float)):
+            add_entry(len(results) + 1, obj)
+            return
+        if isinstance(obj, dict):
+            lowered = {str(k).lower(): v for k, v in obj.items()}
+
+            # Direct mapping jornada/puntos
+            if any(k in lowered for k in ["matchday", "jornada", "round", "day", "gw"]) and any(
+                k in lowered for k in ["points", "puntos", "score", "valor", "value"]
+            ):
+                md = next(
+                    (lowered[k] for k in ["matchday", "jornada", "round", "day", "gw"] if k in lowered),
+                    None,
+                )
+                pts = next(
+                    (lowered[k] for k in ["points", "puntos", "score", "valor", "value"] if k in lowered),
+                    None,
+                )
+                add_entry(md, pts)
+
+            # Dictionaries where keys encode the jornada (ej: j1: 6)
+            for key, value in lowered.items():
+                m = re.match(r"(?:j|jor|jornada|gw|md)[_\-]?([0-9]{1,3})", key)
+                if m:
+                    add_entry(int(m.group(1)), value)
+
+            # Nested history keys
+            for key in [
+                "historial",
+                "history",
+                "puntuaciones",
+                "scores",
+                "matchdays",
+                "jornadas",
+                "points",
+                "values",
+            ]:
+                if key in lowered:
+                    handle(lowered[key])
+            return
+
+        if isinstance(obj, (list, tuple)):
+            for item in obj:
+                handle(item)
+            return
+
+        if isinstance(obj, str):
+            text = obj.strip()
+            if not text:
+                return
+            for candidate in (text, text.replace("'", '"')):
+                try:
+                    parsed = json.loads(candidate)
+                    handle(parsed)
+                    return
+                except Exception:
+                    continue
+
+            pattern = re.compile(
+                r"(?:j(?:or(?:nada)?)?|gw|md|round)?\s*([0-9]{1,3})[^0-9+\-]*([-+]?\d+(?:[.,]\d+)?)",
+                re.IGNORECASE,
+            )
+            matches = pattern.findall(text)
+            if matches:
+                for jornada, puntos in matches:
+                    add_entry(int(jornada), puntos)
+                return
+
+            tokens = re.split(r"[|;,]", text)
+            parsed_tokens = []
+            for token in tokens:
+                token = token.strip()
+                if not token:
+                    continue
+                m = re.match(
+                    r"(?:j(?:or(?:nada)?)?|gw|md|round)?\s*([0-9]{1,3})\s*[:\-]?\s*([-+]?\d+(?:[.,]\d+)?)",
+                    token,
+                    re.IGNORECASE,
+                )
+                if m:
+                    parsed_tokens.append((int(m.group(1)), m.group(2)))
+            for jornada, puntos in parsed_tokens:
+                add_entry(jornada, puntos)
+
+    handle(payload)
+    return dedupe_points_history(results)
+
+
+def gather_datasets(locator) -> list:
+    try:
+        return locator.evaluate(
+            """
+            (root) => {
+              const entries = [];
+              const queue = [root];
+              const visited = new Set();
+              while (queue.length) {
+                const node = queue.shift();
+                if (!node || visited.has(node)) continue;
+                visited.add(node);
+                if (node.dataset && Object.keys(node.dataset).length) {
+                  entries.push({ ...node.dataset });
+                }
+                if (node.getAttributeNames) {
+                  const attrs = {};
+                  for (const name of node.getAttributeNames()) {
+                    if (name.startsWith('data-')) {
+                      attrs[name.slice(5)] = node.getAttribute(name);
+                    }
+                  }
+                  if (Object.keys(attrs).length) {
+                    entries.push(attrs);
+                  }
+                }
+                for (const child of Array.from(node.children || [])) {
+                  queue.push(child);
+                }
+              }
+              return entries;
+            }
+            """,
+        )
+    except Exception:
+        return []
+
+
+def close_detail_modal(page):
+    try:
+        page.keyboard.press("Escape")
+    except Exception:
+        pass
+    selectors = [
+        "button:has-text('Cerrar')",
+        "button:has-text('Close')",
+        "button.cerrar",
+        "button.close",
+        "div.modal button.btn",
+        "div.modal-header button",
+        "div.swal2-container button.swal2-close",
+    ]
+    for sel in selectors:
+        try:
+            btn = page.locator(sel).first
+            if btn.is_visible():
+                btn.click(timeout=1000)
+                page.wait_for_timeout(200)
+                break
+        except Exception:
+            continue
+
+
+def collect_history_from_modal(modal) -> list[dict]:
+    history: list[dict] = []
+    for payload in gather_datasets(modal):
+        history.extend(parse_points_history_payload(payload))
+    if history:
+        return dedupe_points_history(history)
+    try:
+        text = modal.inner_text(timeout=1000)
+        history.extend(parse_points_history_payload(text))
+    except Exception:
+        pass
+    return dedupe_points_history(history)
+
+
+def fetch_points_history_via_modal(page, locator, pid, label: str | None = None) -> list[dict]:
+    if label:
+        descriptor = f"{label} (ID {pid})" if pid is not None else label
+    elif pid is not None:
+        descriptor = f"ID {pid}"
+    else:
+        descriptor = "el jugador"
+    print(f"   ↳ Cargando historial de puntos para {descriptor}…")
+    try:
+        locator.scroll_into_view_if_needed(timeout=1000)
+    except Exception:
+        pass
+
+    opened = False
+    try:
+        locator.click(timeout=1500)
+        opened = True
+    except Exception:
+        pass
+
+    if not opened and pid is not None:
+        try:
+            opened = page.evaluate(
+                """
+                (playerId) => {
+                  const fn = window?.app?.Analytics?.showPlayerDetail
+                    || window?.Analytics?.showPlayerDetail
+                    || window?.showPlayerDetail;
+                  if (typeof fn === 'function') {
+                    try {
+                      fn('laliga-fantasy', '', playerId);
+                      return true;
+                    } catch (err) {
+                      console.warn('No se pudo ejecutar showPlayerDetail', err);
+                    }
+                  }
+                  const card = Array.from(document.querySelectorAll('div.elemento_jugador'))
+                    .find((el) => (el.getAttribute('onclick') || '').includes(String(playerId)));
+                  if (card) {
+                    card.click();
+                    return true;
+                  }
+                  return false;
+                }
+                """,
+                pid,
+            )
+        except Exception:
+            opened = False
+
+    if not opened:
+        print(f"   ↳ No se pudo abrir el detalle para {descriptor}.")
+        return []
+
+    history: list[dict] = []
+    try:
+        modal = page.wait_for_selector(
+            "div[id*='detalle'], div[class*='detalle'], div.modal, div[class*='player']",
+            state="visible",
+            timeout=4000,
+        )
+        page.wait_for_timeout(300)
+        history = collect_history_from_modal(modal)
+    except Exception:
+        try:
+            raw = page.evaluate(
+                "() => window?.app?.Analytics?.playerDetail || window?.playerDetail || window?.detalleJugador || null"
+            )
+            history = parse_points_history_payload(raw)
+        except Exception:
+            history = []
+    finally:
+        close_detail_modal(page)
+        try:
+            page.wait_for_timeout(150)
+        except Exception:
+            pass
+
+    return dedupe_points_history(history)
+
+
+def compute_average_from_history(history: list[dict], last: int | None = None) -> float | None:
+    if not history:
+        return None
+    if last is not None and last > 0:
+        values = [item["points"] for item in history[-last:] if isinstance(item.get("points"), (int, float))]
+    else:
+        values = [item["points"] for item in history if isinstance(item.get("points"), (int, float))]
+    if not values:
+        return None
+    return sum(values) / len(values)
+
+
+def compute_total_points(history: list[dict]) -> float | None:
+    if not history:
+        return None
+    values = [item["points"] for item in history if isinstance(item.get("points"), (int, float))]
+    if not values:
+        return None
+    return float(sum(values))
+
+>>>>>>> origin/codex/review-my-code-c4k5mh
 def normalize_name_text(text: str | None) -> str:
     if not text:
         return ""
@@ -183,10 +543,54 @@ def dedupe_repeated_suffix(text: str | None) -> str:
 def clean_name_candidate(text: str | None) -> str:
     return dedupe_trailing_tokens(
         dedupe_repeated_suffix(
+<<<<<<< HEAD
         dedupe_repeated_words(
             dedupe_double_text(text)
         )
     ))
+=======
+            dedupe_repeated_words(
+                dedupe_double_text(text)
+            )
+        )
+    )
+
+
+def extract_points_history(page, locator, pid, label: str | None = None) -> list[dict]:
+    history: list[dict] = []
+    try:
+        attr_names = locator.evaluate("el => el.getAttributeNames()") or []
+    except Exception:
+        attr_names = []
+
+    for name in attr_names:
+        if not name or not name.startswith("data-"):
+            continue
+        lowered = name.lower()
+        if not any(keyword in lowered for keyword in ["punto", "point", "jorn", "match", "score"]):
+            continue
+        try:
+            value = locator.get_attribute(name)
+        except Exception:
+            value = None
+        if not value:
+            continue
+        history.extend(parse_points_history_payload(value))
+
+    for payload in gather_datasets(locator):
+        history.extend(parse_points_history_payload(payload))
+
+    normalized = dedupe_points_history(history)
+    if normalized:
+        return normalized
+
+    if pid is None:
+        return []
+
+    detail_history = fetch_points_history_via_modal(page, locator, pid, label)
+    return detail_history or []
+
+>>>>>>> origin/codex/review-my-code-c4k5mh
 
 def maybe_accept_cookies(page):
     sels = [
@@ -215,6 +619,7 @@ def extract_all(page):
     print(f"🔍 Detectados {n} elementos .elemento_jugador")
 
     players = []
+    history_cache: dict[int, list[dict]] = {}
     for i in range(n):
         el = cards.nth(i)
 
@@ -228,6 +633,13 @@ def extract_all(page):
                 return el.get_attribute(name)
             except:
                 return None
+
+        def grab_first(*names):
+            for name in names:
+                value = ga(name)
+                if value:
+                    return value
+            return None
 
         # Nombre visible (puede venir duplicado visualmente):
         try:
@@ -263,6 +675,69 @@ def extract_all(page):
             "position": (ga("data-posicion") or "").strip(),
             "value": to_int(ga("data-valor")),
         }
+
+        avg_points_attr = grab_first(
+            "data-media",
+            "data-media-total",
+            "data-media_jornada",
+            "data-mediajornada",
+            "data-mediajornadas",
+            "data-media-puntos",
+            "data-promedio",
+            "data-puntos",
+        )
+        recent_points_attr = grab_first(
+            "data-media5",
+            "data-media-5",
+            "data-media5partidos",
+            "data-media5p",
+            "data-media_reciente",
+            "data-media-reciente",
+            "data-mediaultimos5",
+            "data-media-ultimos5",
+            "data-ultimos5",
+            "data-ult5",
+            "data-puntos5",
+        )
+        total_points_attr = grab_first(
+            "data-puntos-total",
+            "data-puntos_total",
+            "data-puntos-totales",
+            "data-puntos_totales",
+            "data-total-puntos",
+            "data-total_puntos",
+            "data-totalpuntos",
+            "data-puntos-temporada",
+            "data-puntos-season",
+            "data-puntos_temporada",
+        )
+
+        data["points_avg"] = to_float(avg_points_attr)
+        data["points_last5"] = to_float(recent_points_attr)
+        data["points_total"] = to_float(total_points_attr)
+
+        if pid is not None and pid in history_cache:
+            history = history_cache[pid]
+        else:
+            history = extract_points_history(page, el, pid, clean_name)
+            if pid is not None:
+                history_cache[pid] = history
+        data["points_history"] = history
+
+        if data["points_avg"] is None:
+            avg_from_history = compute_average_from_history(history)
+            if avg_from_history is not None:
+                data["points_avg"] = avg_from_history
+
+        if data["points_last5"] is None:
+            recent_from_history = compute_average_from_history(history, last=5)
+            if recent_from_history is not None:
+                data["points_last5"] = recent_from_history
+
+        if data["points_total"] is None:
+            total_from_history = compute_total_points(history)
+            if total_from_history is not None:
+                data["points_total"] = total_from_history
 
         # Debug de lectura por jugador
         val_fmt = f"{data['value']:,}".replace(",", ".")
