@@ -1,9 +1,10 @@
 # sniff_market_json_v3_debug.py
 from playwright.sync_api import sync_playwright
-import json, re
+import json, re, unicodedata
 from datetime import datetime, timezone
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
+
 
 def to_int(s: str | None) -> int:
     if s is None:
@@ -19,6 +20,31 @@ def to_int(s: str | None) -> int:
     except:
         return 0
 
+def to_float(s: str | None) -> float | None:
+    if s is None:
+        return None
+    cleaned = (str(s)
+               .replace("\xa0", " ")
+               .replace("%", "")
+               .strip())
+    if not cleaned:
+        return None
+    if "," in cleaned:
+        cleaned = cleaned.replace(".", "").replace(",", ".")
+    cleaned = re.sub(r"[^0-9.+-]", "", cleaned)
+    if not cleaned:
+        return None
+    try:
+        return float(cleaned)
+    except:
+        return None
+
+def normalize_name_text(text: str | None) -> str:
+    if not text:
+        return ""
+    return re.sub(r"\s+", " ", str(text).replace("\xa0", " ")).strip()
+
+
 def dedupe_double_text(text: str | None) -> str:
     """
     Arregla nombres repetidos consecutivos:
@@ -26,9 +52,7 @@ def dedupe_double_text(text: str | None) -> str:
     - 'Pau López Pau López' -> 'Pau López'
     - Soporta cualquier cadena duplicada exacta (con o sin espacio entre bloques).
     """
-    if not text:
-        return ""
-    s = text.strip()
+    s = normalize_name_text(text)
     # Caso 1: duplicado sin separador (A + A)
     if len(s) % 2 == 0:
         half = len(s) // 2
@@ -39,6 +63,149 @@ def dedupe_double_text(text: str | None) -> str:
     if m:
         return m.group(1).strip()
     return s
+
+
+def dedupe_repeated_words(text: str | None) -> str:
+    s = normalize_name_text(text)
+    if not s:
+        return ""
+    cleaned = []
+    for part in s.split(" "):
+        if cleaned and part.lower() == cleaned[-1].lower():
+            continue
+        cleaned.append(part)
+    return " ".join(cleaned)
+
+
+def _is_lower_letter(ch: str) -> bool:
+    return ch.isalpha() and ch == ch.lower()
+
+
+def _is_upper_letter(ch: str) -> bool:
+    return ch.isalpha() and ch == ch.upper()
+
+
+def split_camel_chunk(chunk: str) -> list[str]:
+    if not chunk:
+        return []
+    result: list[str] = []
+    current = ""
+    for idx, char in enumerate(chunk):
+        if idx > 0 and _is_upper_letter(char) and _is_lower_letter(chunk[idx - 1]) and len(current) >= 3:
+            result.append(current)
+            current = char
+        else:
+            current += char
+    if current:
+        result.append(current)
+    return result
+
+
+def tokenize_name(text: str | None) -> list[str]:
+    base = normalize_name_text(text)
+    if not base:
+        return []
+    tokens: list[str] = []
+    matcher = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9.'’-]+|[^\s]+")
+    for raw in base.split():
+        for part in split_camel_chunk(raw):
+            matches = matcher.findall(part)
+            if matches:
+                tokens.extend(matches)
+            else:
+                tokens.append(part)
+    return tokens
+
+
+def dedupe_trailing_tokens(text: str | None) -> str:
+    tokens = tokenize_name(text)
+    if not tokens:
+        return ""
+
+    def normalize_token(token: str) -> str:
+        base = unicodedata.normalize("NFD", token)
+        base = re.sub(r"[\u0300-\u036f]", "", base)
+        return re.sub(r"[\s.'’´`-]", "", base).casefold()
+
+    deduped: list[str] = []
+    last_norm: str | None = None
+    for token in tokens:
+        norm = normalize_token(token)
+        if norm and norm == last_norm:
+            continue
+        deduped.append(token)
+        last_norm = norm
+
+    end = len(deduped)
+    while end > 0:
+        token = deduped[end - 1]
+        norm = normalize_token(token)
+        if not norm:
+            end -= 1
+            continue
+        preceding = [normalize_token(t) for t in deduped[: end - 1]]
+        if norm in preceding:
+            end -= 1
+            continue
+        if len(norm) <= 2 and any(p.startswith(norm) for p in preceding):
+            end -= 1
+            continue
+        break
+
+    return " ".join(deduped[:end])
+
+
+def dedupe_repeated_suffix(text: str | None) -> str:
+    """
+    Elimina repeticiones consecutivas del bloque final aunque no exista un separador.
+
+    Casos:
+      - "Pau CubarsíCubarsí" -> "Pau Cubarsí"
+      - "Paulo GazzanigaGazzaniga" -> "Paulo Gazzaniga"
+      - "Robin Le NormandLe Normand" -> "Robin Le Normand"
+
+    Se ignoran duplicados triviales (p.ej. "Lala") al exigir bloques de tamaño
+    razonable o con mayúsculas/espacios.
+    """
+
+    s = normalize_name_text(text)
+    if not s:
+        return ""
+
+    def is_candidate_chunk(chunk: str) -> bool:
+        if len(chunk.strip()) < 3:
+            return False
+        if any(c.isupper() for c in chunk):
+            return True
+        if any(sep in chunk for sep in [" ", "-", "'", "’"]):
+            return True
+        return False
+
+    while True:
+        lowered = s.casefold()
+        found = False
+        for size in range(len(s) // 2, 0, -1):
+            chunk = s[-size:]
+            if not is_candidate_chunk(chunk):
+                continue
+            suffix = lowered[-size:]
+            if lowered.endswith(suffix * 2):
+                s = s[:-size].rstrip()
+                found = True
+                break
+        if not found:
+            break
+
+    return normalize_name_text(s)
+
+
+def clean_name_candidate(text: str | None) -> str:
+    return dedupe_trailing_tokens(
+        dedupe_repeated_suffix(
+        dedupe_repeated_words(
+            dedupe_double_text(text)
+        )
+    ))
 
 def maybe_accept_cookies(page):
     sels = [
@@ -81,13 +248,32 @@ def extract_all(page):
             except:
                 return None
 
+        def grab_first(*names):
+            for name in names:
+                value = ga(name)
+                if value:
+                    return value
+            return None
+
         # Nombre visible (puede venir duplicado visualmente):
         try:
             # Cogemos TODO el bloque del nombre para evitar dobles fuentes internas
-            raw_name = el.locator(".datos-nombre").inner_text().strip()
+            raw_name_visible = el.locator(".datos-nombre").inner_text()
         except:
-            raw_name = ga("data-nombre") or ""
-        clean_name = dedupe_double_text(raw_name)
+            raw_name_visible = ""
+        raw_name_attr = ga("data-nombre") or ga("data-name")
+        clean_visible = clean_name_candidate(raw_name_visible)
+        clean_attr = clean_name_candidate(raw_name_attr)
+        clean_name = clean_attr or clean_visible
+        if not clean_name:
+            clean_name = clean_visible or clean_attr
+        if clean_attr and clean_visible and clean_attr.lower() != clean_visible.lower():
+            print(
+                "⚠️  data-nombre distinto del texto visible:",
+                f"'{clean_attr}' vs '{clean_visible}'",
+            )
+        if re.search(r"(\b\w+\b)\s+\1", clean_name or "", flags=re.IGNORECASE):
+            print("⚠️  Posible repetición en nombre normalizado:", clean_name)
 
         # Equipo visible
         try:
@@ -103,6 +289,33 @@ def extract_all(page):
             "position": (ga("data-posicion") or "").strip(),
             "value": to_int(ga("data-valor")),
         }
+
+        avg_points_attr = grab_first(
+            "data-media",
+            "data-media-total",
+            "data-media_jornada",
+            "data-mediajornada",
+            "data-mediajornadas",
+            "data-media-puntos",
+            "data-promedio",
+            "data-puntos",
+        )
+        recent_points_attr = grab_first(
+            "data-media5",
+            "data-media-5",
+            "data-media5partidos",
+            "data-media5p",
+            "data-media_reciente",
+            "data-media-reciente",
+            "data-mediaultimos5",
+            "data-media-ultimos5",
+            "data-ultimos5",
+            "data-ult5",
+            "data-puntos5",
+        )
+
+        data["points_avg"] = to_float(avg_points_attr)
+        data["points_last5"] = to_float(recent_points_attr)
 
         # Debug de lectura por jugador
         val_fmt = f"{data['value']:,}".replace(",", ".")

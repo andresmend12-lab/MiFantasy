@@ -4,7 +4,7 @@
   "players": [
     {
       "id": 8405,
-      "name": "Antony\nBetis",
+      "name": "Antony",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -30,7 +30,7 @@
     },
     {
       "id": 11520,
-      "name": "Lamine Yamal\nBarcelona",
+      "name": "Lamine Yamal",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -56,7 +56,7 @@
     },
     {
       "id": 6633,
-      "name": "Jorge de Frutos\nRayo",
+      "name": "Jorge de Frutos",
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -82,7 +82,7 @@
     },
     {
       "id": 1931,
-      "name": "Marcos Llorente\nAtlético",
+      "name": "Marcos Llorente",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -108,7 +108,7 @@
     },
     {
       "id": 2632,
-      "name": "Pablo Fornals\nBetis",
+      "name": "Pablo Fornals",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -134,7 +134,7 @@
     },
     {
       "id": 9125,
-      "name": "Rubén Vargas\nSevilla",
+      "name": "Rubén Vargas",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -160,7 +160,7 @@
     },
     {
       "id": 2939,
-      "name": "Marcus Rashford\nBarcelona",
+      "name": "Marcus Rashford",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -186,7 +186,7 @@
     },
     {
       "id": 6210,
-      "name": "Frenkie de Jong\nBarcelona",
+      "name": "Frenkie de Jong",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -212,7 +212,7 @@
     },
     {
       "id": 11709,
-      "name": "Fermín López\nBarcelona",
+      "name": "Fermín López",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -238,7 +238,7 @@
     },
     {
       "id": 10638,
-      "name": "Tajon Buchanan\nVillarreal",
+      "name": "Tajon Buchanan",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -264,7 +264,7 @@
     },
     {
       "id": 6363,
-      "name": "Ander Barrenetxea\nReal Sociedad",
+      "name": "Ander Barrenetxea",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -290,7 +290,7 @@
     },
     {
       "id": 5546,
-      "name": "Cucho Hernández\nBetis",
+      "name": "Cucho Hernández",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -316,7 +316,7 @@
     },
     {
       "id": 10005,
-      "name": "Pablo Barrios\nAtlético",
+      "name": "Pablo Barrios",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -342,7 +342,7 @@
     },
     {
       "id": 11813,
-      "name": "Natan\nBetis",
+      "name": "Natan",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -368,7 +368,7 @@
     },
     {
       "id": 7257,
-      "name": "Pedri González\nBarcelona",
+      "name": "Pedri González",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -394,7 +394,7 @@
     },
     {
       "id": 6493,
-      "name": "Alejandro Catena\nOsasuna",
+      "name": "Alejandro Catena",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -420,7 +420,7 @@
     },
     {
       "id": 7645,
-      "name": "Álex Baena\nAtlético",
+      "name": "Álex Baena",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -446,7 +446,7 @@
     },
     {
       "id": 9990,
-      "name": "Alberto Moleiro\nVillarreal",
+      "name": "Alberto Moleiro",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -472,7 +472,7 @@
     },
     {
       "id": 3738,
-      "name": "Edu Expósito\nEspanyol",
+      "name": "Edu Expósito",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -498,7 +498,7 @@
     },
     {
       "id": 9750,
-      "name": "Abde Ezzalzouli\nBetis",
+      "name": "Abde Ezzalzouli",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -524,7 +524,7 @@
     },
     {
       "id": 867,
-      "name": "Álvaro GarcíaÁlvaro García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Álvaro García",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -550,7 +550,7 @@
     },
     {
       "id": 10287,
-      "name": "Julián ÁlvarezAlvarez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Julián Álvarez",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -576,7 +576,7 @@
     },
     {
       "id": 6002,
-      "name": "Robin Le NormandLe Normand\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Robin Le Normand",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -602,7 +602,7 @@
     },
     {
       "id": 9317,
-      "name": "José Ángel CarmonaCarmona\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "José Ángel Carmona",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -628,7 +628,7 @@
     },
     {
       "id": 6935,
-      "name": "Luis MillaLuis Milla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Luis Milla",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -654,7 +654,7 @@
     },
     {
       "id": 7542,
-      "name": "Eric GarcíaEric García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Eric García",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -680,7 +680,7 @@
     },
     {
       "id": 8816,
-      "name": "David AffengruberAffengruber\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "David Affengruber",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -706,7 +706,7 @@
     },
     {
       "id": 8386,
-      "name": "Jude BellinghamBellingham\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Jude Bellingham",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -732,7 +732,7 @@
     },
     {
       "id": 3429,
-      "name": "Kylian MbappéMbappé\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Kylian Mbappé",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -758,7 +758,7 @@
     },
     {
       "id": 6174,
-      "name": "Arnaut DanjumaDanjuma\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Arnaut Danjuma",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -784,7 +784,7 @@
     },
     {
       "id": 1927,
-      "name": "Pere MillaPere Milla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Pere Milla",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -810,7 +810,7 @@
     },
     {
       "id": 3758,
-      "name": "Federico ValverdeValverde\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Federico Valverde",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -836,7 +836,7 @@
     },
     {
       "id": 7658,
-      "name": "Germán ValeraValera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Germán Valera",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -862,7 +862,7 @@
     },
     {
       "id": 11138,
-      "name": "Thiago AlmadaAlmada\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Thiago Almada",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -888,7 +888,7 @@
     },
     {
       "id": 6560,
-      "name": "Andrei RatiuRatiu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Andrei Ratiu",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -914,7 +914,7 @@
     },
     {
       "id": 863,
-      "name": "Florian LejeuneLejeune\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Florian Lejeune",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -940,7 +940,7 @@
     },
     {
       "id": 12605,
-      "name": "Mikel JauregizarJauregizar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Mikel Jauregizar",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -966,7 +966,7 @@
     },
     {
       "id": 11172,
-      "name": "Carlos RomeroRomero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Carlos Romero",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -992,7 +992,7 @@
     },
     {
       "id": 2401,
-      "name": "André SilvaAndré Silva\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "André Silva",
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -1018,7 +1018,7 @@
     },
     {
       "id": 12651,
-      "name": "Augusto BatallaBatalla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Augusto Batalla",
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -1044,7 +1044,7 @@
     },
     {
       "id": 1071,
-      "name": "Aarón EscandellAarón\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Aarón Escandell",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -1070,7 +1070,7 @@
     },
     {
       "id": 11765,
-      "name": "Carlos VicenteCarlos Vicente\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Carlos Vicente",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -1096,7 +1096,7 @@
     },
     {
       "id": 582,
-      "name": "Leandro CabreraCabrera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Leandro Cabrera",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -1122,7 +1122,7 @@
     },
     {
       "id": 6180,
-      "name": "Sergio GómezSergio Gómez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Sergio Gómez",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -1148,7 +1148,7 @@
     },
     {
       "id": 7638,
-      "name": "Jesús AresoAreso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Jesús Areso",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1174,7 +1174,7 @@
     },
     {
       "id": 4288,
-      "name": "RaphinhaRaphinha\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Raphinha",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -1200,7 +1200,7 @@
     },
     {
       "id": 6885,
-      "name": "Aleix FebasFebas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Aleix Febas",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -1226,7 +1226,7 @@
     },
     {
       "id": 14954,
-      "name": "Víctor MuñozVíctor Muñoz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Víctor Muñoz",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -1252,7 +1252,7 @@
     },
     {
       "id": 3759,
-      "name": "Marko DmitrovicDmitrovic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Marko Dmitrovic",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -1278,7 +1278,7 @@
     },
     {
       "id": 7992,
-      "name": "Pep ChavarríaPep Chavarría\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Pep Chavarría",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -1304,7 +1304,7 @@
     },
     {
       "id": 8134,
-      "name": "Vedat MuriqiMuriqi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Vedat Muriqi",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -1330,7 +1330,7 @@
     },
     {
       "id": 697,
-      "name": "Aymeric LaporteLaporte\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Aymeric Laporte",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1356,7 +1356,7 @@
     },
     {
       "id": 11767,
-      "name": "Álvaro NúñezÁ. Núñez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Álvaro Núñez",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -1382,7 +1382,7 @@
     },
     {
       "id": 9987,
-      "name": "Roberto FernándezRoberto\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Roberto Fernández",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -1408,7 +1408,7 @@
     },
     {
       "id": 9276,
-      "name": "Giuliano SimeoneGiuliano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Giuliano Simeone",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -1434,7 +1434,7 @@
     },
     {
       "id": 404,
-      "name": "Pedro BigasBigas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Pedro Bigas",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -1460,7 +1460,7 @@
     },
     {
       "id": 6062,
-      "name": "Éder MilitãoMilitão\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Éder Militão",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -1486,7 +1486,7 @@
     },
     {
       "id": 6611,
-      "name": "Sergio HerreraHerrera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Sergio Herrera",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -1512,7 +1512,7 @@
     },
     {
       "id": 44,
-      "name": "Íñigo Ruiz de GalarretaR. de Galarreta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Íñigo Ruiz de Galarreta",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -1538,7 +1538,7 @@
     },
     {
       "id": 735,
-      "name": "Yuri BerchicheYuri\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Yuri Berchiche",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -1564,7 +1564,7 @@
     },
     {
       "id": 1881,
-      "name": "Unai LópezUnai López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Unai López",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -1590,7 +1590,7 @@
     },
     {
       "id": 4397,
-      "name": "Marcos AlonsoM. Alonso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Marcos Alonso",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -1616,7 +1616,7 @@
     },
     {
       "id": 775,
-      "name": "José María GiménezGiménez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "José María Giménez",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -1642,7 +1642,7 @@
     },
     {
       "id": 16308,
-      "name": "Clemens RiedelRiedel\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Clemens Riedel",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -1668,7 +1668,7 @@
     },
     {
       "id": 9283,
-      "name": "Haissem HassanHassan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Haissem Hassan",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -1694,7 +1694,7 @@
     },
     {
       "id": 5978,
-      "name": "Ionut RaduRadu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Ionut Radu",
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -1720,7 +1720,7 @@
     },
     {
       "id": 10326,
-      "name": "Karl Etta EyongEtta Eyong\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Karl Etta Eyong",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -1746,7 +1746,7 @@
     },
     {
       "id": 13883,
-      "name": "Martim NetoMartim Neto\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Martim Neto",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -1772,7 +1772,7 @@
     },
     {
       "id": 899,
-      "name": "Johan MojicaMojica\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Johan Mojica",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -1798,7 +1798,7 @@
     },
     {
       "id": 1826,
-      "name": "Jan OblakOblak\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Jan Oblak",
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -1824,7 +1824,7 @@
     },
     {
       "id": 7629,
-      "name": "Iván RomeroIván Romero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Iván Romero",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -1850,7 +1850,7 @@
     },
     {
       "id": 7307,
-      "name": "Pathé CissPathé Ciss\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Pathé Ciss",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -1876,7 +1876,7 @@
     },
     {
       "id": 16169,
-      "name": "Jan VirgiliVirgili\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Jan Virgili",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -1902,7 +1902,7 @@
     },
     {
       "id": 1708,
-      "name": "Axel WitselWitsel\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Axel Witsel",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -1928,7 +1928,7 @@
     },
     {
       "id": 8105,
-      "name": "Samú CostaSamú\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Samú Costa",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -1954,7 +1954,7 @@
     },
     {
       "id": 1067,
-      "name": "Pau LópezPau López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Pau López",
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -1980,7 +1980,7 @@
     },
     {
       "id": 12358,
-      "name": "Gabriel SuazoSuazo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Gabriel Suazo",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2006,7 +2006,7 @@
     },
     {
       "id": 7004,
-      "name": "Ronald AraújoAraújo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Ronald Araújo",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -2032,7 +2032,7 @@
     },
     {
       "id": 9218,
-      "name": "Arnau MartínezArnau\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Arnau Martínez",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -2058,7 +2058,7 @@
     },
     {
       "id": 5032,
-      "name": "Toni MartinezToni Martinez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Toni Martinez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -2084,7 +2084,7 @@
     },
     {
       "id": 6235,
-      "name": "Odysseas VlachodimosVlachodimos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Odysseas Vlachodimos",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -2110,7 +2110,7 @@
     },
     {
       "id": 3693,
-      "name": "Unai SimónUnai Simón\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Unai Simón",
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -2136,7 +2136,7 @@
     },
     {
       "id": 10886,
-      "name": "Mateo JosephJoseph\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Mateo Joseph",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -2162,7 +2162,7 @@
     },
     {
       "id": 2675,
-      "name": "Mikel OyarzabalOyarzabal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Mikel Oyarzabal",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -2188,7 +2188,7 @@
     },
     {
       "id": 11230,
-      "name": "Abel Bretones Bretones\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Abel Bretones",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -2214,7 +2214,7 @@
     },
     {
       "id": 10220,
-      "name": "Omar El HilaliEl Hilali\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Omar El Hilali",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -2240,7 +2240,7 @@
     },
     {
       "id": 2687,
-      "name": "Rafa MirRafa Mir\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Rafa Mir",
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -2266,7 +2266,7 @@
     },
     {
       "id": 4516,
-      "name": "Paulo GazzanigaGazzaniga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Paulo Gazzaniga",
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -2292,7 +2292,7 @@
     },
     {
       "id": 6289,
-      "name": "Iñaki PeñaPeña\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Iñaki Peña",
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -2318,7 +2318,7 @@
     },
     {
       "id": 9316,
-      "name": "Alejandro BaldeBalde\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Alejandro Balde",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -2344,7 +2344,7 @@
     },
     {
       "id": 2663,
-      "name": "Pablo MaffeoMaffeo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Pablo Maffeo",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -2370,7 +2370,7 @@
     },
     {
       "id": 5549,
-      "name": "Santi ComesañaComesaña\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Santi Comesaña",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -2396,7 +2396,7 @@
     },
     {
       "id": 8479,
-      "name": "Eduardo CamavingaCamavinga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Eduardo Camavinga",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -2422,7 +2422,7 @@
     },
     {
       "id": 5995,
-      "name": "David HanckoHancko\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "David Hancko",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -2448,7 +2448,7 @@
     },
     {
       "id": 2242,
-      "name": "Gonçalo GuedesGuedes\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Gonçalo Guedes",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -2474,7 +2474,7 @@
     },
     {
       "id": 9405,
-      "name": "Leo RománLeo Román\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Leo Román",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -2500,7 +2500,7 @@
     },
     {
       "id": 3879,
-      "name": "Pol LozanoLozano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Pol Lozano",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -2526,7 +2526,7 @@
     },
     {
       "id": 12595,
-      "name": "Nobel MendyMendy\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Nobel Mendy",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -2552,7 +2552,7 @@
     },
     {
       "id": 6889,
-      "name": "Óscar ValentínValentín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Óscar Valentín",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -2578,7 +2578,7 @@
     },
     {
       "id": 10358,
-      "name": "Marc AguadoAguado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Marc Aguado",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -2604,7 +2604,7 @@
     },
     {
       "id": 11683,
-      "name": "Jon GorrotxategiGorrotxategi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Jon Gorrotxategi",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -2630,7 +2630,7 @@
     },
     {
       "id": 15123,
-      "name": "Vitor ReisVitor Reis\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Vitor Reis",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -2656,7 +2656,7 @@
     },
     {
       "id": 2759,
-      "name": "Carles AleñáAleñá\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Carles Aleñá",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -2682,7 +2682,7 @@
     },
     {
       "id": 2751,
-      "name": "Kike GarcíaKike García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Kike García",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -2708,7 +2708,7 @@
     },
     {
       "id": 16714,
-      "name": "Javier OlaizolaOlaizola\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Javier Olaizola",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -2734,7 +2734,7 @@
     },
     {
       "id": 12453,
-      "name": "Asier OsambelaOsambela\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Asier Osambela",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -2760,7 +2760,7 @@
     },
     {
       "id": 12609,
-      "name": "Pol TristanPol Tristan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Pol Tristan",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -2786,7 +2786,7 @@
     },
     {
       "id": 13804,
-      "name": "Ramón MartínezRamón\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Ramón Martínez",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2812,7 +2812,7 @@
     },
     {
       "id": 14135,
-      "name": "Manu GonzálezManu González\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Manu González",
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -2838,7 +2838,7 @@
     },
     {
       "id": 16317,
-      "name": "Marcos NavarroNavarro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Marcos Navarro",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -2864,7 +2864,7 @@
     },
     {
       "id": 15413,
-      "name": "Lucas NúñezNúñez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Lucas Núñez",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -2890,7 +2890,7 @@
     },
     {
       "id": 16319,
-      "name": "Hugo LópezHugo López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Hugo López",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -2916,7 +2916,7 @@
     },
     {
       "id": 12596,
-      "name": "Joaquín OsoOso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Joaquín Oso",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -2942,7 +2942,7 @@
     },
     {
       "id": 15133,
-      "name": "Grégoire SwiderskiSwiderski\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Grégoire Swiderski",
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -2968,7 +2968,7 @@
     },
     {
       "id": 16227,
-      "name": "Cheli PeredaCheli\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Cheli Pereda",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -2994,7 +2994,7 @@
     },
     {
       "id": 14811,
-      "name": "Papa Dame BaPapa Ba\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Papa Dame BaPapa",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -3020,7 +3020,7 @@
     },
     {
       "id": 16163,
-      "name": "Gibert JordanaGibert\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Gibert Jordana",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -3046,7 +3046,7 @@
     },
     {
       "id": 11871,
-      "name": "Dimitrios StamatakisStamatakis\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Dimitrios Stamatakis",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -3072,7 +3072,7 @@
     },
     {
       "id": 13868,
-      "name": "Raúl ChascoChasco\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Raúl Chasco",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -3098,7 +3098,7 @@
     },
     {
       "id": 12980,
-      "name": "Antoniu RocaRoca\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Antoniu Roca",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -3124,7 +3124,7 @@
     },
     {
       "id": 11684,
-      "name": "Mikel GotiGoti\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Mikel Goti",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -3150,7 +3150,7 @@
     },
     {
       "id": 13808,
-      "name": "Miguel RománRomán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Miguel Román",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -3176,7 +3176,7 @@
     },
     {
       "id": 14812,
-      "name": "Rubén GómezRubén Gómez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Rubén Gómez",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -3202,7 +3202,7 @@
     },
     {
       "id": 14816,
-      "name": "Jean Ives ValouValou\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Jean Ives Valou",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -3228,7 +3228,7 @@
     },
     {
       "id": 8634,
-      "name": "Rafael RomeroRafa\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Rafael Romero Rafa",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -3254,7 +3254,7 @@
     },
     {
       "id": 15423,
-      "name": "Lander PinillosPinillos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Lander Pinillos",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -3280,7 +3280,7 @@
     },
     {
       "id": 15422,
-      "name": "Salvi EsquivelEsquivel\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Salvi Esquivel",
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -3306,7 +3306,7 @@
     },
     {
       "id": 16270,
-      "name": "Cayetano RomeroCaye\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Cayetano Romero Caye",
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -3332,7 +3332,7 @@
     },
     {
       "id": 16167,
-      "name": "Jofre TorrentsTorrents\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Jofre Torrents",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -3358,7 +3358,7 @@
     },
     {
       "id": 14967,
-      "name": "Juanpe GilJuanpe\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Juanpe Gil",
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -3384,7 +3384,7 @@
     },
     {
       "id": 13813,
-      "name": "Adrián MolinaMolina\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Adrián Molina",
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -3410,7 +3410,7 @@
     },
     {
       "id": 13870,
-      "name": "Jano MonserrateMonserrate\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Jano Monserrate",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -3436,7 +3436,7 @@
     },
     {
       "id": 14159,
-      "name": "Coba GomesCoba\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Coba Gomes",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -3462,7 +3462,7 @@
     },
     {
       "id": 267,
-      "name": "Allan NyomNyom\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Allan Nyom",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -3488,7 +3488,7 @@
     },
     {
       "id": 16014,
-      "name": "Antonio Martínez BastidaMartínez Bastida\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Antonio Martínez Bastida",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -3514,7 +3514,7 @@
     },
     {
       "id": 9796,
-      "name": "Rubén IranzoIranzo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Rubén Iranzo",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -3540,7 +3540,7 @@
     },
     {
       "id": 12539,
-      "name": "Joselu PérezJoselu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Joselu Pérez",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -3566,7 +3566,7 @@
     },
     {
       "id": 16146,
-      "name": "Samu BecerraBecerra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Samu Becerra",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -3592,7 +3592,7 @@
     },
     {
       "id": 16018,
-      "name": "Aimar BlázquezBlázquez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Aimar Blázquez",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -3618,7 +3618,7 @@
     },
     {
       "id": 14912,
-      "name": "Iliesse SalhiSalhi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Iliesse Salhi",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -3644,7 +3644,7 @@
     },
     {
       "id": 16158,
-      "name": "Mauro EchegoyenEchegoyen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Mauro Echegoyen",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -3670,7 +3670,7 @@
     },
     {
       "id": 12479,
-      "name": "Rúben MonteroMontero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Rúben Montero",
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -3696,7 +3696,7 @@
     },
     {
       "id": 10586,
-      "name": "Mihailo RisticRistic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Mihailo Ristic",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -3722,7 +3722,7 @@
     },
     {
       "id": 13814,
-      "name": "Marco de la SíasDe la Sías\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Marco de la Sías",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -3748,7 +3748,7 @@
     },
     {
       "id": 14051,
-      "name": "Jon de LuisDe Luis\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Jon de Luis",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -3774,7 +3774,7 @@
     },
     {
       "id": 16287,
-      "name": "Iván CorralejoCorralejo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Iván Corralejo",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -3800,7 +3800,7 @@
     },
     {
       "id": 16272,
-      "name": "Marc VilaplanaVilaplana\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Marc Vilaplana",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -3826,7 +3826,7 @@
     },
     {
       "id": 16020,
-      "name": "Nacho PérezNacho Pérez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Nacho Pérez",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -3852,7 +3852,7 @@
     },
     {
       "id": 16198,
-      "name": "Edu AltozanoAltozano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Edu Altozano",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -3878,7 +3878,7 @@
     },
     {
       "id": 13748,
-      "name": "Martín KrugKrug\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Martín Krug",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -3904,7 +3904,7 @@
     },
     {
       "id": 11554,
-      "name": "Fran GonzálezFran González\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Fran González",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -3930,7 +3930,7 @@
     },
     {
       "id": 10767,
-      "name": "Sergio MestreMestre\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Sergio Mestre",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -3956,7 +3956,7 @@
     },
     {
       "id": 16151,
-      "name": "Mawuli MensahMawuli\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Mawuli Mensah",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -3982,7 +3982,7 @@
     },
     {
       "id": 12594,
-      "name": "David OtorbiOtorbi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "David Otorbi",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -4008,7 +4008,7 @@
     },
     {
       "id": 12917,
-      "name": "Alberto RiscoRisco\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Alberto Risco",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -4034,7 +4034,7 @@
     },
     {
       "id": 13032,
-      "name": "Pau CabanesCabanes\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Pau Cabanes",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -4060,7 +4060,7 @@
     },
     {
       "id": 10328,
-      "name": "Marc DoménechDoménech\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Marc Doménech",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -4086,7 +4086,7 @@
     },
     {
       "id": 13860,
-      "name": "Toni FernándezToni Fernández\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Toni Fernández",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -4112,7 +4112,7 @@
     },
     {
       "id": 11707,
-      "name": "Diego KochenKochen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Diego Kochen",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -4138,7 +4138,7 @@
     },
     {
       "id": 14950,
-      "name": "Vladyslav KrapyvtsovKrapyvtsov\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Vladyslav Krapyvtsov",
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -4164,7 +4164,7 @@
     },
     {
       "id": 13859,
-      "name": "Guille FernándezGuille\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Guille Fernández",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -4190,7 +4190,7 @@
     },
     {
       "id": 13871,
-      "name": "Taufik SeiduTaufik\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Taufik Seidu",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -4216,7 +4216,7 @@
     },
     {
       "id": 11507,
-      "name": "Ilias KostisKostis\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Ilias Kostis",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -4242,7 +4242,7 @@
     },
     {
       "id": 9824,
-      "name": "Alberto FloresAlberto\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Alberto Flores",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -4268,7 +4268,7 @@
     },
     {
       "id": 16236,
-      "name": "Miguel SierraSierra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Miguel Sierra",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -4294,7 +4294,7 @@
     },
     {
       "id": 11562,
-      "name": "Yago SantiagoSantiago\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Yago Santiago",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -4320,7 +4320,7 @@
     },
     {
       "id": 11888,
-      "name": "Jhon SolísSolís\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Jhon Solís",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -4346,7 +4346,7 @@
     },
     {
       "id": 8679,
-      "name": "Unai MarreroMarrero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Unai Marrero",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -4372,7 +4372,7 @@
     },
     {
       "id": 13036,
-      "name": "Yoel LagoLago\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Yoel Lago",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -4398,7 +4398,7 @@
     },
     {
       "id": 16271,
-      "name": "Joan RuizJoan Ruiz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Joan Ruiz",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -4424,7 +4424,7 @@
     },
     {
       "id": 33,
-      "name": "Raúl FernándezRaúl F.\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Raúl Fernández",
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -4450,7 +4450,7 @@
     },
     {
       "id": 9695,
-      "name": "Rubén SánchezRubén Sánchez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Rubén Sánchez",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -4476,7 +4476,7 @@
     },
     {
       "id": 3833,
-      "name": "Diego PampínPampín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Diego Pampín",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -4502,7 +4502,7 @@
     },
     {
       "id": 16228,
-      "name": "Ovie EjariaEjaria\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Ovie Ejaria",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4528,7 +4528,7 @@
     },
     {
       "id": 15427,
-      "name": "Lamine GueyeGueye\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Lamine Gueye",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4554,7 +4554,7 @@
     },
     {
       "id": 10230,
-      "name": "Dani PérezDani Pérez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Dani Pérez",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -4580,7 +4580,7 @@
     },
     {
       "id": 16235,
-      "name": "Álex CostaÁlex Costa\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Álex Costa",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -4606,7 +4606,7 @@
     },
     {
       "id": 9759,
-      "name": "Alejandro IturbeIturbe\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Alejandro Iturbe",
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -4632,7 +4632,7 @@
     },
     {
       "id": 12656,
-      "name": "Alex ForésForés\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Alex Forés",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -4658,7 +4658,7 @@
     },
     {
       "id": 7570,
-      "name": "Dani CárdenasCárdenas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Dani Cárdenas",
       "team_id": "14",
       "team": "Rayo",
       "position": "Portero",
@@ -4684,7 +4684,7 @@
     },
     {
       "id": 5080,
-      "name": "Cristian RiveroRivero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Cristian Rivero",
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -4710,7 +4710,7 @@
     },
     {
       "id": 16237,
-      "name": "Thiago PitarchThiago\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Thiago Pitarch",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -4736,7 +4736,7 @@
     },
     {
       "id": 14935,
-      "name": "Youssef EnríquezYoussef\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Youssef Enríquez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -4762,7 +4762,7 @@
     },
     {
       "id": 15961,
-      "name": "Jesús ForteaFortea\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Jesús Fortea",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4788,7 +4788,7 @@
     },
     {
       "id": 12945,
-      "name": "Marco EstebanMarco Esteban\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Marco Esteban",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -4814,7 +4814,7 @@
     },
     {
       "id": 5022,
-      "name": "Bambo DiabyBambo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Bambo Diaby",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -4840,7 +4840,7 @@
     },
     {
       "id": 14886,
-      "name": "Diego AguadoD. Aguado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Diego Aguado",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4866,7 +4866,7 @@
     },
     {
       "id": 13877,
-      "name": "Jiri LetácekLetácek\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Jiri Letácek",
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -4892,7 +4892,7 @@
     },
     {
       "id": 9771,
-      "name": "Javi LlabrésLlabrés\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Javi Llabrés",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -4918,7 +4918,7 @@
     },
     {
       "id": 14700,
-      "name": "David JiménezJiménez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "David Jiménez",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -4944,7 +4944,7 @@
     },
     {
       "id": 11688,
-      "name": "Adama BoiroBoiro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Adama Boiro",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -4970,7 +4970,7 @@
     },
     {
       "id": 14016,
-      "name": "Mikel SantosSantos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Mikel Santos",
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -4996,7 +4996,7 @@
     },
     {
       "id": 12922,
-      "name": "Adam BoayarAdam Boayar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Adam Boayar",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -5022,7 +5022,7 @@
     },
     {
       "id": 16463,
-      "name": "Darling BladiBladi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Darling Bladi",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -5048,7 +5048,7 @@
     },
     {
       "id": 10826,
-      "name": "Germán GarcíaGermán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Germán García",
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -5074,7 +5074,7 @@
     },
     {
       "id": 16155,
-      "name": "Theo FolgadoFolgado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Theo Folgado",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -5100,7 +5100,7 @@
     },
     {
       "id": 11180,
-      "name": "Manu BuenoManu Bueno\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Manu Bueno",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -5126,7 +5126,7 @@
     },
     {
       "id": 15349,
-      "name": "Omar FalahFalah\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Omar Falah",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -5152,7 +5152,7 @@
     },
     {
       "id": 14832,
-      "name": "Albert NiculaeseiNiculaesei\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Albert Niculaesei",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5178,7 +5178,7 @@
     },
     {
       "id": 11712,
-      "name": "David LópezDavid López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "David López",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -5204,7 +5204,7 @@
     },
     {
       "id": 14172,
-      "name": "Matías MorenoMoreno\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Matías Moreno",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -5230,7 +5230,7 @@
     },
     {
       "id": 2016,
-      "name": "Iván CuéllarCuéllar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Iván Cuéllar",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -5256,7 +5256,7 @@
     },
     {
       "id": 7915,
-      "name": "Oier LuengoLuengo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Oier Luengo",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -5282,7 +5282,7 @@
     },
     {
       "id": 10234,
-      "name": "Marc VidalMarc Vidal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Marc Vidal",
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -5308,7 +5308,7 @@
     },
     {
       "id": 12870,
-      "name": "Carlos EspíCarlos Espí\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Carlos Espí",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -5334,7 +5334,7 @@
     },
     {
       "id": 5942,
-      "name": "Juan MussoMusso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Juan Musso",
       "team_id": "2",
       "team": "Atlético",
       "position": "Portero",
@@ -5360,7 +5360,7 @@
     },
     {
       "id": 9602,
-      "name": "Lucas BergstromBergstrom\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Lucas Bergstrom",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -5386,7 +5386,7 @@
     },
     {
       "id": 12608,
-      "name": "Rayane BelaidRayane\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Rayane Belaid",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -5412,7 +5412,7 @@
     },
     {
       "id": 14024,
-      "name": "Javier HernándezJavier Hernández\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Javier Hernández",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -5438,7 +5438,7 @@
     },
     {
       "id": 2736,
-      "name": "Antonio LatoLato\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Antonio Lato",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -5464,7 +5464,7 @@
     },
     {
       "id": 9755,
-      "name": "Carlos MartínCarlos Martín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Carlos Martín",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -5490,7 +5490,7 @@
     },
     {
       "id": 10219,
-      "name": "Ángel FortuñoFortuño\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Ángel Fortuño",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -5516,7 +5516,7 @@
     },
     {
       "id": 572,
-      "name": "Adrián San MiguelAdrián\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Adrián San Miguel",
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -5542,7 +5542,7 @@
     },
     {
       "id": 16001,
-      "name": "Brandon DominguèsBrandon\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Brandon Dominguès",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -5568,7 +5568,7 @@
     },
     {
       "id": 12355,
-      "name": "Moussa DiarraDiarra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Moussa Diarra",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -5594,7 +5594,7 @@
     },
     {
       "id": 15409,
-      "name": "Alejandro RegoRego\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Alejandro Rego",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -5620,7 +5620,7 @@
     },
     {
       "id": 10552,
-      "name": "Abdul MuminMumin\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Abdul Mumin",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -5646,7 +5646,7 @@
     },
     {
       "id": 8680,
-      "name": "John ChetauyaJohn C.\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "John Chetauya",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5672,7 +5672,7 @@
     },
     {
       "id": 9872,
-      "name": "Iker BenitoBenito\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Iker Benito",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -5698,7 +5698,7 @@
     },
     {
       "id": 14004,
-      "name": "Jozhua VertrouwdVertrouwd\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Jozhua Vertrouwd",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -5724,7 +5724,7 @@
     },
     {
       "id": 10476,
-      "name": "Abde RebbachRebbach\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Abde Rebbach",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -5750,7 +5750,7 @@
     },
     {
       "id": 9314,
-      "name": "Javi SerranoSerrano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Javi Serrano",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -5776,7 +5776,7 @@
     },
     {
       "id": 3318,
-      "name": "Franco CerviCervi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Franco Cervi",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -5802,7 +5802,7 @@
     },
     {
       "id": 8961,
-      "name": "Jon Ander OlasagastiOlasagasti\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Jon Ander Olasagasti",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -5828,7 +5828,7 @@
     },
     {
       "id": 16723,
-      "name": "Eder AllerAller\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Eder Aller",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -5854,7 +5854,7 @@
     },
     {
       "id": 4715,
-      "name": "Nikola MarasMaras\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Nikola Maras",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -5880,7 +5880,7 @@
     },
     {
       "id": 10191,
-      "name": "Alejandro PrimoPrimo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Alejandro Primo",
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -5906,7 +5906,7 @@
     },
     {
       "id": 12879,
-      "name": "Jorge CabelloJorge Cabello\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Jorge Cabello",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -5932,7 +5932,7 @@
     },
     {
       "id": 3206,
-      "name": "Kike BarjaKike Barja\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Kike Barja",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -5958,7 +5958,7 @@
     },
     {
       "id": 16160,
-      "name": "Léo PétrotPétrot\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Léo Pétrot",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -5984,7 +5984,7 @@
     },
     {
       "id": 6346,
-      "name": "Adrián de la FuenteDe la Fuente\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Adrián de la Fuente",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -6010,7 +6010,7 @@
     },
     {
       "id": 3255,
-      "name": "Iván VillarIván Villar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Iván Villar",
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -6036,7 +6036,7 @@
     },
     {
       "id": 16758,
-      "name": "Carlos BallesteroBallestero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Carlos Ballestero",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -6062,7 +6062,7 @@
     },
     {
       "id": 16757,
-      "name": "Diego MorcilloMorcillo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Diego Morcillo",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -6088,7 +6088,7 @@
     },
     {
       "id": 1972,
-      "name": "Yeray ÁlvarezYeray\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Yeray Álvarez",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -6114,7 +6114,7 @@
     },
     {
       "id": 9638,
-      "name": "Coke CarrilloCarrillo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Coke Carrillo",
       "team_id": "5",
       "team": "Celta",
       "position": "Portero",
@@ -6140,7 +6140,7 @@
     },
     {
       "id": 10329,
-      "name": "Gorka RiveraGorka\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Gorka Rivera",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -6166,7 +6166,7 @@
     },
     {
       "id": 10265,
-      "name": "Diego MéndezMéndez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Diego Méndez",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -6192,7 +6192,7 @@
     },
     {
       "id": 11816,
-      "name": "Aitor FragaFraga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Aitor Fraga",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -6218,7 +6218,7 @@
     },
     {
       "id": 9994,
-      "name": "Ricard ArteroArtero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Ricard Artero",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6244,7 +6244,7 @@
     },
     {
       "id": 12948,
-      "name": "José Luis CatalàJosé Luis Català\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "José Luis Català",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -6270,7 +6270,7 @@
     },
     {
       "id": 12891,
-      "name": "Llorenç SerredSerred\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Llorenç Serred",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Portero",
@@ -6296,7 +6296,7 @@
     },
     {
       "id": 8986,
-      "name": "Eneko OrtizEneko Ortiz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Eneko Ortiz",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -6322,7 +6322,7 @@
     },
     {
       "id": 13876,
-      "name": "Diego FerrerFerrer\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Diego Ferrer",
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -6348,7 +6348,7 @@
     },
     {
       "id": 10764,
-      "name": "Egoitz AranaArana\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Egoitz Arana",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -6374,7 +6374,7 @@
     },
     {
       "id": 13887,
-      "name": "Pablo RiveraRivera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Pablo Rivera",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -6400,7 +6400,7 @@
     },
     {
       "id": 12611,
-      "name": "Alberto ColladoCollado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Alberto Collado",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -6426,7 +6426,7 @@
     },
     {
       "id": 14100,
-      "name": "Raúl JiménezRaúl Jiménez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Raúl Jiménez",
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -6452,7 +6452,7 @@
     },
     {
       "id": 13861,
-      "name": "Andrés CuencaCuenca\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Andrés Cuenca",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -6478,7 +6478,7 @@
     },
     {
       "id": 13872,
-      "name": "Gerónimo SpinaSpina\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Gerónimo Spina",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -6504,7 +6504,7 @@
     },
     {
       "id": 14882,
-      "name": "Álvaro CortésCortés\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Álvaro Cortés",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -6530,7 +6530,7 @@
     },
     {
       "id": 12695,
-      "name": "Djordjije MedenicaMedenica\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Djordjije Medenica",
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -6556,7 +6556,7 @@
     },
     {
       "id": 12601,
-      "name": "Juan ArangoArango\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Juan Arango",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -6582,7 +6582,7 @@
     },
     {
       "id": 12600,
-      "name": "Enric GarcíaEnric\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Enric García",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6608,7 +6608,7 @@
     },
     {
       "id": 14831,
-      "name": "Aleksandar AndreevAndreev\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Aleksandar Andreev",
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -6634,7 +6634,7 @@
     },
     {
       "id": 14817,
-      "name": "Ferrán RuizFerrán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Ferrán Ruiz",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -6660,7 +6660,7 @@
     },
     {
       "id": 10192,
-      "name": "Carlos GiménezCarlos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Carlos Giménez",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -6686,7 +6686,7 @@
     },
     {
       "id": 11181,
-      "name": "Aitor GismeraGismera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Aitor Gismera",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -6712,7 +6712,7 @@
     },
     {
       "id": 10276,
-      "name": "Alex AlmansaAlmansa\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Alex Almansa",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -6738,7 +6738,7 @@
     },
     {
       "id": 12536,
-      "name": "Isra DomínguezIsra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Isra Domínguez",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -6764,7 +6764,7 @@
     },
     {
       "id": 11788,
-      "name": "Egoitz MuñozEgoitz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Egoitz Muñoz",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -6790,7 +6790,7 @@
     },
     {
       "id": 12441,
-      "name": "Pablo BustoBusto\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Pablo Busto",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -6816,7 +6816,7 @@
     },
     {
       "id": 14946,
-      "name": "Carlos ReinaReina\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Carlos Reina",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -6842,7 +6842,7 @@
     },
     {
       "id": 7860,
-      "name": "Pere Joan GarcíaPere\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Pere Joan García",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Portero",
@@ -6868,7 +6868,7 @@
     },
     {
       "id": 14836,
-      "name": "Diego EspejoEspejo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Diego Espejo",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -6894,7 +6894,7 @@
     },
     {
       "id": 14904,
-      "name": "Daniel YáñezYáñez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Daniel Yáñez",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -6920,7 +6920,7 @@
     },
     {
       "id": 14903,
-      "name": "Hugo de LlanosDe Llanos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Hugo de Llanos",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -6946,7 +6946,7 @@
     },
     {
       "id": 14020,
-      "name": "Arkaitz MariezkurrenaMariezkurrena\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Arkaitz Mariezkurrena",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -6972,7 +6972,7 @@
     },
     {
       "id": 12694,
-      "name": "Iñaki RupérezRupérez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Iñaki Rupérez",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -6998,7 +6998,7 @@
     },
     {
       "id": 13040,
-      "name": "Jon BaldaBalda\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Jon Balda",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -7024,7 +7024,7 @@
     },
     {
       "id": 14022,
-      "name": "Alassane DiattaDiatta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Alassane Diatta",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -7050,7 +7050,7 @@
     },
     {
       "id": 15122,
-      "name": "Leandro AntonettiAntonetti\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Leandro Antonetti",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -7076,7 +7076,7 @@
     },
     {
       "id": 15228,
-      "name": "Endika BujánBuján\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Endika Buján",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -7102,7 +7102,7 @@
     },
     {
       "id": 10894,
-      "name": "Xavi PleguezueloPleguezuelo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Xavi Pleguezuelo",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -7128,7 +7128,7 @@
     },
     {
       "id": 14977,
-      "name": "Martín CuéllarCuéllar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Martín Cuéllar",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -7154,7 +7154,7 @@
     },
     {
       "id": 12823,
-      "name": "Iñigo ArguibideArguibide\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Iñigo Arguibide",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -7180,7 +7180,7 @@
     },
     {
       "id": 15006,
-      "name": "Carlos LumbrerasLumbreras\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Carlos Lumbreras",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -7206,7 +7206,7 @@
     },
     {
       "id": 15135,
-      "name": "Pol FortunyFortuny\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Pol Fortuny",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -7232,7 +7232,7 @@
     },
     {
       "id": 15227,
-      "name": "Mario RivasRivas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Mario Rivas",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -7258,7 +7258,7 @@
     },
     {
       "id": 13007,
-      "name": "Vicent AbrilAbril\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Vicent Abril",
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -7284,7 +7284,7 @@
     },
     {
       "id": 11676,
-      "name": "Unai EgiluzEgiluz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Unai Egiluz",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -7310,7 +7310,7 @@
     },
     {
       "id": 3172,
-      "name": "Álvaro LemosÁ. Lemos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Álvaro Lemos",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -7336,7 +7336,7 @@
     },
     {
       "id": 10003,
-      "name": "Joseda ÁlvarezJoseda\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Joseda Álvarez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -7362,7 +7362,7 @@
     },
     {
       "id": 11852,
-      "name": "Ander SánchezAnder\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Ander Sánchez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -7388,7 +7388,7 @@
     },
     {
       "id": 11718,
-      "name": "Gaizka GarcíaGaizka\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Gaizka García",
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -7414,7 +7414,7 @@
     },
     {
       "id": 10166,
-      "name": "Mario DomínguezMario\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Mario Domínguez",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -7440,7 +7440,7 @@
     },
     {
       "id": 9744,
-      "name": "Hugo GonzálezHugo González\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Hugo González",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -7466,7 +7466,7 @@
     },
     {
       "id": 12883,
-      "name": "Ian FornsIan Forns\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Ian Forns",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -7492,7 +7492,7 @@
     },
     {
       "id": 11790,
-      "name": "Mario GonzálezMario\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Mario González",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -7518,7 +7518,7 @@
     },
     {
       "id": 11524,
-      "name": "Unai GómezUnai Gómez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Unai Gómez",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -7544,7 +7544,7 @@
     },
     {
       "id": 7737,
-      "name": "Unai VencedorVencedor\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Unai Vencedor",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -7570,7 +7570,7 @@
     },
     {
       "id": 8250,
-      "name": "José SalinasSalinas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "José Salinas",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -7596,7 +7596,7 @@
     },
     {
       "id": 12534,
-      "name": "Javi RodríguezJavi Rodríguez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Javi Rodríguez",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -7622,7 +7622,7 @@
     },
     {
       "id": 10193,
-      "name": "Damián RodríguezDamián\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Damián Rodríguez",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -7648,7 +7648,7 @@
     },
     {
       "id": 12560,
-      "name": "Victor ParadaParada\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Victor Parada",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -7674,7 +7674,7 @@
     },
     {
       "id": 11362,
-      "name": "Iker MuñozIker Muñoz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Iker Muñoz",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -7700,7 +7700,7 @@
     },
     {
       "id": 7386,
-      "name": "Tanguy NianzouNianzou\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Tanguy Nianzou",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -7726,7 +7726,7 @@
     },
     {
       "id": 785,
-      "name": "Omar MascarellMascarell\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Omar Mascarell",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -7752,7 +7752,7 @@
     },
     {
       "id": 605,
-      "name": "Abdon PratsAbdon\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Abdon Prats",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -7778,7 +7778,7 @@
     },
     {
       "id": 7644,
-      "name": "Víctor GarcíaVíctor García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Víctor García",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -7804,7 +7804,7 @@
     },
     {
       "id": 14773,
-      "name": "Miguel NarvaezNarvaez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Miguel Narvaez",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -7830,7 +7830,7 @@
     },
     {
       "id": 829,
-      "name": "Aitor FernándezAitor\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Aitor Fernández",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Portero",
@@ -7856,7 +7856,7 @@
     },
     {
       "id": 8702,
-      "name": "Carlos DominguezDomínguez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Carlos Dominguez",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -7882,7 +7882,7 @@
     },
     {
       "id": 9124,
-      "name": "Eray CömertCömert\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Eray Cömert",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -7908,7 +7908,7 @@
     },
     {
       "id": 11677,
-      "name": "Hugo RincónRincón\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Hugo Rincón",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -7934,7 +7934,7 @@
     },
     {
       "id": 16162,
-      "name": "Lass KouroumaLass\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Lass Kourouma",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -7960,7 +7960,7 @@
     },
     {
       "id": 7993,
-      "name": "Alejandro FrancésFrancés\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Alejandro Francés",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -7986,7 +7986,7 @@
     },
     {
       "id": 16200,
-      "name": "Calebe GonçalvesCalebe\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Calebe Gonçalves",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -8012,7 +8012,7 @@
     },
     {
       "id": 7291,
-      "name": "Antonio SánchezAntonio\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Antonio Sánchez",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -8038,7 +8038,7 @@
     },
     {
       "id": 14118,
-      "name": "Ali Houary Ali Houary\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Ali Houary",
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -8064,7 +8064,7 @@
     },
     {
       "id": 13875,
-      "name": "Ismael BekhouchaBekhoucha\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Ismael Bekhoucha",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -8090,7 +8090,7 @@
     },
     {
       "id": 12706,
-      "name": "Horatiu MoldovanMoldovan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Horatiu Moldovan",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Portero",
@@ -8116,7 +8116,7 @@
     },
     {
       "id": 12860,
-      "name": "Pau NavarroPau Navarro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Pau Navarro",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8142,7 +8142,7 @@
     },
     {
       "id": 14980,
-      "name": "Jones El-AbdellaouiEl-Abdellaoui\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Jones El-Abdellaoui",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -8168,7 +8168,7 @@
     },
     {
       "id": 16202,
-      "name": "Tyrhys DolanDolan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Tyrhys Dolan",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -8194,7 +8194,7 @@
     },
     {
       "id": 1833,
-      "name": "Juan Carlos MartínJuan Carlos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Juan Carlos Martín",
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -8220,7 +8220,7 @@
     },
     {
       "id": 7920,
-      "name": "Nico SerranoSerrano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Nico Serrano",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -8246,7 +8246,7 @@
     },
     {
       "id": 10822,
-      "name": "Pablo DuránDurán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Pablo Durán",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -8272,7 +8272,7 @@
     },
     {
       "id": 6853,
-      "name": "Randy NtekaNteka\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Randy Nteka",
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -8298,7 +8298,7 @@
     },
     {
       "id": 9423,
-      "name": "Jon KarrikaburuKarrikaburu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Jon Karrikaburu",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -8324,7 +8324,7 @@
     },
     {
       "id": 9850,
-      "name": "Jofre CarrerasJofre\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Jofre Carreras",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -8350,7 +8350,7 @@
     },
     {
       "id": 6977,
-      "name": "Lucas AhijadoAhijado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Lucas Ahijado",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -8376,7 +8376,7 @@
     },
     {
       "id": 2807,
-      "name": "Álvaro OdriozolaOdriozola\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Álvaro Odriozola",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -8402,7 +8402,7 @@
     },
     {
       "id": 14048,
-      "name": "Urko IzetaIzeta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Urko Izeta",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -8428,7 +8428,7 @@
     },
     {
       "id": 3249,
-      "name": "Mikel VesgaVesga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Mikel Vesga",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -8454,7 +8454,7 @@
     },
     {
       "id": 5587,
-      "name": "Adrià PedrosaPedrosa\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Adrià Pedrosa",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -8480,7 +8480,7 @@
     },
     {
       "id": 1859,
-      "name": "Josan FerrándezJosan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Josan Ferrández",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -8506,7 +8506,7 @@
     },
     {
       "id": 7781,
-      "name": "Javi LópezJavi López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Javi López",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -8532,7 +8532,7 @@
     },
     {
       "id": 6538,
-      "name": "Abel RuizAbel Ruiz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Abel Ruiz",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -8558,7 +8558,7 @@
     },
     {
       "id": 3998,
-      "name": "Domingos DuarteD. Duarte\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Domingos Duarte",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -8584,7 +8584,7 @@
     },
     {
       "id": 16168,
-      "name": "Dro FernándezDro Fernández\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Dro Ferna ́ndez Dro Fernández",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -8610,7 +8610,7 @@
     },
     {
       "id": 12354,
-      "name": "Logan CostaCosta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Logan Costa",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8636,7 +8636,7 @@
     },
     {
       "id": 6804,
-      "name": "Alfonso EspinoEspino\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Alfonso Espino",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -8662,7 +8662,7 @@
     },
     {
       "id": 1940,
-      "name": "Aritz ElustondoAritz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Aritz Elustondo",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -8688,7 +8688,7 @@
     },
     {
       "id": 4208,
-      "name": "MarcãoMarcão\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Marcão",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -8714,7 +8714,7 @@
     },
     {
       "id": 7082,
-      "name": "Jorge HerrandoHerrando\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Jorge Herrando",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -8740,7 +8740,7 @@
     },
     {
       "id": 10214,
-      "name": "Alex PadillaPadilla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Alex Padilla",
       "team_id": "1",
       "team": "Athletic",
       "position": "Portero",
@@ -8766,7 +8766,7 @@
     },
     {
       "id": 10207,
-      "name": "Williot SwedbergSwedberg\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Williot Swedberg",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -8792,7 +8792,7 @@
     },
     {
       "id": 1887,
-      "name": "Joan JordanJordan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Joan Jordan",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -8818,7 +8818,7 @@
     },
     {
       "id": 2128,
-      "name": "Gerard GumbauGumbau\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Gerard Gumbau",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -8844,7 +8844,7 @@
     },
     {
       "id": 12634,
-      "name": "Willy KambwalaKambwala\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Willy Kambwala",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -8870,7 +8870,7 @@
     },
     {
       "id": 7201,
-      "name": "Iker LosadaLosada\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Iker Losada",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -8896,7 +8896,7 @@
     },
     {
       "id": 10448,
-      "name": "Carlos BenavidezBenavidez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Carlos Benavidez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -8922,7 +8922,7 @@
     },
     {
       "id": 7917,
-      "name": "Beñat PradosPrados\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Beñat Prados",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -8948,7 +8948,7 @@
     },
     {
       "id": 7055,
-      "name": "Santiago ColombattoColombatto\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Santiago Colombatto",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -8974,7 +8974,7 @@
     },
     {
       "id": 10341,
-      "name": "PequePeque\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Peque",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -9000,7 +9000,7 @@
     },
     {
       "id": 664,
-      "name": "Cristian PortuPortu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Cristian Portu",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -9026,7 +9026,7 @@
     },
     {
       "id": 3158,
-      "name": "Unai ElgezabalElgezabal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Unai Elgezabal",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -9052,7 +9052,7 @@
     },
     {
       "id": 5061,
-      "name": "Manuel MorlanesMorlanes\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Manuel Morlanes",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -9078,7 +9078,7 @@
     },
     {
       "id": 6846,
-      "name": "Joseph AidooAidoo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Joseph Aidoo",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -9104,7 +9104,7 @@
     },
     {
       "id": 1778,
-      "name": "Denis SuárezDenis Suárez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Denis Suárez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -9130,7 +9130,7 @@
     },
     {
       "id": 3612,
-      "name": "Álvaro FernándezÁlvaro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Álvaro Fernández",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -9156,7 +9156,7 @@
     },
     {
       "id": 6209,
-      "name": "Donny van de BeekVan de Beek\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Donny van de Beek",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -9182,7 +9182,7 @@
     },
     {
       "id": 10357,
-      "name": "Adrià AltimiraAltimira\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Adrià Altimira",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -9208,7 +9208,7 @@
     },
     {
       "id": 6704,
-      "name": "Takuma AsanoAsano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Takuma Asano",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Delantero",
@@ -9234,7 +9234,7 @@
     },
     {
       "id": 10233,
-      "name": "Ángel OrtizOrtiz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Ángel Ortiz",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -9260,7 +9260,7 @@
     },
     {
       "id": 935,
-      "name": "David CostasCostas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "David Costas",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9286,7 +9286,7 @@
     },
     {
       "id": 9763,
-      "name": "Ilias AkhomachAkhomach\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Ilias Akhomach",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -9312,7 +9312,7 @@
     },
     {
       "id": 8273,
-      "name": "Víctor ChustChust\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Víctor Chust",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -9338,7 +9338,7 @@
     },
     {
       "id": 6394,
-      "name": "Aihen MuñozAihen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Aihen Muñoz",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -9364,7 +9364,7 @@
     },
     {
       "id": 7199,
-      "name": "Sergio CarreiraCarreira\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Sergio Carreira",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -9390,7 +9390,7 @@
     },
     {
       "id": 3802,
-      "name": "Ander GuevaraGuevara\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Ander Guevara",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -9416,7 +9416,7 @@
     },
     {
       "id": 1923,
-      "name": "Eric BaillyBailly\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Eric Bailly",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9442,7 +9442,7 @@
     },
     {
       "id": 6783,
-      "name": "Kwasi SiboSibo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Kwasi Sibo",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9468,7 +9468,7 @@
     },
     {
       "id": 7251,
-      "name": "Iván BalliuBalliu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Iván Balliu",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -9494,7 +9494,7 @@
     },
     {
       "id": 7569,
-      "name": "Arnau TenasTenas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Arnau Tenas",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -9520,7 +9520,7 @@
     },
     {
       "id": 9011,
-      "name": "Arsen ZakharyanZakharyan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Arsen Zakharyan",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -9546,7 +9546,7 @@
     },
     {
       "id": 3357,
-      "name": "Djibril SowSow\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Djibril Sow",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -9572,7 +9572,7 @@
     },
     {
       "id": 2114,
-      "name": "Íñigo LekueLekue\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Íñigo Lekue",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -9598,7 +9598,7 @@
     },
     {
       "id": 14989,
-      "name": "Kervin ArriagaArriaga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Kervin Arriaga",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -9624,7 +9624,7 @@
     },
     {
       "id": 339,
-      "name": "Salomón RondónRondón\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Salomón Rondón",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -9650,7 +9650,7 @@
     },
     {
       "id": 5385,
-      "name": "Duje Caleta-CarCaleta-Car\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Duje Caleta-Car",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -9676,7 +9676,7 @@
     },
     {
       "id": 9157,
-      "name": "Roger BruguéBrugui\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Roger Brugué Brugui",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -9702,7 +9702,7 @@
     },
     {
       "id": 7926,
-      "name": "Luka IlicL. Ilic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Luka Ilic",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9728,7 +9728,7 @@
     },
     {
       "id": 11756,
-      "name": "Alberto ReinaReina\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Alberto Reina",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9754,7 +9754,7 @@
     },
     {
       "id": 10435,
-      "name": "Charles PickelPickel\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Charles Pickel",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -9780,7 +9780,7 @@
     },
     {
       "id": 14000,
-      "name": "Rahim AlhassaneAlhassane\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Rahim Alhassane",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -9806,7 +9806,7 @@
     },
     {
       "id": 5545,
-      "name": "Chimy ÁvilaChimy\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Chimy Ávila",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -9832,7 +9832,7 @@
     },
     {
       "id": 6562,
-      "name": "Sergio CamelloCamello\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Sergio Camello",
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -9858,7 +9858,7 @@
     },
     {
       "id": 626,
-      "name": "Christian StuaniStuani\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Christian Stuani",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -9884,7 +9884,7 @@
     },
     {
       "id": 83,
-      "name": "Alexis SánchezAlexis\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Alexis Sánchez",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -9910,7 +9910,7 @@
     },
     {
       "id": 5548,
-      "name": "Óscar TrejoTrejo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Óscar Trejo",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -9936,7 +9936,7 @@
     },
     {
       "id": 9017,
-      "name": "Josip BrekaloBrekalo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Josip Brekalo",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -9962,7 +9962,7 @@
     },
     {
       "id": 11627,
-      "name": "Alan MatturroMatturro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Alan Matturro",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -9988,7 +9988,7 @@
     },
     {
       "id": 7725,
-      "name": "Jon PachecoPacheco\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Jon Pacheco",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -10014,7 +10014,7 @@
     },
     {
       "id": 8651,
-      "name": "Beñat TurrientesTurrientes\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Beñat Turrientes",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -10040,7 +10040,7 @@
     },
     {
       "id": 3623,
-      "name": "Pedro DíazPedro Díaz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Pedro Díaz",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -10066,7 +10066,7 @@
     },
     {
       "id": 8120,
-      "name": "Nahuel MolinaMolina\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Nahuel Molina",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10092,7 +10092,7 @@
     },
     {
       "id": 5220,
-      "name": "Miguel Ángel RubioMiguel Rubio\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Miguel Ángel Rubio",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -10118,7 +10118,7 @@
     },
     {
       "id": 8088,
-      "name": "Oriol ReyOriol Rey\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Oriol Rey",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -10144,7 +10144,7 @@
     },
     {
       "id": 7100,
-      "name": "Marash KumbullaKumbulla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Marash Kumbulla",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10170,7 +10170,7 @@
     },
     {
       "id": 5526,
-      "name": "Andriy LuninLunin\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Andriy Lunin",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -10196,7 +10196,7 @@
     },
     {
       "id": 7413,
-      "name": "Mateu MoreyMorey\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Mateu Morey",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10222,7 +10222,7 @@
     },
     {
       "id": 1981,
-      "name": "Javi MuñozJavi Muñoz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Javi Muñoz",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -10248,7 +10248,7 @@
     },
     {
       "id": 16003,
-      "name": "Manu FernándezManu Fernández\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Manu Fernández",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -10274,7 +10274,7 @@
     },
     {
       "id": 10210,
-      "name": "Fran PérezFran Pérez \n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Fran Pérez",
       "team_id": "14",
       "team": "Rayo",
       "position": "Mediocampista",
@@ -10300,7 +10300,7 @@
     },
     {
       "id": 7027,
-      "name": "Raúl GarcíaRaúl García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Raúl García",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -10326,7 +10326,7 @@
     },
     {
       "id": 14156,
-      "name": "Federico ViñasViñas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Federico Viñas",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -10352,7 +10352,7 @@
     },
     {
       "id": 11766,
-      "name": "Álex SancrisSancris\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Álex Sancris",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -10378,7 +10378,7 @@
     },
     {
       "id": 1978,
-      "name": "Alfonso PedrazaPedraza\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Alfonso Pedraza",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -10404,7 +10404,7 @@
     },
     {
       "id": 15505,
-      "name": "Federico RedondoRedondo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Federico Redondo",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -10430,7 +10430,7 @@
     },
     {
       "id": 3215,
-      "name": "Marc RocaMarc Roca\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Marc Roca",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -10456,7 +10456,7 @@
     },
     {
       "id": 8228,
-      "name": "Urko González de ZarateUrko\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Urko González de Zarate",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -10482,7 +10482,7 @@
     },
     {
       "id": 16224,
-      "name": "Goduine KoyalipouKoyalipou\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Goduine Koyalipou",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -10508,7 +10508,7 @@
     },
     {
       "id": 2118,
-      "name": "Cédric BakambuBakambu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Cédric Bakambu",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -10534,7 +10534,7 @@
     },
     {
       "id": 2223,
-      "name": "David AlabaAlaba\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "David Alaba",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -10560,7 +10560,7 @@
     },
     {
       "id": 1715,
-      "name": "Adnan JanuzajJanuzaj\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Adnan Januzaj",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -10586,7 +10586,7 @@
     },
     {
       "id": 989,
-      "name": "Stole DimitrievskiDimitrievski\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Stole Dimitrievski",
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -10612,7 +10612,7 @@
     },
     {
       "id": 7294,
-      "name": "Thierry CorreiaThierry\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Thierry Correia",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -10638,7 +10638,7 @@
     },
     {
       "id": 3799,
-      "name": "Andoni GorosabelGorosabel\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Andoni Gorosabel",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -10664,7 +10664,7 @@
     },
     {
       "id": 8686,
-      "name": "Juan IglesiasIglesias\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Juan Iglesias",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -10690,7 +10690,7 @@
     },
     {
       "id": 10041,
-      "name": "David CarmoCarmo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "David Carmo",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10716,7 +10716,7 @@
     },
     {
       "id": 6634,
-      "name": "Martin ValjentValjent\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Martin Valjent",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -10742,7 +10742,7 @@
     },
     {
       "id": 9823,
-      "name": "Marc PubillPubill\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Marc Pubill",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10768,7 +10768,7 @@
     },
     {
       "id": 7554,
-      "name": "Diego CondeConde\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Diego Conde",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -10794,7 +10794,7 @@
     },
     {
       "id": 2721,
-      "name": "Dani CalvoCalvo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Dani Calvo",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10820,7 +10820,7 @@
     },
     {
       "id": 2534,
-      "name": "Wojciech SzczesnySzczesny\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Wojciech Szczesny",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -10846,7 +10846,7 @@
     },
     {
       "id": 6487,
-      "name": "Javi GalánGalán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Javi Galán",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -10872,7 +10872,7 @@
     },
     {
       "id": 3742,
-      "name": "Nacho VidalNacho Vidal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Nacho Vidal",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Defensa",
@@ -10898,7 +10898,7 @@
     },
     {
       "id": 5547,
-      "name": "Fran BeltránBeltrán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Fran Beltrán",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -10924,7 +10924,7 @@
     },
     {
       "id": 7204,
-      "name": "Jon MoncayolaMoncayola\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Jon Moncayola",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -10950,7 +10950,7 @@
     },
     {
       "id": 10272,
-      "name": "Joel RocaRoca\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Joel Roca",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -10976,7 +10976,7 @@
     },
     {
       "id": 13564,
-      "name": "EndrickEndrick\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Endrick",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -11002,7 +11002,7 @@
     },
     {
       "id": 8944,
-      "name": "Ramón TerratsTerrats\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Ramón Terrats",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -11028,7 +11028,7 @@
     },
     {
       "id": 13888,
-      "name": "Andrés CastrínCastrín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Andrés Castrín",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -11054,7 +11054,7 @@
     },
     {
       "id": 11792,
-      "name": "Jon MartínJon Martín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Jon Martín",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -11080,7 +11080,7 @@
     },
     {
       "id": 16004,
-      "name": "DavinchiDavinchi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Davinchi",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -11106,7 +11106,7 @@
     },
     {
       "id": 841,
-      "name": "Moi GómezMoi Gómez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Moi Gómez",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11132,7 +11132,7 @@
     },
     {
       "id": 10533,
-      "name": "André AlmeidaAlmeida\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "André Almeida",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -11158,7 +11158,7 @@
     },
     {
       "id": 9612,
-      "name": "Carl StarfeltStarfelt\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Carl Starfelt",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -11184,7 +11184,7 @@
     },
     {
       "id": 6651,
-      "name": "Dani RodríguezDani Rodríguez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Dani Rodríguez",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -11210,7 +11210,7 @@
     },
     {
       "id": 3226,
-      "name": "Mariano DíazMariano\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Mariano Díaz",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -11236,7 +11236,7 @@
     },
     {
       "id": 3736,
-      "name": "Jon GuridiGuridi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Jon Guridi",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -11262,7 +11262,7 @@
     },
     {
       "id": 16203,
-      "name": "Valentín GómezValentín Gómez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Valentín Gómez",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -11288,7 +11288,7 @@
     },
     {
       "id": 10258,
-      "name": "Pablo IbáñezIbáñez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Pablo Ibáñez",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -11314,7 +11314,7 @@
     },
     {
       "id": 10960,
-      "name": "Azzedine OunahiOunahi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Azzedine Ounahi",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -11340,7 +11340,7 @@
     },
     {
       "id": 843,
-      "name": "Gerard MorenoGerard\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Gerard Moreno",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -11366,7 +11366,7 @@
     },
     {
       "id": 1743,
-      "name": "Mathew RyanRyan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Mathew Ryan",
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -11392,7 +11392,7 @@
     },
     {
       "id": 3427,
-      "name": "Thomas LemarLemar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Thomas Lemar",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -11418,7 +11418,7 @@
     },
     {
       "id": 11353,
-      "name": "Sheraldo BeckerBecker\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Sheraldo Becker",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11444,7 +11444,7 @@
     },
     {
       "id": 5124,
-      "name": "Lucas BoyéBoyé\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Lucas Boyé",
       "team_id": "28",
       "team": "Alavés",
       "position": "Delantero",
@@ -11470,7 +11470,7 @@
     },
     {
       "id": 6158,
-      "name": "Ferland MendyMendy\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Ferland Mendy",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -11496,7 +11496,7 @@
     },
     {
       "id": 7614,
-      "name": "Pablo MartínezPablo Martínez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Pablo Martínez",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -11522,7 +11522,7 @@
     },
     {
       "id": 11807,
-      "name": "Pablo CamposCuñat Campos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Pablo Campos Cuñat",
       "team_id": "10",
       "team": "Levante",
       "position": "Portero",
@@ -11548,7 +11548,7 @@
     },
     {
       "id": 660,
-      "name": "Rubén GarcíaRubén G.\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Rubén García",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -11574,7 +11574,7 @@
     },
     {
       "id": 9500,
-      "name": "Fábio CardosoCardoso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Fábio Cardoso",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -11600,7 +11600,7 @@
     },
     {
       "id": 658,
-      "name": "David LópezDavid López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "David López",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -11626,7 +11626,7 @@
     },
     {
       "id": 11580,
-      "name": "Ilyas ChairaChaira\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Ilyas Chaira",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Delantero",
@@ -11652,7 +11652,7 @@
     },
     {
       "id": 12025,
-      "name": "Filip UgrinicUgrinic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Filip Ugrinic",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -11678,7 +11678,7 @@
     },
     {
       "id": 8294,
-      "name": "Umar SadiqSadiq\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Umar Sadiq",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -11704,7 +11704,7 @@
     },
     {
       "id": 10830,
-      "name": "Pablo MarínMarín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Pablo Marín",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -11730,7 +11730,7 @@
     },
     {
       "id": 328,
-      "name": "Santi CazorlaCazorla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Santi Cazorla",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -11756,7 +11756,7 @@
     },
     {
       "id": 15696,
-      "name": "Nelson DeossaDeossa\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Nelson Deossa",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -11782,7 +11782,7 @@
     },
     {
       "id": 3178,
-      "name": "Kiko FemeniaFemenia\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Kiko Femenia",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -11808,7 +11808,7 @@
     },
     {
       "id": 10217,
-      "name": "Marc CasadóCasadó\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Marc Casadó",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -11834,7 +11834,7 @@
     },
     {
       "id": 10237,
-      "name": "Rodrigo MendozaMendoza\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Rodrigo Mendoza",
       "team_id": "21",
       "team": "Elche",
       "position": "Mediocampista",
@@ -11860,7 +11860,7 @@
     },
     {
       "id": 10153,
-      "name": "Abu KamaraKamara\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Abu Kamara",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -11886,7 +11886,7 @@
     },
     {
       "id": 707,
-      "name": "Diego Javier LlorenteD. Llorente\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Diego Javier Llorente",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -11912,7 +11912,7 @@
     },
     {
       "id": 10564,
-      "name": "Yvan NeyouNeyou\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Yvan Neyou",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -11938,7 +11938,7 @@
     },
     {
       "id": 10660,
-      "name": "Orri Steinn ÓskarssonÓskarsson\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Orri Steinn Óskarsson",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Delantero",
@@ -11964,7 +11964,7 @@
     },
     {
       "id": 6605,
-      "name": "Manu SánchezManu Sánchez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Manu Sánchez",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -11990,7 +11990,7 @@
     },
     {
       "id": 1382,
-      "name": "Daley BlindBlind\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Daley Blind",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -12016,7 +12016,7 @@
     },
     {
       "id": 6446,
-      "name": "Yangel HerreraHerrera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Yangel Herrera",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12042,7 +12042,7 @@
     },
     {
       "id": 13822,
-      "name": "Pablo GarcíaPablo García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Pablo García",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -12068,7 +12068,7 @@
     },
     {
       "id": 12042,
-      "name": "Chidera EjukeEjuke\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Chidera Ejuke",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12094,7 +12094,7 @@
     },
     {
       "id": 9234,
-      "name": "José Manuel CopeteCopete\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "José Manuel Copete",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -12120,7 +12120,7 @@
     },
     {
       "id": 1928,
-      "name": "Lucas TorróTorró\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Lucas Torró",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -12146,7 +12146,7 @@
     },
     {
       "id": 11758,
-      "name": "AlemãoAlemão\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Alemão",
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -12172,7 +12172,7 @@
     },
     {
       "id": 5194,
-      "name": "Grady DianganaDiangana\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Grady Diangana",
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -12198,7 +12198,7 @@
     },
     {
       "id": 1825,
-      "name": "Álex MorenoÁlex Moreno\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Álex Moreno",
       "team_id": "30",
       "team": "Girona",
       "position": "Defensa",
@@ -12224,7 +12224,7 @@
     },
     {
       "id": 16332,
-      "name": "Batista MendyMendy\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Batista Mendy",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12250,7 +12250,7 @@
     },
     {
       "id": 10197,
-      "name": "Luca KoleoshoKoleosho\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Luca Koleosho",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Delantero",
@@ -12276,7 +12276,7 @@
     },
     {
       "id": 13440,
-      "name": "Tani OluwaseyiOluwaseyi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Tani Oluwaseyi",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -12302,7 +12302,7 @@
     },
     {
       "id": 12538,
-      "name": "Jon AramburuAramburu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Jon Aramburu",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -12328,7 +12328,7 @@
     },
     {
       "id": 63,
-      "name": "Koke ResurrecciónKoke\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Koke Resurrección",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -12354,7 +12354,7 @@
     },
     {
       "id": 8392,
-      "name": "Luka SucicSucic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Luka Sucic",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12380,7 +12380,7 @@
     },
     {
       "id": 11202,
-      "name": "Mario MartínMario Martín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Mario Martín",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -12406,7 +12406,7 @@
     },
     {
       "id": 13864,
-      "name": "Marc BernalBernal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Marc Bernal",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -12432,7 +12432,7 @@
     },
     {
       "id": 1263,
-      "name": "Marc-André ter StegenTer Stegen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Marc-André ter Stegen",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -12458,7 +12458,7 @@
     },
     {
       "id": 8684,
-      "name": "Jesús VázquezJesús Vázquez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Jesús Vázquez",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -12484,7 +12484,7 @@
     },
     {
       "id": 11680,
-      "name": "Isaac RomeroRomero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Isaac Romero",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12510,7 +12510,7 @@
     },
     {
       "id": 7779,
-      "name": "Juanlu SánchezJuanlu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Juanlu Sánchez",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12536,7 +12536,7 @@
     },
     {
       "id": 15134,
-      "name": "Akor AdamsAdams\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Akor Adams",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -12562,7 +12562,7 @@
     },
     {
       "id": 2799,
-      "name": "Carlos SolerCarlos Soler\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Carlos Soler",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -12588,7 +12588,7 @@
     },
     {
       "id": 340,
-      "name": "Juanmi JiménezJuanmi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Juanmi Jiménez",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -12614,7 +12614,7 @@
     },
     {
       "id": 5705,
-      "name": "Luiz FelipeLuiz Felipe\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Luiz Felipe",
       "team_id": "14",
       "team": "Rayo",
       "position": "Defensa",
@@ -12640,7 +12640,7 @@
     },
     {
       "id": 5051,
-      "name": "Aitor RuibalRuibal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Aitor Ruibal",
       "team_id": "4",
       "team": "Betis",
       "position": "Delantero",
@@ -12666,7 +12666,7 @@
     },
     {
       "id": 7293,
-      "name": "Robert NavarroNavarro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Robert Navarro",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -12692,7 +12692,7 @@
     },
     {
       "id": 1934,
-      "name": "Iñaki WilliamsI. Williams\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Iñaki Williams",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -12718,7 +12718,7 @@
     },
     {
       "id": 851,
-      "name": "José Luis MoralesMorales\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "José Luis Morales",
       "team_id": "10",
       "team": "Levante",
       "position": "Delantero",
@@ -12744,7 +12744,7 @@
     },
     {
       "id": 5553,
-      "name": "Fernando CaleroCalero\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Fernando Calero",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Defensa",
@@ -12770,7 +12770,7 @@
     },
     {
       "id": 9924,
-      "name": "Yaser AsprillaAsprilla\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Yaser Asprilla",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -12796,7 +12796,7 @@
     },
     {
       "id": 7028,
-      "name": "Nemanja GudeljGudelj\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Nemanja Gudelj",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -12822,7 +12822,7 @@
     },
     {
       "id": 8930,
-      "name": "Vladyslav VanatVanat\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Vladyslav Vanat",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -12848,7 +12848,7 @@
     },
     {
       "id": 2153,
-      "name": "Héctor BellerínBellerín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Héctor Bellerín",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -12874,7 +12874,7 @@
     },
     {
       "id": 6392,
-      "name": "Fran GarcíaFran García\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Fran García",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -12900,7 +12900,7 @@
     },
     {
       "id": 1945,
-      "name": "Borja IglesiasIglesias\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Borja Iglesias",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -12926,7 +12926,7 @@
     },
     {
       "id": 1062,
-      "name": "Dani CeballosCeballos\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Dani Ceballos",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -12952,7 +12952,7 @@
     },
     {
       "id": 7842,
-      "name": "Ferran JutglàJutglà\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Ferran Jutglà",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -12978,7 +12978,7 @@
     },
     {
       "id": 8082,
-      "name": "Ilaix MoribaMoriba\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Ilaix Moriba",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -13004,7 +13004,7 @@
     },
     {
       "id": 137,
-      "name": "Dani ParejoParejo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Dani Parejo",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -13030,7 +13030,7 @@
     },
     {
       "id": 6631,
-      "name": "Rodrygo GoesRodrygo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Rodrygo Goes",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -13056,7 +13056,7 @@
     },
     {
       "id": 11577,
-      "name": "Héctor FortFort\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Héctor Fort",
       "team_id": "21",
       "team": "Elche",
       "position": "Defensa",
@@ -13082,7 +13082,7 @@
     },
     {
       "id": 6563,
-      "name": "Iván MartínIván Martín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Iván Martín",
       "team_id": "30",
       "team": "Girona",
       "position": "Mediocampista",
@@ -13108,7 +13108,7 @@
     },
     {
       "id": 3650,
-      "name": "Brais MéndezBrais\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Brais Méndez",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -13134,7 +13134,7 @@
     },
     {
       "id": 6820,
-      "name": "Juan CruzJuan Cruz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Juan Cruz",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -13160,7 +13160,7 @@
     },
     {
       "id": 5859,
-      "name": "Gorka GuruzetaGuruzeta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Gorka Guruzeta",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -13186,7 +13186,7 @@
     },
     {
       "id": 13830,
-      "name": "Maroan SannadiSannadi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Maroan Sannadi",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -13212,7 +13212,7 @@
     },
     {
       "id": 9740,
-      "name": "Hugo Álvarez Hugo Álvarez \n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Hugo Álvarez",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -13238,7 +13238,7 @@
     },
     {
       "id": 3524,
-      "name": "Viktor TsygankovTsygankov\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Viktor Tsygankov",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -13264,7 +13264,7 @@
     },
     {
       "id": 4976,
-      "name": "Jeremy ToljanToljan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Jeremy Toljan",
       "team_id": "10",
       "team": "Levante",
       "position": "Defensa",
@@ -13290,7 +13290,7 @@
     },
     {
       "id": 10658,
-      "name": "Roony BardghjiBardghji\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Roony Bardghji",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -13316,7 +13316,7 @@
     },
     {
       "id": 2417,
-      "name": "Andreas ChristensenA. Christensen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Andreas Christensen",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -13342,7 +13342,7 @@
     },
     {
       "id": 4793,
-      "name": "Leander DendonckerDendoncker\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Oviedo",
+      "name": "Leander Dendoncker",
       "team_id": "43",
       "team": "Real Oviedo",
       "position": "Mediocampista",
@@ -13368,7 +13368,7 @@
     },
     {
       "id": 189,
-      "name": "Jonny CastroJonny\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Jonny Castro",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13394,7 +13394,7 @@
     },
     {
       "id": 7934,
-      "name": "Largie RamazaniRamazani\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Largie Ramazani",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -13420,7 +13420,7 @@
     },
     {
       "id": 6551,
-      "name": "Giacomo RaspadoriRaspadori\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Giacomo Raspadori",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -13446,7 +13446,7 @@
     },
     {
       "id": 6705,
-      "name": "Örjan NylandNyland\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Örjan Nyland",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Portero",
@@ -13472,7 +13472,7 @@
     },
     {
       "id": 3691,
-      "name": "Clément LengletLenglet\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Clément Lenglet",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -13498,7 +13498,7 @@
     },
     {
       "id": 11289,
-      "name": "Baptiste SantamariaSantamaria\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Baptiste Santamaria",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -13524,7 +13524,7 @@
     },
     {
       "id": 11885,
-      "name": "Gonzalo GarcíaGonzalo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Gonzalo García",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -13550,7 +13550,7 @@
     },
     {
       "id": 5245,
-      "name": "Dani VivianVivian\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Dani Vivian",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -13576,7 +13576,7 @@
     },
     {
       "id": 2715,
-      "name": "PepeluPepelu\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Pepelu",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -13602,7 +13602,7 @@
     },
     {
       "id": 8737,
-      "name": "Antonio BlancoBlanco\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Antonio Blanco",
       "team_id": "28",
       "team": "Alavés",
       "position": "Mediocampista",
@@ -13628,7 +13628,7 @@
     },
     {
       "id": 9931,
-      "name": "Kike SalasKike Salas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Kike Salas",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -13654,7 +13654,7 @@
     },
     {
       "id": 663,
-      "name": "José GayàGayà\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "José Gayà",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -13680,7 +13680,7 @@
     },
     {
       "id": 6624,
-      "name": "Conor GallagherGallagher\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Conor Gallagher",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -13706,7 +13706,7 @@
     },
     {
       "id": 7249,
-      "name": "Lucien AgoumeAgoume\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Lucien Agoume",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Mediocampista",
@@ -13732,7 +13732,7 @@
     },
     {
       "id": 4639,
-      "name": "Mauro ArambarriArambarri\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Mauro Arambarri",
       "team_id": "8",
       "team": "Getafe",
       "position": "Mediocampista",
@@ -13758,7 +13758,7 @@
     },
     {
       "id": 14045,
-      "name": "Facundo GarcésGarcés\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Facundo Garcés",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13784,7 +13784,7 @@
     },
     {
       "id": 1989,
-      "name": "Borja MayoralMayoral\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Borja Mayoral",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -13810,7 +13810,7 @@
     },
     {
       "id": 8646,
-      "name": "Carlos ÁlvarezC. Álvarez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tLevante",
+      "name": "Carlos Álvarez",
       "team_id": "10",
       "team": "Levante",
       "position": "Mediocampista",
@@ -13836,7 +13836,7 @@
     },
     {
       "id": 12639,
-      "name": "Raúl AsencioAsencio\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Raúl Asencio",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -13862,7 +13862,7 @@
     },
     {
       "id": 9909,
-      "name": "Nahuel TenagliaTenaglia\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Nahuel Tenaglia",
       "team_id": "28",
       "team": "Alavés",
       "position": "Defensa",
@@ -13888,7 +13888,7 @@
     },
     {
       "id": 8703,
-      "name": "Alfonso GonzálezAlfon\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "Alfonso González Alfon",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Delantero",
@@ -13914,7 +13914,7 @@
     },
     {
       "id": 767,
-      "name": "Thomas TeyeThomas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Thomas Teye",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -13940,7 +13940,7 @@
     },
     {
       "id": 10859,
-      "name": "Alvaro RodríguezAlvaro R.\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Alvaro Rodríguez",
       "team_id": "21",
       "team": "Elche",
       "position": "Delantero",
@@ -13966,7 +13966,7 @@
     },
     {
       "id": 13035,
-      "name": "Javi RuedaRueda\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Javi Rueda",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -13992,7 +13992,7 @@
     },
     {
       "id": 9161,
-      "name": "Matías DituroDituro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tElche",
+      "name": "Matías Dituro",
       "team_id": "21",
       "team": "Elche",
       "position": "Portero",
@@ -14018,7 +14018,7 @@
     },
     {
       "id": 6436,
-      "name": "Bryan GilBryan Gil\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Bryan Gil",
       "team_id": "30",
       "team": "Girona",
       "position": "Delantero",
@@ -14044,7 +14044,7 @@
     },
     {
       "id": 7882,
-      "name": "Óscar MinguezaMingueza\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Óscar Mingueza",
       "team_id": "5",
       "team": "Celta",
       "position": "Defensa",
@@ -14070,7 +14070,7 @@
     },
     {
       "id": 3881,
-      "name": "Dakonam DjenéDjené\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Dakonam Djené",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14096,7 +14096,7 @@
     },
     {
       "id": 1998,
-      "name": "Antonio RaílloRaíllo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Antonio Raíllo",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Defensa",
@@ -14122,7 +14122,7 @@
     },
     {
       "id": 4511,
-      "name": "Ayoze PérezAyoze\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Ayoze Pérez",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -14148,7 +14148,7 @@
     },
     {
       "id": 3235,
-      "name": "Diego RicoDiego Rico\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Diego Rico",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14174,7 +14174,7 @@
     },
     {
       "id": 3589,
-      "name": "Dominik LivakovicLivakovic\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGirona",
+      "name": "Dominik Livakovic",
       "team_id": "30",
       "team": "Girona",
       "position": "Portero",
@@ -14200,7 +14200,7 @@
     },
     {
       "id": 1059,
-      "name": "Antonio SiveraSivera\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAlavés",
+      "name": "Antonio Sivera",
       "team_id": "28",
       "team": "Alavés",
       "position": "Portero",
@@ -14226,7 +14226,7 @@
     },
     {
       "id": 6665,
-      "name": "Luis RiojaRioja\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Luis Rioja",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -14252,7 +14252,7 @@
     },
     {
       "id": 7203,
-      "name": "Aimar OrozOroz\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Aimar Oroz",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Mediocampista",
@@ -14278,7 +14278,7 @@
     },
     {
       "id": 5083,
-      "name": "Abdel AbqarAbqar\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Abdel Abqar",
       "team_id": "8",
       "team": "Getafe",
       "position": "Defensa",
@@ -14304,7 +14304,7 @@
     },
     {
       "id": 1239,
-      "name": "Ricardo RodriguezRodríguez\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Ricardo Rodriguez",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -14330,7 +14330,7 @@
     },
     {
       "id": 4955,
-      "name": "Sofyan AmrabatS. Amrabat\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Sofyan Amrabat",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -14356,7 +14356,7 @@
     },
     {
       "id": 9273,
-      "name": "Pablo GaviGavi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Pablo Gavi",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -14382,7 +14382,7 @@
     },
     {
       "id": 943,
-      "name": "Dimitri FoulquierFoulquier\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Dimitri Foulquier",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14408,7 +14408,7 @@
     },
     {
       "id": 1375,
-      "name": "César AzpilicuetaAzpilicueta\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tSevilla",
+      "name": "César Azpilicueta",
       "team_id": "17",
       "team": "Sevilla",
       "position": "Defensa",
@@ -14434,7 +14434,7 @@
     },
     {
       "id": 3686,
-      "name": "Álvaro VallesValles\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Álvaro Valles",
       "team_id": "4",
       "team": "Betis",
       "position": "Portero",
@@ -14460,7 +14460,7 @@
     },
     {
       "id": 10114,
-      "name": "Renato VeigaVeiga\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Renato Veiga",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -14486,7 +14486,7 @@
     },
     {
       "id": 1919,
-      "name": "David SoriaSoria\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "David Soria",
       "team_id": "8",
       "team": "Getafe",
       "position": "Portero",
@@ -14512,7 +14512,7 @@
     },
     {
       "id": 11833,
-      "name": "Lucas BeltránBeltrán\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Lucas Beltrán",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -14538,7 +14538,7 @@
     },
     {
       "id": 3732,
-      "name": "Daniel RabaRaba\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Daniel Raba",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -14564,7 +14564,7 @@
     },
     {
       "id": 10205,
-      "name": "Pablo TorrePablo Torre\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Pablo Torre",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -14590,7 +14590,7 @@
     },
     {
       "id": 8695,
-      "name": "BoyomoBoyomo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Boyomo",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -14616,7 +14616,7 @@
     },
     {
       "id": 3607,
-      "name": "Mouctar DiakhabyDiakhaby\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Mouctar Diakhaby",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14642,7 +14642,7 @@
     },
     {
       "id": 8256,
-      "name": "Matteo RuggeriRuggeri\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Matteo Ruggeri",
       "team_id": "2",
       "team": "Atlético",
       "position": "Defensa",
@@ -14668,7 +14668,7 @@
     },
     {
       "id": 930,
-      "name": "Sergi DarderDarder\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tMallorca",
+      "name": "Sergi Darder",
       "team_id": "12",
       "team": "Mallorca",
       "position": "Mediocampista",
@@ -14694,7 +14694,7 @@
     },
     {
       "id": 2536,
-      "name": "Antonio RüdigerRüdiger\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Antonio Rüdiger",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -14720,7 +14720,7 @@
     },
     {
       "id": 12892,
-      "name": "Adrián LisoLiso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tGetafe",
+      "name": "Adrián Liso",
       "team_id": "8",
       "team": "Getafe",
       "position": "Delantero",
@@ -14746,7 +14746,7 @@
     },
     {
       "id": 9779,
-      "name": "Bryan ZaragozaBryan\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Bryan Zaragoza",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -14772,7 +14772,7 @@
     },
     {
       "id": 336,
-      "name": "Isco AlarcónIsco\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Isco Alarcón",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -14798,7 +14798,7 @@
     },
     {
       "id": 12641,
-      "name": "Gerard MartínMartín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Gerard Martín",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -14824,7 +14824,7 @@
     },
     {
       "id": 9762,
-      "name": "César TárregaTárrega\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "César Tárrega",
       "team_id": "18",
       "team": "Valencia",
       "position": "Defensa",
@@ -14850,7 +14850,7 @@
     },
     {
       "id": 2802,
-      "name": "Igor ZubeldiaZubeldia\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Igor Zubeldia",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Defensa",
@@ -14876,7 +14876,7 @@
     },
     {
       "id": 1975,
-      "name": "Álex RemiroRemiro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Álex Remiro",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Portero",
@@ -14902,7 +14902,7 @@
     },
     {
       "id": 7395,
-      "name": "Manor SolomonSolomon\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Manor Solomon",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -14928,7 +14928,7 @@
     },
     {
       "id": 8988,
-      "name": "Hugo SoteloSotelo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Hugo Sotelo",
       "team_id": "5",
       "team": "Celta",
       "position": "Mediocampista",
@@ -14954,7 +14954,7 @@
     },
     {
       "id": 9213,
-      "name": "Julen AgirrezabalaAgirrezabala\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Julen Agirrezabala",
       "team_id": "18",
       "team": "Valencia",
       "position": "Portero",
@@ -14980,7 +14980,7 @@
     },
     {
       "id": 465,
-      "name": "Antoine GriezmannGriezmann\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Antoine Griezmann",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -15006,7 +15006,7 @@
     },
     {
       "id": 9304,
-      "name": "Diego LópezDiego López\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Diego López",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -15032,7 +15032,7 @@
     },
     {
       "id": 5035,
-      "name": "Brahim DíazBrahim\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Brahim Díaz",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15058,7 +15058,7 @@
     },
     {
       "id": 3204,
-      "name": "Álex BerenguerBerenguer\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Álex Berenguer",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -15084,7 +15084,7 @@
     },
     {
       "id": 12647,
-      "name": "Johnny CardosoCardoso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Johnny Cardoso",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -15110,7 +15110,7 @@
     },
     {
       "id": 175,
-      "name": "Iago AspasAspas\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tCelta",
+      "name": "Iago Aspas",
       "team_id": "5",
       "team": "Celta",
       "position": "Delantero",
@@ -15136,7 +15136,7 @@
     },
     {
       "id": 4620,
-      "name": "Junior FirpoJunior\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Junior Firpo",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -15162,7 +15162,7 @@
     },
     {
       "id": 7006,
-      "name": "Oihan SancetSancet\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Oihan Sancet",
       "team_id": "1",
       "team": "Athletic",
       "position": "Mediocampista",
@@ -15188,7 +15188,7 @@
     },
     {
       "id": 11673,
-      "name": "Sergi AltimiraAltimira\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Sergi Altimira",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -15214,7 +15214,7 @@
     },
     {
       "id": 322,
-      "name": "Marc BartraBartra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Marc Bartra",
       "team_id": "4",
       "team": "Betis",
       "position": "Defensa",
@@ -15240,7 +15240,7 @@
     },
     {
       "id": 5019,
-      "name": "Hugo DuroDuro\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Hugo Duro",
       "team_id": "18",
       "team": "Valencia",
       "position": "Delantero",
@@ -15266,7 +15266,7 @@
     },
     {
       "id": 4705,
-      "name": "Juan FoythFoyth\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Juan Foyth",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15292,7 +15292,7 @@
     },
     {
       "id": 11706,
-      "name": "Pau CubarsíCubarsí\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Pau Cubarsí",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -15318,7 +15318,7 @@
     },
     {
       "id": 5134,
-      "name": "Alexander SorlothSörloth\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Alexander Sorloth",
       "team_id": "2",
       "team": "Atlético",
       "position": "Delantero",
@@ -15344,7 +15344,7 @@
     },
     {
       "id": 9927,
-      "name": "Javi GuerraJavi Guerra\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tValencia",
+      "name": "Javi Guerra",
       "team_id": "18",
       "team": "Valencia",
       "position": "Mediocampista",
@@ -15370,7 +15370,7 @@
     },
     {
       "id": 11439,
-      "name": "Arda GülerGüler\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Arda Güler",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15396,7 +15396,7 @@
     },
     {
       "id": 11678,
-      "name": "Santiago MouriñoMouriño\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Santiago Mouriño",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15422,7 +15422,7 @@
     },
     {
       "id": 4480,
-      "name": "Trent Alexander-ArnoldAlexander-Arnold\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Trent Alexander-Arnold",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15448,7 +15448,7 @@
     },
     {
       "id": 10176,
-      "name": "Álvaro F. CarrerasA. F. Carreras\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Álvaro F. Carreras",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15474,7 +15474,7 @@
     },
     {
       "id": 8693,
-      "name": "Nico WilliamsN. Williams\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Nico Williams",
       "team_id": "1",
       "team": "Athletic",
       "position": "Delantero",
@@ -15500,7 +15500,7 @@
     },
     {
       "id": 6635,
-      "name": "Ante BudimirBudimir\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Ante Budimir",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Delantero",
@@ -15526,7 +15526,7 @@
     },
     {
       "id": 9844,
-      "name": "Rafa MarínRafa Marín\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Rafa Marín",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15552,7 +15552,7 @@
     },
     {
       "id": 6450,
-      "name": "Rodrigo RiquelmeRiquelme\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Rodrigo Riquelme",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -15578,7 +15578,7 @@
     },
     {
       "id": 14125,
-      "name": "Luiz JuniorLuiz Junior\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Luiz Junior",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Portero",
@@ -15604,7 +15604,7 @@
     },
     {
       "id": 790,
-      "name": "Daniel CarvajalCarvajal\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Daniel Carvajal",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -15630,7 +15630,7 @@
     },
     {
       "id": 9669,
-      "name": "Aurélien TchouaméniTchouaméni\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Aurélien Tchouaméni",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Mediocampista",
@@ -15656,7 +15656,7 @@
     },
     {
       "id": 9531,
-      "name": "Valentin RosierRosier\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tOsasuna",
+      "name": "Valentin Rosier",
       "team_id": "13",
       "team": "Osasuna",
       "position": "Defensa",
@@ -15682,7 +15682,7 @@
     },
     {
       "id": 12139,
-      "name": "Georges MikautadzeMikautadze\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Georges Mikautadze",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
@@ -15708,7 +15708,7 @@
     },
     {
       "id": 7916,
-      "name": "Aitor ParedesParedes\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAthletic",
+      "name": "Aitor Paredes",
       "team_id": "1",
       "team": "Athletic",
       "position": "Defensa",
@@ -15734,7 +15734,7 @@
     },
     {
       "id": 59,
-      "name": "Thibaut CourtoisCourtois\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Thibaut Courtois",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Portero",
@@ -15760,7 +15760,7 @@
     },
     {
       "id": 9352,
-      "name": "Nicolás GonzálezGonzález\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tAtlético",
+      "name": "Nicolás González",
       "team_id": "2",
       "team": "Atlético",
       "position": "Mediocampista",
@@ -15786,7 +15786,7 @@
     },
     {
       "id": 8413,
-      "name": "Pape GueyeP. Gueye\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Pape Gueye",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Mediocampista",
@@ -15812,7 +15812,7 @@
     },
     {
       "id": 15437,
-      "name": "Franco MastantuonoMastantuono\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Franco Mastantuono",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -15838,7 +15838,7 @@
     },
     {
       "id": 9989,
-      "name": "Sergi CardonaS. Cardona\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Sergi Cardona",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Defensa",
@@ -15864,7 +15864,7 @@
     },
     {
       "id": 6957,
-      "name": "Isi PalazónIsi\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tRayo",
+      "name": "Isi Palazón",
       "team_id": "14",
       "team": "Rayo",
       "position": "Delantero",
@@ -15890,7 +15890,7 @@
     },
     {
       "id": 5565,
-      "name": "Vinicius JuniorVinicius\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Vinicius Junior",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Delantero",
@@ -15916,7 +15916,7 @@
     },
     {
       "id": 3807,
-      "name": "Javi PuadoPuado\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tEspanyol",
+      "name": "Javi Puado",
       "team_id": "7",
       "team": "Espanyol",
       "position": "Mediocampista",
@@ -15942,7 +15942,7 @@
     },
     {
       "id": 6674,
-      "name": "Jules KoundéKoundé\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Jules Koundé",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Defensa",
@@ -15968,7 +15968,7 @@
     },
     {
       "id": 7091,
-      "name": "Takefusa KuboKubo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Sociedad",
+      "name": "Takefusa Kubo",
       "team_id": "16",
       "team": "Real Sociedad",
       "position": "Mediocampista",
@@ -15994,7 +15994,7 @@
     },
     {
       "id": 7279,
-      "name": "Joan GarciaJoan Garcia\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Joan Garcia",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Portero",
@@ -16020,7 +16020,7 @@
     },
     {
       "id": 2288,
-      "name": "Dani OlmoOlmo\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Dani Olmo",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Mediocampista",
@@ -16046,7 +16046,7 @@
     },
     {
       "id": 11830,
-      "name": "Dean HuijsenHuijsen\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tReal Madrid",
+      "name": "Dean Huijsen",
       "team_id": "15",
       "team": "Real Madrid",
       "position": "Defensa",
@@ -16072,7 +16072,7 @@
     },
     {
       "id": 3717,
-      "name": "Giovani Lo CelsoLo Celso\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBetis",
+      "name": "Giovani Lo Celso",
       "team_id": "4",
       "team": "Betis",
       "position": "Mediocampista",
@@ -16098,7 +16098,7 @@
     },
     {
       "id": 5050,
-      "name": "Ferrán TorresFerran\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Ferrán Torres",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -16124,7 +16124,7 @@
     },
     {
       "id": 2225,
-      "name": "Robert LewandowskiLewandowski\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tBarcelona",
+      "name": "Robert Lewandowski",
       "team_id": "3",
       "team": "Barcelona",
       "position": "Delantero",
@@ -16150,7 +16150,7 @@
     },
     {
       "id": 7209,
-      "name": "Nicolas PépéPépé\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\tVillarreal",
+      "name": "Nicolas Pépé",
       "team_id": "22",
       "team": "Villarreal",
       "position": "Delantero",
