@@ -69,6 +69,24 @@ describe("FantasyTeamDashboard", () => {
             ],
           },
           {
+            id: 5,
+            name: "Pedri GonzálezPedri",
+            team: "Barcelona",
+            team_id: "3",
+            position: "Centrocampista",
+            value: "3123456",
+            diff_1: 0,
+            diff_7: 0,
+            points_avg: "6,1",
+            points_last5: "6,4",
+            points_history: [
+              { matchday: 3, points: 6.2 },
+              { matchday: 4, points: 6.8 },
+              { matchday: 5, points: 5.9 },
+              { matchday: 6, points: 6.5 },
+            ],
+          },
+          {
             id: 4,
             name: "Iñaki WilliamsI. Williams",
             team: "Athletic",
@@ -260,5 +278,178 @@ describe("FantasyTeamDashboard", () => {
         "-6.720.968 €"
       )
     );
+  });
+
+  it("permite anular una venta confirmada restaurando jugador y presupuesto", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    const sellButtons = await screen.findAllByRole("button", {
+      name: "Vender a Pau Cubarsí",
+    });
+    fireEvent.click(sellButtons[sellButtons.length - 1]);
+
+    const sellInput = await screen.findByLabelText(
+      "Precio de venta de Pau Cubarsí"
+    );
+    fireEvent.change(sellInput, { target: { value: "2000000" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar venta" }));
+
+    await screen.findByTestId("sales-table");
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "Eliminar/Anular venta" })
+    );
+
+    expect(
+      await screen.findByText(
+        "Se anulará la venta, se revertirá el presupuesto y se restaurará el jugador al equipo."
+      )
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+    await waitFor(() =>
+      expect(screen.getByText("Aún no has registrado ventas.")).toBeInTheDocument()
+    );
+
+    const restoredTable = screen.getByTestId("team-table");
+    expect(within(restoredTable).getByText("Pau Cubarsí")).toBeInTheDocument();
+    expect(screen.getByTestId("team-budget")).toHaveTextContent(
+      "-8.720.968 €"
+    );
+  });
+
+  it("elimina una venta no confirmada sin tocar presupuesto ni plantilla", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
+    );
+    window.localStorage.setItem(
+      "mySales",
+      JSON.stringify([
+        {
+          name: "Pau Cubarsí",
+          buyPrice: 1500000,
+          sellPrice: 2000000,
+          playerId: 1,
+        },
+      ])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    const salesTable = await screen.findByTestId("sales-table");
+    expect(
+      within(salesTable).getByRole("button", { name: "Eliminar/Anular venta" })
+    ).toBeInTheDocument();
+
+    fireEvent.click(
+      within(salesTable).getByRole("button", { name: "Eliminar/Anular venta" })
+    );
+
+    expect(
+      await screen.findByText("Se eliminará el registro de la lista de ventas.")
+    ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar" }));
+
+    await waitFor(() =>
+      expect(screen.getByText("Aún no has registrado ventas.")).toBeInTheDocument()
+    );
+
+    const teamTable = screen.getByTestId("team-table");
+    expect(within(teamTable).getByText("Pau Cubarsí")).toBeInTheDocument();
+    expect(screen.getByTestId("team-budget")).toHaveTextContent("-8.720.968 €");
+  });
+
+  it("gestiona la alineación con drag and drop, guardado y restauración", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([
+        { name: "Pau Cubarsí", precioCompra: 1500000 },
+        { name: "Aarón Escandell", precioCompra: 1000000 },
+        { name: "Pedri González", precioCompra: 3000000 },
+        { name: "Nico Williams", precioCompra: 2000000 },
+      ])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Alineación" }));
+
+    const playerListSection = screen
+      .getByRole("heading", { name: "Mis jugadores" })
+      .closest("section");
+    if (!playerListSection) {
+      throw new Error("No se encontró la sección de jugadores");
+    }
+
+    const defenderItem = await within(playerListSection).findByText("Pau Cubarsí");
+    const defenderRow = defenderItem.closest("li");
+    if (!defenderRow) {
+      throw new Error("No se encontró el elemento arrastrable del defensor");
+    }
+
+    const defenderSlot = document.querySelector(
+      '[data-zone="DEF"][data-slot-index="0"]'
+    );
+    if (!defenderSlot) {
+      throw new Error("No se encontró el slot DEF #1");
+    }
+
+    const createDataTransfer = () => {
+      const data = {};
+      return {
+        data,
+        setData: jest.fn((type, value) => {
+          data[type] = value;
+        }),
+        getData: jest.fn((type) => data[type]),
+        effectAllowed: "all",
+        dropEffect: "move",
+      };
+    };
+
+    const dragTransfer = createDataTransfer();
+    fireEvent.dragStart(defenderRow, { dataTransfer: dragTransfer });
+
+    const dropTransfer = createDataTransfer();
+    dropTransfer.getData = (type) => dragTransfer.data[type];
+    fireEvent.dragOver(defenderSlot, { dataTransfer: dropTransfer });
+    fireEvent.drop(defenderSlot, { dataTransfer: dropTransfer });
+
+    await waitFor(() =>
+      expect(defenderSlot).toHaveTextContent("Pau Cubarsí")
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Guardar alineación" }));
+
+    await waitFor(() =>
+      expect(window.localStorage.getItem("teamLineupSaved")).not.toBeNull()
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Limpiar" }));
+
+    await waitFor(() => expect(defenderSlot).toHaveTextContent("DEF #1"));
+
+    fireEvent.click(
+      screen.getByRole("button", { name: "Restaurar última guardada" })
+    );
+
+    await waitFor(() =>
+      expect(defenderSlot).toHaveTextContent("Pau Cubarsí")
+    );
+
+    const saved = JSON.parse(
+      window.localStorage.getItem("teamLineupSaved") || "{}"
+    );
+    expect(saved.formation).toBe("4-3-3");
+    expect(Array.isArray(saved.slots?.DEF)).toBe(true);
+    expect(saved.slots.DEF.some(Boolean)).toBe(true);
   });
 });

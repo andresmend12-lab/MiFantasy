@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const normalizeText = (value) =>
   typeof value === "string" ? value : value ? String(value) : "";
@@ -318,6 +318,223 @@ const normalizePlayer = (player) => {
   };
 };
 
+const FORMATIONS = ["5-3-2", "5-4-1", "4-3-3", "4-4-2", "4-5-1", "3-4-3", "3-5-2"];
+const DEFAULT_FORMATION = "4-3-3";
+const ZONE_CODES = ["POR", "DEF", "MED", "DEL"];
+const ZONE_LABELS = {
+  POR: "Portería",
+  DEF: "Defensa",
+  MED: "Mediocampo",
+  DEL: "Delantera",
+};
+const ZONE_ORDER = {
+  POR: 0,
+  DEF: 1,
+  MED: 2,
+  DEL: 3,
+};
+const LINEUP_STORAGE_KEY = "teamLineupSaved";
+
+const parseFormation = (formation) => {
+  const fallback = { DEF: 4, MED: 3, DEL: 3 };
+  if (typeof formation !== "string") return fallback;
+  const parts = formation.split("-").map((part) => Number(part));
+  if (parts.length !== 3 || parts.some((value) => !Number.isFinite(value) || value < 0)) {
+    return fallback;
+  }
+  return { DEF: parts[0], MED: parts[1], DEL: parts[2] };
+};
+
+const sanitizeSlotValue = (value) => {
+  if (value === null || value === undefined) return null;
+  const str = String(value);
+  return str ? str : null;
+};
+
+const createEmptyLineup = (formation = DEFAULT_FORMATION) => {
+  const counts = parseFormation(formation);
+  return {
+    POR: [null],
+    DEF: Array.from({ length: counts.DEF }, () => null),
+    MED: Array.from({ length: counts.MED }, () => null),
+    DEL: Array.from({ length: counts.DEL }, () => null),
+  };
+};
+
+const ensureLineupShape = (slots, formation = DEFAULT_FORMATION) => {
+  const counts = parseFormation(formation);
+  const source = slots ?? {};
+  const build = (zone, count) => {
+    const list = Array.isArray(source[zone])
+      ? source[zone].map(sanitizeSlotValue)
+      : [];
+    const trimmed = list.slice(0, count);
+    while (trimmed.length < count) {
+      trimmed.push(null);
+    }
+    return trimmed;
+  };
+  return {
+    POR: build("POR", 1),
+    DEF: build("DEF", counts.DEF),
+    MED: build("MED", counts.MED),
+    DEL: build("DEL", counts.DEL),
+  };
+};
+
+const cloneLineup = (lineup) => {
+  const safe = lineup ?? {};
+  return {
+    POR: Array.isArray(safe.POR) ? [...safe.POR] : [null],
+    DEF: Array.isArray(safe.DEF) ? [...safe.DEF] : [],
+    MED: Array.isArray(safe.MED) ? [...safe.MED] : [],
+    DEL: Array.isArray(safe.DEL) ? [...safe.DEL] : [],
+  };
+};
+
+const lineupEquals = (a, b) => {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return ZONE_CODES.every((zone) => {
+    const arrA = Array.isArray(a[zone]) ? a[zone] : [];
+    const arrB = Array.isArray(b[zone]) ? b[zone] : [];
+    if (arrA.length !== arrB.length) return false;
+    return arrA.every((value, index) => arrB[index] === value);
+  });
+};
+
+const flattenLineupKeys = (lineup) => {
+  if (!lineup) return [];
+  const values = [];
+  ZONE_CODES.forEach((zone) => {
+    if (!Array.isArray(lineup[zone])) return;
+    lineup[zone].forEach((value) => {
+      if (value !== null && value !== undefined) {
+        values.push(value);
+      }
+    });
+  });
+  return values;
+};
+
+const pruneLineupSlots = (lineup, validKeys) => {
+  if (!lineup) return lineup;
+  const next = {};
+  ZONE_CODES.forEach((zone) => {
+    const arr = Array.isArray(lineup[zone]) ? lineup[zone] : [];
+    next[zone] = arr.map((value) =>
+      value !== null && value !== undefined && validKeys.has(value) ? value : null
+    );
+  });
+  return next;
+};
+
+const findPlayerSlot = (lineup, playerKey) => {
+  if (!lineup || !playerKey) return null;
+  for (const zone of ZONE_CODES) {
+    const arr = Array.isArray(lineup[zone]) ? lineup[zone] : [];
+    const index = arr.findIndex((value) => value === playerKey);
+    if (index !== -1) {
+      return { zone, index };
+    }
+  }
+  return null;
+};
+
+const removePlayerFromLineup = (lineup, playerKey) => {
+  if (!lineup || !playerKey) return lineup;
+  let changed = false;
+  const next = {};
+  ZONE_CODES.forEach((zone) => {
+    const arr = Array.isArray(lineup[zone]) ? lineup[zone] : [];
+    next[zone] = arr.map((value) => {
+      if (value === playerKey) {
+        changed = true;
+        return null;
+      }
+      return value;
+    });
+  });
+  return changed ? next : lineup;
+};
+
+const getZoneFromPosition = (position) => {
+  const normalized = collapseWhitespace(normalizeText(position)).toLowerCase();
+  if (!normalized) return "DEL";
+  if (normalized.includes("por")) return "POR";
+  if (normalized.includes("def")) return "DEF";
+  if (
+    normalized.includes("med") ||
+    normalized.includes("cen") ||
+    normalized.includes("mid") ||
+    normalized.includes("vol") ||
+    normalized.includes("cam")
+  ) {
+    return "MED";
+  }
+  if (
+    normalized.includes("del") ||
+    normalized.includes("ata") ||
+    normalized.includes("for") ||
+    normalized.includes("dav")
+  ) {
+    return "DEL";
+  }
+  return "DEL";
+};
+
+const getPlayerKey = (player) => {
+  if (!player) return null;
+  const rawId =
+    player.id ??
+    player.playerId ??
+    player.player_id ??
+    player.playerID ??
+    player.idJugador;
+  if (rawId !== null && rawId !== undefined && rawId !== "") {
+    return `id:${rawId}`;
+  }
+  const name = sanitizeName(
+    player.name ?? player.fullName ?? player.nombre ?? player.displayName
+  );
+  if (!name) return null;
+  return `name:${name.toLowerCase()}`;
+};
+
+const loadSavedLineup = () => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(LINEUP_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    const formation = FORMATIONS.includes(parsed?.formation)
+      ? parsed.formation
+      : DEFAULT_FORMATION;
+    return {
+      formation,
+      slots: ensureLineupShape(parsed?.slots ?? {}, formation),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const saveLineupToStorage = (data) => {
+  if (typeof window === "undefined" || !data) return;
+  try {
+    const formation = FORMATIONS.includes(data.formation)
+      ? data.formation
+      : DEFAULT_FORMATION;
+    const payload = {
+      formation,
+      slots: ensureLineupShape(data.slots ?? {}, formation),
+    };
+    window.localStorage.setItem(LINEUP_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    /* noop */
+  }
+};
+
 const sanitizeStoredTeam = (entries) => {
   if (!Array.isArray(entries)) return [];
   const seen = new Set();
@@ -325,8 +542,20 @@ const sanitizeStoredTeam = (entries) => {
     const name = sanitizeName(item?.name);
     if (!name) return acc;
     const key = name.toLowerCase();
-    if (seen.has(key)) return acc;
-    seen.add(key);
+    const rawId =
+      item?.id ??
+      item?.playerId ??
+      item?.player_id ??
+      item?.playerID ??
+      item?.idJugador ??
+      item?.jugadorId;
+    const id =
+      rawId !== null && rawId !== undefined && rawId !== ""
+        ? String(rawId)
+        : null;
+    const dedupeKey = id ?? key;
+    if (seen.has(dedupeKey)) return acc;
+    seen.add(dedupeKey);
     const precioCompra = toOptionalNumber(
       item?.precioCompra ??
         item?.buyPrice ??
@@ -335,7 +564,24 @@ const sanitizeStoredTeam = (entries) => {
         item?.purchase_value ??
         item?.purchaseValue
     );
-    acc.push({ name, precioCompra });
+    const positionRaw = collapseWhitespace(
+      normalizeText(
+        item?.position ??
+          item?.posicion ??
+          item?.playerPosition ??
+          item?.positionCode ??
+          item?.role ??
+          item?.demarcacion
+      )
+    );
+    const entry = { name, precioCompra };
+    if (id) {
+      entry.id = id;
+    }
+    if (positionRaw) {
+      entry.position = positionRaw;
+    }
+    acc.push(entry);
     return acc;
   }, []);
 };
@@ -352,11 +598,33 @@ const sanitizeStoredSales = (entries) => {
     const soldAtRaw = collapseWhitespace(
       normalizeText(item?.soldAt ?? item?.sold_at)
     );
+    const rawId =
+      item?.playerId ??
+      item?.player_id ??
+      item?.playerID ??
+      item?.idJugador ??
+      item?.id ??
+      item?.jugadorId;
+    const playerId =
+      rawId !== null && rawId !== undefined && rawId !== ""
+        ? String(rawId)
+        : null;
+    const positionRaw = collapseWhitespace(
+      normalizeText(
+        item?.position ??
+          item?.posicion ??
+          item?.playerPosition ??
+          item?.role ??
+          item?.demarcacion
+      )
+    );
     acc.push({
       name,
       buyPrice,
       sellPrice,
       soldAt: soldAtRaw || null,
+      playerId,
+      position: positionRaw || null,
     });
     return acc;
   }, []);
@@ -381,6 +649,7 @@ export default function FantasyTeamDashboard() {
       return [];
     }
   });
+  const savedLineup = useMemo(() => loadSavedLineup(), []);
   const [presupuestoActual, setPresupuestoActual] = useState(() => {
     try {
       const raw = localStorage.getItem("teamBudget");
@@ -393,8 +662,53 @@ export default function FantasyTeamDashboard() {
   const [status, setStatus] = useState("cargando");
   const [playerToBuy, setPlayerToBuy] = useState(null);
   const [purchaseValue, setPurchaseValue] = useState("");
+  const [alineacionGuardada, setAlineacionGuardada] = useState(savedLineup);
+  const [formacionSeleccionada, setFormacionSeleccionada] = useState(
+    savedLineup?.formation ?? DEFAULT_FORMATION
+  );
+  const [alineacion, setAlineacion] = useState(() =>
+    ensureLineupShape(
+      savedLineup?.slots ?? createEmptyLineup(savedLineup?.formation ?? DEFAULT_FORMATION),
+      savedLineup?.formation ?? DEFAULT_FORMATION
+    )
+  );
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [feedback, setFeedback] = useState(null);
+  const feedbackTimeoutRef = useRef(null);
+  const [saleToRemove, setSaleToRemove] = useState(null);
 
   const MARKET_URL = "/market.json";
+
+  const getPlayerIdKey = (item) => {
+    if (!item) return null;
+    const rawId =
+      item.id ??
+      item.playerId ??
+      item.player_id ??
+      item.playerID ??
+      item.idJugador ??
+      item.jugadorId;
+    return rawId !== null && rawId !== undefined && rawId !== ""
+      ? String(rawId)
+      : null;
+  };
+
+  const getPlayerNameKey = (item) => {
+    const base = sanitizeName(item?.name);
+    return base ? base.toLowerCase() : null;
+  };
+
+  const entryMatchesPlayer = (entry, player) => {
+    if (!entry || !player) return false;
+    const entryId = getPlayerIdKey(entry);
+    const playerId = getPlayerIdKey(player);
+    if (entryId && playerId) {
+      return entryId === playerId;
+    }
+    const entryName = getPlayerNameKey(entry);
+    const playerName = getPlayerNameKey(player);
+    return entryName && playerName ? entryName === playerName : false;
+  };
 
   useEffect(() => {
     const load = async () => {
@@ -431,6 +745,98 @@ export default function FantasyTeamDashboard() {
     localStorage.setItem("teamBudget", String(presupuestoActual));
   }, [presupuestoActual]);
 
+  useEffect(() => {
+    if (!feedback) {
+      if (feedbackTimeoutRef.current) {
+        clearTimeout(feedbackTimeoutRef.current);
+        feedbackTimeoutRef.current = null;
+      }
+      return;
+    }
+    if (feedbackTimeoutRef.current) {
+      clearTimeout(feedbackTimeoutRef.current);
+    }
+    const timeout = window.setTimeout(() => {
+      setFeedback(null);
+      feedbackTimeoutRef.current = null;
+    }, 3000);
+    feedbackTimeoutRef.current = timeout;
+    return () => clearTimeout(timeout);
+  }, [feedback]);
+
+  const playerIndex = useMemo(() => {
+    const byName = new Map();
+    const byId = new Map();
+    market.players.forEach((player) => {
+      if (!player) return;
+      const nameKey = player.name ? player.name.toLowerCase() : null;
+      if (nameKey) {
+        byName.set(nameKey, player);
+      }
+      if (player.id !== null && player.id !== undefined) {
+        byId.set(String(player.id), player);
+      }
+    });
+    return { byName, byId };
+  }, [market.players]);
+
+  useEffect(() => {
+    if (!playerIndex.byName.size && !playerIndex.byId.size) {
+      return;
+    }
+    setMyTeam((prev) => {
+      let mutated = false;
+      const next = prev.map((entry) => {
+        if (!entry || typeof entry !== "object") return entry;
+        const nameKey = entry.name ? entry.name.toLowerCase() : null;
+        const storedId =
+          entry.id ??
+          entry.playerId ??
+          entry.player_id ??
+          entry.playerID ??
+          entry.idJugador;
+        const candidate =
+          (storedId !== null && storedId !== undefined
+            ? playerIndex.byId.get(String(storedId))
+            : null) ?? (nameKey ? playerIndex.byName.get(nameKey) : null);
+        if (!candidate) return entry;
+        const desiredId =
+          candidate.id !== null && candidate.id !== undefined
+            ? String(candidate.id)
+            : null;
+        const desiredPosition = candidate.position ?? null;
+        let updated = entry;
+        if (desiredId) {
+          const currentId =
+            entry.id ??
+            entry.playerId ??
+            entry.player_id ??
+            entry.playerID ??
+            entry.idJugador;
+          if (String(currentId ?? "") !== desiredId) {
+            updated = updated === entry ? { ...entry } : { ...updated };
+            updated.id = desiredId;
+          }
+        }
+        if (desiredPosition) {
+          const currentPosition = collapseWhitespace(normalizeText(entry.position));
+          const desiredNormalized = collapseWhitespace(
+            normalizeText(desiredPosition)
+          );
+          if (desiredNormalized && currentPosition !== desiredNormalized) {
+            updated = updated === entry ? { ...entry } : { ...updated };
+            updated.position = desiredPosition;
+          }
+        }
+        if (updated !== entry) {
+          mutated = true;
+        }
+        return updated;
+      });
+      return mutated ? next : prev;
+    });
+  }, [playerIndex]);
+
   const actualizarPresupuesto = (operacion, monto) => {
     const cantidad = toOptionalNumber(monto);
     if (cantidad === null || cantidad <= 0) {
@@ -442,6 +848,9 @@ export default function FantasyTeamDashboard() {
       }
       if (operacion === "venta") {
         return prev + cantidad;
+      }
+      if (operacion === "anulacion") {
+        return prev - cantidad;
       }
       return prev;
     });
@@ -458,13 +867,15 @@ export default function FantasyTeamDashboard() {
   }, [query, market.players]);
 
   const teamPlayers = useMemo(() => {
-    const playerByName = new Map(
-      market.players.map((p) => [p.name.toLowerCase(), p])
-    );
     return myTeam
       .map((entry) => {
-        const key = entry.name.toLowerCase();
-        const player = playerByName.get(key);
+        if (!entry?.name) return null;
+        const nameKey = entry.name.toLowerCase();
+        const storedId = getPlayerIdKey(entry);
+        const player =
+          (storedId !== null && storedId !== undefined
+            ? playerIndex.byId.get(String(storedId))
+            : null) ?? playerIndex.byName.get(nameKey);
         if (!player) return null;
         const precioCompra = toOptionalNumber(entry.precioCompra);
         const gain =
@@ -475,15 +886,19 @@ export default function FantasyTeamDashboard() {
           precioCompra !== null && precioCompra > 0 && gain !== null
             ? (gain / precioCompra) * 100
             : null;
+        const zone = getZoneFromPosition(player.position ?? entry.position);
+        const playerKey = getPlayerKey(player) ?? `name:${nameKey}`;
         return {
           ...player,
           precioCompra,
           gain,
           roi,
+          zone,
+          playerKey,
         };
       })
       .filter(Boolean);
-  }, [myTeam, market.players]);
+  }, [myTeam, playerIndex]);
 
   const totals = useMemo(() => {
     const sum = (arr, key) =>
@@ -524,9 +939,7 @@ export default function FantasyTeamDashboard() {
   }, [teamPlayers]);
 
   const iniciarCompra = (player) => {
-    const exists = myTeam.some(
-      (x) => x.name.toLowerCase() === player.name.toLowerCase()
-    );
+    const exists = myTeam.some((entry) => entryMatchesPlayer(entry, player));
     if (exists) {
       return;
     }
@@ -543,20 +956,29 @@ export default function FantasyTeamDashboard() {
   };
 
   const comprarJugador = (player, price) => {
-    const exists = myTeam.some(
-      (x) => x.name.toLowerCase() === player.name.toLowerCase()
-    );
+    const exists = myTeam.some((entry) => entryMatchesPlayer(entry, player));
     if (exists) {
       return;
     }
-    setMyTeam((prev) => [...prev, { name: player.name, precioCompra: price }]);
+    setMyTeam((prev) => {
+      const newEntry = {
+        name: player.name,
+        precioCompra: price,
+      };
+      const id = getPlayerIdKey(player);
+      if (id) {
+        newEntry.id = id;
+      }
+      if (player.position) {
+        newEntry.position = player.position;
+      }
+      return [...prev, newEntry];
+    });
     actualizarPresupuesto("compra", price);
   };
 
-  const eliminarJugadorSinVenta = (name) => {
-    setMyTeam((prev) =>
-      prev.filter((x) => x.name.toLowerCase() !== name.toLowerCase())
-    );
+  const eliminarJugadorSinVenta = (player) => {
+    setMyTeam((prev) => prev.filter((entry) => !entryMatchesPlayer(entry, player)));
   };
 
   const venderJugador = (player, saleInput) => {
@@ -566,8 +988,8 @@ export default function FantasyTeamDashboard() {
     const soldAt = new Date().toISOString();
     let removed = false;
     setMyTeam((prev) => {
-      const next = prev.filter((x) => {
-        const matches = x.name.toLowerCase() === player.name.toLowerCase();
+      const next = prev.filter((entry) => {
+        const matches = entryMatchesPlayer(entry, player);
         if (matches) {
           removed = true;
         }
@@ -583,6 +1005,8 @@ export default function FantasyTeamDashboard() {
         buyPrice,
         sellPrice,
         soldAt,
+        playerId: getPlayerIdKey(player),
+        position: player.position,
       },
     ]);
     actualizarPresupuesto("venta", sellPrice);
@@ -597,12 +1021,12 @@ export default function FantasyTeamDashboard() {
     cerrarCompra();
   };
 
-  const handleEliminarJugador = (name) => {
+  const handleEliminarJugador = (player) => {
     const promptMessage = "¿Eliminar jugador sin vender?";
     const confirmed =
       typeof window !== "undefined" ? window.confirm(promptMessage) : true;
     if (!confirmed) return;
-    eliminarJugadorSinVenta(name);
+    eliminarJugadorSinVenta(player);
   };
 
   const saleRecords = useMemo(
@@ -620,13 +1044,292 @@ export default function FantasyTeamDashboard() {
             : null;
         return {
           ...entry,
-          key: `${entry.name}-${entry.soldAt ?? index}`,
+          key: `${getPlayerIdKey(entry) ?? entry.name}-${entry.soldAt ?? index}`,
           gain,
           roi,
+          index,
+          isConfirmed: Boolean(entry.soldAt),
+          playerId: getPlayerIdKey(entry),
         };
       }),
     [sales]
   );
+
+  const playerLookup = useMemo(() => {
+    const map = new Map();
+    teamPlayers.forEach((player) => {
+      if (player.playerKey) {
+        map.set(player.playerKey, player);
+      }
+    });
+    return map;
+  }, [teamPlayers]);
+
+  const validPlayerKeys = useMemo(() => {
+    const set = new Set();
+    teamPlayers.forEach((player) => {
+      if (player.playerKey) {
+        set.add(player.playerKey);
+      }
+    });
+    return set;
+  }, [teamPlayers]);
+
+  useEffect(() => {
+    setAlineacion((prev) => {
+      const cleaned = pruneLineupSlots(prev, validPlayerKeys);
+      const normalized = ensureLineupShape(cleaned, formacionSeleccionada);
+      return lineupEquals(prev, normalized) ? prev : normalized;
+    });
+  }, [validPlayerKeys, formacionSeleccionada]);
+
+  useEffect(() => {
+    setAlineacionGuardada((prev) => {
+      if (!prev) return prev;
+      const cleaned = pruneLineupSlots(prev.slots, validPlayerKeys);
+      const normalized = ensureLineupShape(
+        cleaned,
+        prev.formation ?? DEFAULT_FORMATION
+      );
+      if (lineupEquals(prev.slots, normalized)) {
+        return prev;
+      }
+      const updated = { ...prev, slots: normalized };
+      saveLineupToStorage(updated);
+      return updated;
+    });
+  }, [validPlayerKeys]);
+
+  const assignedPlayerKeys = useMemo(
+    () => new Set(flattenLineupKeys(alineacion)),
+    [alineacion]
+  );
+
+  const playersForLineupList = useMemo(() => {
+    return teamPlayers
+      .map((player) => ({
+        ...player,
+        assigned: assignedPlayerKeys.has(player.playerKey),
+      }))
+      .sort((a, b) => {
+        if (ZONE_ORDER[a.zone] !== ZONE_ORDER[b.zone]) {
+          return ZONE_ORDER[a.zone] - ZONE_ORDER[b.zone];
+        }
+        if (a.assigned !== b.assigned) {
+          return a.assigned ? 1 : -1;
+        }
+        return a.name.localeCompare(b.name, "es");
+      });
+  }, [teamPlayers, assignedPlayerKeys]);
+
+  const guardarAlineacion = () => {
+    const payload = {
+      formation: formacionSeleccionada,
+      slots: ensureLineupShape(alineacion, formacionSeleccionada),
+    };
+    setAlineacionGuardada(payload);
+    saveLineupToStorage(payload);
+    setFeedback({ message: "Alineación guardada.", type: "success" });
+  };
+
+  const limpiarAlineacion = () => {
+    setAlineacion(createEmptyLineup(formacionSeleccionada));
+    setFeedback({ message: "Alineación limpia.", type: "info" });
+  };
+
+  const restaurarAlineacion = () => {
+    if (!alineacionGuardada) {
+      setFeedback({ message: "No hay una alineación guardada.", type: "info" });
+      return;
+    }
+    setFormacionSeleccionada(alineacionGuardada.formation);
+    setAlineacion(
+      ensureLineupShape(
+        alineacionGuardada.slots,
+        alineacionGuardada.formation ?? formacionSeleccionada
+      )
+    );
+    setFeedback({ message: "Alineación restaurada.", type: "success" });
+  };
+
+  const retirarJugadorDeSlot = (zone, index) => {
+    setAlineacion((prev) => {
+      if (!prev?.[zone] || prev[zone][index] == null) return prev;
+      const next = cloneLineup(prev);
+      next[zone][index] = null;
+      return next;
+    });
+  };
+
+  const setDragPayload = (event, payload) => {
+    const data = JSON.stringify(payload);
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("application/json", data);
+    event.dataTransfer.setData("text/plain", data);
+  };
+
+  const parseDragPayload = (event) => {
+    const raw =
+      event.dataTransfer.getData("application/json") ||
+      event.dataTransfer.getData("text/plain");
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  };
+
+  const handlePlayerDragStart = (event, player) => {
+    if (!player?.playerKey) return;
+    setDragPayload(event, {
+      type: "player",
+      source: "pool",
+      playerKey: player.playerKey,
+      zone: player.zone,
+    });
+  };
+
+  const handleSlotDragStart = (event, zone, index, playerKey) => {
+    if (!playerKey) return;
+    setDragPayload(event, {
+      type: "player",
+      source: "slot",
+      playerKey,
+      zone,
+      index,
+    });
+  };
+
+  const handleSlotDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
+
+  const handlePlayerPoolDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  };
+
+  const handleSlotDrop = (zone, index) => (event) => {
+    event.preventDefault();
+    const payload = parseDragPayload(event);
+    if (!payload || payload.type !== "player" || !payload.playerKey) return;
+    const player = playerLookup.get(payload.playerKey);
+    if (!player) {
+      setFeedback({ message: "Jugador no disponible en tu equipo.", type: "error" });
+      return;
+    }
+    const allowedZone = player.zone ?? payload.zone;
+    if (allowedZone !== zone) {
+      setFeedback({
+        message: `Solo puedes colocar ${allowedZone} en ${ZONE_LABELS[zone]}.`,
+        type: "error",
+      });
+      return;
+    }
+    let rejected = false;
+    let rejectionMessage = "";
+    setAlineacion((prev) => {
+      const normalized = ensureLineupShape(prev, formacionSeleccionada);
+      const next = cloneLineup(normalized);
+      if (!Array.isArray(next[zone])) {
+        rejected = true;
+        rejectionMessage = "Zona no disponible.";
+        return prev;
+      }
+      if (payload.source === "pool") {
+        const occupied = next[zone][index];
+        if (occupied && occupied !== payload.playerKey) {
+          rejected = true;
+          rejectionMessage = `No hay huecos disponibles en ${ZONE_LABELS[zone]}.`;
+          return prev;
+        }
+        const existing = findPlayerSlot(next, payload.playerKey);
+        if (existing) {
+          next[existing.zone][existing.index] = null;
+        }
+        next[zone][index] = payload.playerKey;
+        return next;
+      }
+      if (payload.source === "slot") {
+        if (payload.zone !== zone) {
+          rejected = true;
+          rejectionMessage = "No puedes mover al jugador a otra línea.";
+          return prev;
+        }
+        if (payload.index === index) {
+          return prev;
+        }
+        const fromValue = next[zone][payload.index];
+        if (fromValue !== payload.playerKey) {
+          return prev;
+        }
+        const targetValue = next[zone][index] ?? null;
+        next[zone][index] = payload.playerKey;
+        next[zone][payload.index] = targetValue;
+        return next;
+      }
+      return prev;
+    });
+    if (rejected && rejectionMessage) {
+      setFeedback({ message: rejectionMessage, type: "error" });
+    }
+  };
+
+  const handlePlayerPoolDrop = (event) => {
+    event.preventDefault();
+    const payload = parseDragPayload(event);
+    if (!payload || payload.type !== "player" || payload.source !== "slot") return;
+    let removed = false;
+    setAlineacion((prev) => {
+      const normalized = ensureLineupShape(prev, formacionSeleccionada);
+      const next = cloneLineup(normalized);
+      if (!Array.isArray(next[payload.zone])) return prev;
+      if (next[payload.zone][payload.index] !== payload.playerKey) return prev;
+      next[payload.zone][payload.index] = null;
+      removed = true;
+      return next;
+    });
+    if (removed) {
+      setFeedback({ message: "Jugador retirado de la alineación.", type: "info" });
+    }
+  };
+
+  const abrirEliminarVenta = (sale) => {
+    setSaleToRemove(sale);
+  };
+
+  const cancelarEliminarVenta = () => {
+    setSaleToRemove(null);
+  };
+
+  const confirmarEliminarVenta = () => {
+    if (!saleToRemove) return;
+    const sale = saleToRemove;
+    setSales((prev) => prev.filter((_, idx) => idx !== sale.index));
+    if (sale.isConfirmed && sale.sellPrice !== null && sale.sellPrice !== undefined) {
+      actualizarPresupuesto("anulacion", sale.sellPrice);
+    }
+    if (sale.isConfirmed) {
+      const restored = {
+        name: sale.name,
+        precioCompra: sale.buyPrice ?? null,
+      };
+      if (sale.playerId) {
+        restored.id = sale.playerId;
+      }
+      if (sale.position) {
+        restored.position = sale.position;
+      }
+      setMyTeam((prev) => {
+        const exists = prev.some((entry) => entryMatchesPlayer(entry, restored));
+        if (exists) return prev;
+        return [...prev, restored];
+      });
+    }
+    setSaleToRemove(null);
+  };
 
   const formatter = new Intl.NumberFormat("es-ES");
   const percentFormatter = new Intl.NumberFormat("es-ES", {
@@ -649,9 +1352,508 @@ export default function FantasyTeamDashboard() {
     return date.toLocaleString("es-ES");
   };
 
+  const feedbackStyles = {
+    success: "border border-emerald-200 bg-emerald-50 text-emerald-700",
+    error: "border border-red-200 bg-red-50 text-red-700",
+    info: "border border-blue-200 bg-blue-50 text-blue-700",
+  };
+
+  const tabButtonClass = (tab) =>
+    `rounded-full px-4 py-1.5 text-sm font-semibold transition ${
+      activeTab === tab
+        ? "bg-indigo-600 text-white shadow"
+        : "text-gray-600 hover:text-gray-900"
+    }`;
+
+  const dashboardView = (
+    <>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <Card title="Valor actual del equipo" className="xl:col-span-2">
+          <BigNumber>
+            <span data-testid="total-value">
+              {formatter.format(totals.value)}
+            </span>
+          </BigNumber>
+          <SummaryRow
+            label="Presupuesto actual del equipo"
+            value={`${formatter.format(presupuestoActual)} €`}
+            valueClassName={
+              presupuestoActual >= 0 ? "text-green-600" : "text-red-600"
+            }
+            testId="team-budget"
+          />
+          <DeltaBar
+            day={totals.change_day}
+            week={totals.change_week}
+            formatter={formatter}
+          />
+          <div className="mt-3 space-y-1 border-t border-gray-100 pt-2">
+            <SummaryRow
+              label="Invertido"
+              value={
+                totals.buy_count > 0 ? formatter.format(totals.buy_price) : "—"
+              }
+              testId="total-buy"
+            />
+            <SummaryRow
+              label="Ganancia"
+              value={
+                totals.gain !== null
+                  ? `${totals.gain >= 0 ? "+" : "-"}${formatter.format(
+                      Math.abs(totals.gain)
+                    )}`
+                  : "—"
+              }
+              valueClassName={
+                totals.gain !== null
+                  ? totals.gain >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                  : ""
+              }
+              testId="total-gain"
+            />
+            <SummaryRow
+              label="Rentabilidad"
+              value={
+                totals.roi !== null
+                  ? `${totals.roi >= 0 ? "+" : "-"}${percentFormatter.format(
+                      Math.abs(totals.roi)
+                    )}%`
+                  : "—"
+              }
+              valueClassName={
+                totals.roi !== null
+                  ? totals.roi >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                  : ""
+              }
+              testId="total-roi"
+            />
+          </div>
+        </Card>
+        <Card title="Comprar un jugador" className="md:col-span-2 xl:col-span-2">
+          <input
+            type="text"
+            className="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring"
+            placeholder="Busca por nombre, equipo o posición…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <div className="mt-3 max-h-60 overflow-auto rounded-xl border bg-white divide-y">
+            {filtered.slice(0, 50).map((p) => (
+              <button
+                key={p.name + p.team}
+                onClick={() => iniciarCompra(p)}
+                className="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-gray-50"
+              >
+                <span className="font-medium">{p.name}</span>
+                <span className="text-xs text-gray-500">
+                  {p.team} · {p.position}
+                </span>
+              </button>
+            ))}
+          </div>
+        </Card>
+      </section>
+
+      <section className="bg-white border rounded-2xl shadow p-4">
+        <h2 className="mb-3 text-xl font-semibold">Detalle del equipo</h2>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm" data-testid="team-table">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <Th>Jugador</Th>
+                <Th>Equipo</Th>
+                <Th>Pos.</Th>
+                <Th className="text-right">Valor</Th>
+                <Th className="text-right">Comprado</Th>
+                <Th className="text-right">Venta</Th>
+                <Th className="text-right">Ganancia</Th>
+                <Th className="text-right">Rentabilidad</Th>
+                <Th className="text-right">Δ día</Th>
+                <Th className="text-right">Δ semana</Th>
+                <Th className="text-right">Puntos</Th>
+                <Th className="text-right">Media</Th>
+                <Th className="text-right">Media (5)</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {teamPlayers.map((p) => (
+                <tr key={p.name} className="border-b last:border-none">
+                  <Td>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        className="text-xs font-semibold text-gray-400 transition hover:text-red-600"
+                        onClick={() => handleEliminarJugador(p)}
+                        aria-label={`Eliminar ${p.name} sin vender`}
+                      >
+                        ×
+                      </button>
+                      <span>{p.name}</span>
+                    </div>
+                  </Td>
+                  <Td>{p.team}</Td>
+                  <Td>{p.position}</Td>
+                  <Td className="text-right">{formatter.format(p.value)}</Td>
+                  <Td className="text-right">
+                    {Number.isFinite(p.precioCompra)
+                      ? formatter.format(p.precioCompra)
+                      : "—"}
+                  </Td>
+                  <Td className="text-right">
+                    <div className="flex justify-end">
+                      <SaleControl
+                        player={p}
+                        onSell={(value) => venderJugador(p, value)}
+                      />
+                    </div>
+                  </Td>
+                  <Td
+                    className={`text-right ${
+                      p.gain !== null
+                        ? p.gain >= 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {p.gain !== null
+                      ? `${p.gain >= 0 ? "+" : "-"}${formatter.format(
+                          Math.abs(p.gain)
+                        )}`
+                      : "—"}
+                  </Td>
+                  <Td
+                    className={`text-right ${
+                      p.roi !== null
+                        ? p.roi >= 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {p.roi !== null
+                      ? `${p.roi >= 0 ? "+" : "-"}${percentFormatter.format(
+                          Math.abs(p.roi)
+                        )}%`
+                      : "—"}
+                  </Td>
+                  <Td
+                    className={`text-right ${
+                      p.change_day >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {p.change_day >= 0 ? "+" : ""}
+                    {formatter.format(p.change_day)}
+                  </Td>
+                  <Td
+                    className={`text-right ${
+                      p.change_week >= 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {p.change_week >= 0 ? "+" : ""}
+                    {formatter.format(p.change_week)}
+                  </Td>
+                  <Td className="text-right text-gray-700">
+                    {p.points_total !== null
+                      ? pointsFormatter.format(p.points_total)
+                      : "—"}
+                  </Td>
+                  <Td className="text-right text-gray-700">
+                    {p.points_avg !== null
+                      ? pointsFormatter.format(p.points_avg)
+                      : "—"}
+                  </Td>
+                  <Td className="text-right text-gray-700">
+                    {p.points_last5 !== null
+                      ? pointsFormatter.format(p.points_last5)
+                      : "—"}
+                  </Td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="bg-white border rounded-2xl shadow p-4">
+        <h2 className="mb-3 text-xl font-semibold">Ventas realizadas</h2>
+        {saleRecords.length === 0 ? (
+          <p className="text-sm text-gray-500">
+            Aún no has registrado ventas.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm" data-testid="sales-table">
+              <thead className="bg-gray-100 text-gray-700">
+                <tr>
+                  <Th>Jugador</Th>
+                  <Th className="text-right">Comprado</Th>
+                  <Th className="text-right">Vendido</Th>
+                  <Th className="text-right">Ganancia</Th>
+                  <Th className="text-right">Rentabilidad</Th>
+                  <Th className="text-right">Fecha</Th>
+                  <Th className="text-right">Acción</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {saleRecords.map((sale, index) => (
+                  <tr
+                    key={sale.key || `${sale.name}-${index}`}
+                    className="border-b last:border-none"
+                  >
+                    <Td>{sale.name}</Td>
+                    <Td className="text-right">
+                      {sale.buyPrice !== null
+                        ? formatter.format(sale.buyPrice)
+                        : "—"}
+                    </Td>
+                    <Td className="text-right">
+                      {sale.sellPrice !== null
+                        ? formatter.format(sale.sellPrice)
+                        : "—"}
+                    </Td>
+                    <Td
+                      className={`text-right ${
+                        sale.gain !== null
+                          ? sale.gain >= 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {sale.gain !== null
+                        ? `${sale.gain >= 0 ? "+" : "-"}${formatter.format(
+                            Math.abs(sale.gain)
+                          )}`
+                        : "—"}
+                    </Td>
+                    <Td
+                      className={`text-right ${
+                        sale.roi !== null
+                          ? sale.roi >= 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {sale.roi !== null
+                        ? `${sale.roi >= 0 ? "+" : "-"}${percentFormatter.format(
+                            Math.abs(sale.roi)
+                          )}%`
+                        : "—"}
+                    </Td>
+                    <Td className="text-right text-gray-600">
+                      {formatSoldAt(sale.soldAt)}
+                    </Td>
+                    <Td className="text-right">
+                      <button
+                        type="button"
+                        className="text-xs font-semibold text-red-600 hover:text-red-800"
+                        onClick={() => abrirEliminarVenta(sale)}
+                      >
+                        Eliminar/Anular venta
+                      </button>
+                    </Td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </>
+  );
+
+  const alignmentView = (
+    <div className="space-y-6">
+      {feedback?.message && (
+        <div
+          className={`rounded-xl px-3 py-2 text-sm ${
+            feedbackStyles[feedback.type || "info"] ?? feedbackStyles.info
+          }`}
+        >
+          {feedback.message}
+        </div>
+      )}
+      <section className="bg-white border rounded-2xl shadow p-4 space-y-4">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-1">
+            <label
+              className="text-sm font-medium text-gray-600"
+              htmlFor="formation-select"
+            >
+              Formación
+            </label>
+            <select
+              id="formation-select"
+              className="rounded-xl border px-3 py-2 text-sm focus:outline-none focus:ring"
+              value={formacionSeleccionada}
+              onChange={(event) => setFormacionSeleccionada(event.target.value)}
+            >
+              {FORMATIONS.map((formation) => (
+                <option key={formation} value={formation}>
+                  {formation}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              className="rounded-full bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow hover:bg-indigo-700"
+              onClick={guardarAlineacion}
+            >
+              Guardar alineación
+            </button>
+            <button
+              type="button"
+              className="rounded-full border border-gray-300 px-4 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-400 hover:text-gray-800"
+              onClick={limpiarAlineacion}
+            >
+              Limpiar
+            </button>
+            <button
+              type="button"
+              className="rounded-full border border-gray-300 px-4 py-1.5 text-sm font-semibold text-gray-600 hover:border-gray-400 hover:text-gray-800"
+              onClick={restaurarAlineacion}
+            >
+              Restaurar última guardada
+            </button>
+          </div>
+        </div>
+      </section>
+      <div className="grid gap-4 lg:grid-cols-[minmax(220px,280px)_1fr]">
+        <section
+          className="bg-white border rounded-2xl shadow p-4"
+          onDragOver={handlePlayerPoolDragOver}
+          onDrop={handlePlayerPoolDrop}
+        >
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-xl font-semibold">Mis jugadores</h2>
+            {playersForLineupList.length > 0 && (
+              <span className="text-xs text-gray-500">
+                {playersForLineupList.length} jugadores
+              </span>
+            )}
+          </div>
+          {playersForLineupList.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              Aún no tienes jugadores en tu equipo.
+            </p>
+          ) : (
+            <ul className="max-h-[420px] space-y-2 overflow-y-auto pr-1">
+              {playersForLineupList.map((player) => (
+                <li
+                  key={player.playerKey}
+                  className={`flex items-center justify-between rounded-xl border px-3 py-2 text-sm transition ${
+                    player.assigned
+                      ? "border-indigo-200 bg-indigo-50"
+                      : "border-gray-200 bg-white"
+                  }`}
+                  draggable
+                  onDragStart={(event) => handlePlayerDragStart(event, player)}
+                >
+                  <div>
+                    <div className="font-medium text-gray-900">{player.name}</div>
+                    <div className="text-xs text-gray-500">
+                      {player.team} · {player.position}
+                    </div>
+                  </div>
+                  <div
+                    className={`text-xs font-semibold ${
+                      player.assigned ? "text-indigo-600" : "text-gray-500"
+                    }`}
+                  >
+                    {player.zone}
+                    {player.assigned ? " · Alineado" : ""}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+        <section className="bg-white border rounded-2xl shadow p-4">
+          <h2 className="mb-4 text-xl font-semibold">Campo</h2>
+          <div className="rounded-3xl bg-gradient-to-b from-green-600 to-green-700 p-4 text-white sm:p-6">
+            <div className="space-y-6">
+              {ZONE_CODES.map((zone) => {
+                const slots = alineacion?.[zone] ?? [];
+                return (
+                  <div key={zone} className="space-y-2">
+                    <div className="text-center text-xs font-semibold uppercase tracking-wide text-white/80">
+                      {ZONE_LABELS[zone]}
+                    </div>
+                    <div
+                      className="grid gap-3 justify-items-center"
+                      style={{
+                        gridTemplateColumns: `repeat(${Math.max(
+                          slots.length,
+                          1
+                        )}, minmax(0, 1fr))`,
+                      }}
+                    >
+                      {slots.map((slotKey, slotIndex) => {
+                        const assignedPlayer = slotKey
+                          ? playerLookup.get(slotKey)
+                          : null;
+                        return (
+                          <div
+                            key={`${zone}-${slotIndex}`}
+                            data-zone={zone}
+                            data-slot-index={slotIndex}
+                            className={`flex min-h-[80px] w-full max-w-[140px] flex-col items-center justify-center rounded-xl border-2 border-white/70 bg-white/10 p-3 text-center transition ${
+                              assignedPlayer
+                                ? "shadow-lg shadow-black/10"
+                                : "border-dashed"
+                            }`}
+                            draggable={Boolean(assignedPlayer)}
+                            onDragStart={(event) =>
+                              assignedPlayer &&
+                              handleSlotDragStart(event, zone, slotIndex, slotKey)
+                            }
+                            onDragOver={handleSlotDragOver}
+                            onDrop={handleSlotDrop(zone, slotIndex)}
+                          >
+                            {assignedPlayer ? (
+                              <>
+                                <span className="text-sm font-semibold leading-tight">
+                                  {assignedPlayer.name}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="text-xs font-medium text-white/80 hover:text-white"
+                                  onClick={() => retirarJugadorDeSlot(zone, slotIndex)}
+                                  aria-label={`Quitar ${assignedPlayer.name} de ${ZONE_LABELS[zone]}`}
+                                >
+                                  Quitar
+                                </button>
+                              </>
+                            ) : (
+                              <span className="text-xs uppercase tracking-wide text-white/70">
+                                {zone} #{slotIndex + 1}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="mx-auto max-w-6xl space-y-6">
         <header className="flex items-center justify-between">
           <h1 className="text-2xl md:text-3xl font-bold">
             Mi equipo – LaLiga Fantasy
@@ -659,7 +1861,7 @@ export default function FantasyTeamDashboard() {
           <div className="text-sm text-gray-600">
             {status === "ok" && (
               <span>
-                Última actualización:{" "}
+                Última actualización: {" "}
                 {market.updated_at
                   ? new Date(market.updated_at).toLocaleString("es-ES")
                   : "desconocida"}
@@ -672,304 +1874,24 @@ export default function FantasyTeamDashboard() {
           </div>
         </header>
 
-        {/* Resumen de mi equipo */}
-        <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <Card title="Valor actual del equipo" className="xl:col-span-2">
-            <BigNumber>
-              <span data-testid="total-value">
-                {formatter.format(totals.value)}
-              </span>
-            </BigNumber>
-            <SummaryRow
-              label="Presupuesto actual del equipo"
-              value={`${formatter.format(presupuestoActual)} €`}
-              valueClassName={
-                presupuestoActual >= 0 ? "text-green-600" : "text-red-600"
-              }
-              testId="team-budget"
-            />
-            <DeltaBar
-              day={totals.change_day}
-              week={totals.change_week}
-              formatter={formatter}
-            />
-            <div className="border-t border-gray-100 pt-2 mt-3 space-y-1">
-              <SummaryRow
-                label="Invertido"
-                value={
-                  totals.buy_count > 0
-                    ? formatter.format(totals.buy_price)
-                    : "—"
-                }
-                testId="total-buy"
-              />
-              <SummaryRow
-                label="Ganancia"
-                value={
-                  totals.gain !== null
-                    ? `${totals.gain >= 0 ? "+" : "-"}${formatter.format(
-                        Math.abs(totals.gain)
-                      )}`
-                    : "—"
-                }
-                valueClassName={
-                  totals.gain !== null
-                    ? totals.gain >= 0
-                      ? "text-green-600"
-                      : "text-red-600"
-                    : ""
-                }
-                testId="total-gain"
-              />
-              <SummaryRow
-                label="Rentabilidad"
-                value={
-                  totals.roi !== null
-                    ? `${totals.roi >= 0 ? "+" : "-"}${percentFormatter.format(
-                        Math.abs(totals.roi)
-                      )}%`
-                    : "—"
-                }
-                valueClassName={
-                  totals.roi !== null
-                    ? totals.roi >= 0
-                      ? "text-green-600"
-                      : "text-red-600"
-                    : ""
-                }
-                testId="total-roi"
-              />
-            </div>
-          </Card>
-
-          <Card
-            title="Comprar un jugador"
-            className="md:col-span-2 xl:col-span-2"
+        <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-2">
+          <button
+            type="button"
+            className={tabButtonClass("dashboard")}
+            onClick={() => setActiveTab("dashboard")}
           >
-            <input
-              type="text"
-              className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring"
-              placeholder="Busca por nombre, equipo o posición…"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <div className="mt-3 max-h-60 overflow-auto bg-white border rounded-xl divide-y">
-              {filtered.slice(0, 50).map((p) => (
-                <button
-                  key={p.name + p.team}
-                  onClick={() => iniciarCompra(p)}
-                  className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between"
-                >
-                  <span className="font-medium">{p.name}</span>
-                  <span className="text-xs text-gray-500">
-                    {p.team} · {p.position}
-                  </span>
-                </button>
-              ))}
-            </div>
-          </Card>
-        </section>
+            Detalle del equipo
+          </button>
+          <button
+            type="button"
+            className={tabButtonClass("alineacion")}
+            onClick={() => setActiveTab("alineacion")}
+          >
+            Alineación
+          </button>
+        </div>
 
-        {/* Tabla detallada */}
-        <section className="bg-white border rounded-2xl shadow p-4">
-          <h2 className="text-xl font-semibold mb-3">Detalle del equipo</h2>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm" data-testid="team-table">
-              <thead className="bg-gray-100 text-gray-700">
-                <tr>
-                  <Th>Jugador</Th>
-                  <Th>Equipo</Th>
-                  <Th>Pos.</Th>
-                  <Th className="text-right">Valor</Th>
-                  <Th className="text-right">Comprado</Th>
-                  <Th className="text-right">Venta</Th>
-                  <Th className="text-right">Ganancia</Th>
-                  <Th className="text-right">Rentabilidad</Th>
-                  <Th className="text-right">Δ día</Th>
-                  <Th className="text-right">Δ semana</Th>
-                  <Th className="text-right">Puntos</Th>
-                  <Th className="text-right">Media</Th>
-                  <Th className="text-right">Media (5)</Th>
-                </tr>
-              </thead>
-              <tbody>
-                {teamPlayers.map((p) => (
-                  <tr key={p.name} className="border-b last:border-none">
-                    <Td>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          className="text-xs font-semibold text-gray-400 transition hover:text-red-600"
-                          onClick={() => handleEliminarJugador(p.name)}
-                          aria-label={`Eliminar ${p.name} sin vender`}
-                        >
-                          ×
-                        </button>
-                        <span>{p.name}</span>
-                      </div>
-                    </Td>
-                    <Td>{p.team}</Td>
-                    <Td>{p.position}</Td>
-                    <Td className="text-right">
-                      {formatter.format(p.value)}
-                    </Td>
-                    <Td className="text-right">
-                      {Number.isFinite(p.precioCompra)
-                        ? formatter.format(p.precioCompra)
-                        : "—"}
-                    </Td>
-                    <Td className="text-right">
-                      <div className="flex justify-end">
-                        <SaleControl
-                          player={p}
-                          onSell={(value) => venderJugador(p, value)}
-                        />
-                      </div>
-                    </Td>
-                    <Td
-                      className={`text-right ${
-                        p.gain !== null
-                          ? p.gain >= 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {p.gain !== null
-                        ? `${p.gain >= 0 ? "+" : "-"}${formatter.format(
-                            Math.abs(p.gain)
-                          )}`
-                        : "—"}
-                    </Td>
-                    <Td
-                      className={`text-right ${
-                        p.roi !== null
-                          ? p.roi >= 0
-                            ? "text-green-600"
-                            : "text-red-600"
-                          : "text-gray-500"
-                      }`}
-                    >
-                      {p.roi !== null
-                        ? `${p.roi >= 0 ? "+" : "-"}${percentFormatter.format(
-                            Math.abs(p.roi)
-                          )}%`
-                        : "—"}
-                    </Td>
-                    <Td
-                      className={`text-right ${
-                        p.change_day >= 0 ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      {p.change_day >= 0 ? "+" : ""}
-                      {formatter.format(p.change_day)}
-                    </Td>
-                    <Td
-                      className={`text-right ${
-                        p.change_week >= 0 ? "text-green-600" : "text-red-600"
-                      }`}
-                    >
-                      {p.change_week >= 0 ? "+" : ""}
-                      {formatter.format(p.change_week)}
-                    </Td>
-                    <Td className="text-right text-gray-700">
-                      {p.points_total !== null
-                        ? pointsFormatter.format(p.points_total)
-                        : "—"}
-                    </Td>
-                    <Td className="text-right text-gray-700">
-                      {p.points_avg !== null
-                        ? pointsFormatter.format(p.points_avg)
-                        : "—"}
-                    </Td>
-                    <Td className="text-right text-gray-700">
-                      {p.points_last5 !== null
-                        ? pointsFormatter.format(p.points_last5)
-                        : "—"}
-                    </Td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        <section className="bg-white border rounded-2xl shadow p-4">
-          <h2 className="text-xl font-semibold mb-3">Ventas realizadas</h2>
-          {saleRecords.length === 0 ? (
-            <p className="text-sm text-gray-500">
-              Aún no has registrado ventas.
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full text-sm" data-testid="sales-table">
-                <thead className="bg-gray-100 text-gray-700">
-                  <tr>
-                    <Th>Jugador</Th>
-                    <Th className="text-right">Comprado</Th>
-                    <Th className="text-right">Vendido</Th>
-                    <Th className="text-right">Ganancia</Th>
-                    <Th className="text-right">Rentabilidad</Th>
-                    <Th className="text-right">Fecha</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {saleRecords.map((sale, index) => (
-                    <tr
-                      key={sale.key || `${sale.name}-${index}`}
-                      className="border-b last:border-none"
-                    >
-                      <Td>{sale.name}</Td>
-                      <Td className="text-right">
-                        {sale.buyPrice !== null
-                          ? formatter.format(sale.buyPrice)
-                          : "—"}
-                      </Td>
-                      <Td className="text-right">
-                        {sale.sellPrice !== null
-                          ? formatter.format(sale.sellPrice)
-                          : "—"}
-                      </Td>
-                      <Td
-                        className={`text-right ${
-                          sale.gain !== null
-                            ? sale.gain >= 0
-                              ? "text-green-600"
-                              : "text-red-600"
-                            : "text-gray-500"
-                        }`}
-                      >
-                        {sale.gain !== null
-                          ? `${sale.gain >= 0 ? "+" : "-"}${formatter.format(
-                              Math.abs(sale.gain)
-                            )}`
-                          : "—"}
-                      </Td>
-                      <Td
-                        className={`text-right ${
-                          sale.roi !== null
-                            ? sale.roi >= 0
-                              ? "text-green-600"
-                              : "text-red-600"
-                            : "text-gray-500"
-                        }`}
-                      >
-                        {sale.roi !== null
-                          ? `${sale.roi >= 0 ? "+" : "-"}${percentFormatter.format(
-                              Math.abs(sale.roi)
-                            )}%`
-                          : "—"}
-                      </Td>
-                      <Td className="text-right text-gray-600">
-                        {formatSoldAt(sale.soldAt)}
-                      </Td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
+        {activeTab === "dashboard" ? dashboardView : alignmentView}
 
         <footer className="text-xs text-gray-500">
           Los datos provienen de un archivo JSON generado a partir del HTML
@@ -986,9 +1908,17 @@ export default function FantasyTeamDashboard() {
           isValid={purchaseIsValid}
         />
       )}
+      {saleToRemove && (
+        <DeleteSaleModal
+          sale={saleToRemove}
+          onCancel={cancelarEliminarVenta}
+          onConfirm={confirmarEliminarVenta}
+        />
+      )}
     </div>
   );
 }
+
 
 function Card({ title, children, className = "" }) {
   return (
@@ -1203,6 +2133,45 @@ function PurchaseModal({ player, value, onChange, onConfirm, onCancel, isValid }
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  );
+}
+
+function DeleteSaleModal({ sale, onConfirm, onCancel }) {
+  if (!sale) return null;
+  const message = sale.isConfirmed
+    ? "Se anulará la venta, se revertirá el presupuesto y se restaurará el jugador al equipo."
+    : "Se eliminará el registro de la lista de ventas.";
+  return (
+    <div className="fixed inset-0 z-40 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" onClick={onCancel} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-sale-modal-title"
+        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+      >
+        <h3 id="delete-sale-modal-title" className="text-lg font-semibold text-gray-900">
+          ¿Eliminar esta venta?
+        </h3>
+        <p className="mt-2 text-sm text-gray-600">{message}</p>
+        <div className="mt-6 flex justify-end gap-2 text-sm">
+          <button
+            type="button"
+            className="rounded-full px-4 py-1.5 text-gray-500 hover:text-gray-700"
+            onClick={onCancel}
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className="rounded-full bg-red-600 px-4 py-1.5 font-semibold text-white shadow hover:bg-red-700"
+            onClick={onConfirm}
+          >
+            Confirmar
+          </button>
+        </div>
       </div>
     </div>
   );
