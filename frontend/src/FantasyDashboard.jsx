@@ -327,14 +327,15 @@ const sanitizeStoredTeam = (entries) => {
     const key = name.toLowerCase();
     if (seen.has(key)) return acc;
     seen.add(key);
-    const buyPrice = toOptionalNumber(
-      item?.buyPrice ??
+    const precioCompra = toOptionalNumber(
+      item?.precioCompra ??
+        item?.buyPrice ??
         item?.buy_price ??
         item?.purchasePrice ??
         item?.purchase_value ??
         item?.purchaseValue
     );
-    acc.push({ name, buyPrice });
+    acc.push({ name, precioCompra });
     return acc;
   }, []);
 };
@@ -344,7 +345,9 @@ const sanitizeStoredSales = (entries) => {
   return entries.reduce((acc, item) => {
     const name = sanitizeName(item?.name);
     if (!name) return acc;
-    const buyPrice = toOptionalNumber(item?.buyPrice ?? item?.buy_price);
+    const buyPrice = toOptionalNumber(
+      item?.precioCompra ?? item?.buyPrice ?? item?.buy_price
+    );
     const sellPrice = toOptionalNumber(item?.sellPrice ?? item?.sell_price);
     const soldAtRaw = collapseWhitespace(
       normalizeText(item?.soldAt ?? item?.sold_at)
@@ -378,7 +381,18 @@ export default function FantasyTeamDashboard() {
       return [];
     }
   });
+  const [presupuestoActual, setPresupuestoActual] = useState(() => {
+    try {
+      const raw = localStorage.getItem("teamBudget");
+      const parsed = raw !== null ? Number(raw) : null;
+      return Number.isFinite(parsed) ? parsed : -8720968;
+    } catch {
+      return -8720968;
+    }
+  });
   const [status, setStatus] = useState("cargando");
+  const [playerToBuy, setPlayerToBuy] = useState(null);
+  const [purchaseValue, setPurchaseValue] = useState("");
 
   const MARKET_URL = "/market.json";
 
@@ -413,6 +427,26 @@ export default function FantasyTeamDashboard() {
     localStorage.setItem("mySales", JSON.stringify(sales));
   }, [sales]);
 
+  useEffect(() => {
+    localStorage.setItem("teamBudget", String(presupuestoActual));
+  }, [presupuestoActual]);
+
+  const actualizarPresupuesto = (operacion, monto) => {
+    const cantidad = toOptionalNumber(monto);
+    if (cantidad === null || cantidad <= 0) {
+      return;
+    }
+    setPresupuestoActual((prev) => {
+      if (operacion === "compra") {
+        return prev - cantidad;
+      }
+      if (operacion === "venta") {
+        return prev + cantidad;
+      }
+      return prev;
+    });
+  };
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return market.players.slice(0, 100);
@@ -432,18 +466,18 @@ export default function FantasyTeamDashboard() {
         const key = entry.name.toLowerCase();
         const player = playerByName.get(key);
         if (!player) return null;
-        const buyPrice = toOptionalNumber(entry.buyPrice);
+        const precioCompra = toOptionalNumber(entry.precioCompra);
         const gain =
-          buyPrice !== null && Number.isFinite(player.value)
-            ? player.value - buyPrice
+          precioCompra !== null && Number.isFinite(player.value)
+            ? player.value - precioCompra
             : null;
         const roi =
-          buyPrice !== null && buyPrice > 0 && gain !== null
-            ? (gain / buyPrice) * 100
+          precioCompra !== null && precioCompra > 0 && gain !== null
+            ? (gain / precioCompra) * 100
             : null;
         return {
           ...player,
-          buyPrice,
+          precioCompra,
           gain,
           roi,
         };
@@ -469,7 +503,7 @@ export default function FantasyTeamDashboard() {
         },
         { sum: 0, count: 0 }
       );
-    const buy = aggregate(teamPlayers, "buyPrice");
+    const buy = aggregate(teamPlayers, "precioCompra");
     const gain = aggregate(teamPlayers, "gain");
     const avgAll = aggregate(teamPlayers, "points_avg");
     const avgRecent = aggregate(teamPlayers, "points_last5");
@@ -489,50 +523,59 @@ export default function FantasyTeamDashboard() {
     };
   }, [teamPlayers]);
 
-  const addToTeam = (p) => {
-    setMyTeam((prev) => {
-      const exists = prev.some(
-        (x) => x.name.toLowerCase() === p.name.toLowerCase()
-      );
-      if (exists) return prev;
-      return [...prev, { name: p.name, buyPrice: toOptionalNumber(p.value) }];
-    });
+  const iniciarCompra = (player) => {
+    const exists = myTeam.some(
+      (x) => x.name.toLowerCase() === player.name.toLowerCase()
+    );
+    if (exists) {
+      return;
+    }
+    setPlayerToBuy(player);
+    const base = Number.isFinite(player?.value) ? player.value : "";
+    setPurchaseValue(
+      base === null || base === undefined ? "" : String(base)
+    );
   };
 
-  const removeFromTeam = (name) => {
+  const cerrarCompra = () => {
+    setPlayerToBuy(null);
+    setPurchaseValue("");
+  };
+
+  const comprarJugador = (player, price) => {
+    const exists = myTeam.some(
+      (x) => x.name.toLowerCase() === player.name.toLowerCase()
+    );
+    if (exists) {
+      return;
+    }
+    setMyTeam((prev) => [...prev, { name: player.name, precioCompra: price }]);
+    actualizarPresupuesto("compra", price);
+  };
+
+  const eliminarJugadorSinVenta = (name) => {
     setMyTeam((prev) =>
       prev.filter((x) => x.name.toLowerCase() !== name.toLowerCase())
     );
   };
 
-  const updateBuyPrice = (name, value) => {
-    setMyTeam((prev) => {
-      const key = name.toLowerCase();
-      let changed = false;
-      const next = prev.map((item) => {
-        if (item.name.toLowerCase() !== key) {
-          return item;
-        }
-        const parsed = toOptionalNumber(value);
-        const current = toOptionalNumber(item.buyPrice);
-        if (parsed === null && current === null) {
-          return item;
-        }
-        if (parsed !== null && current !== null && parsed === current) {
-          return item;
-        }
-        changed = true;
-        return { ...item, buyPrice: parsed };
-      });
-      return changed ? next : prev;
-    });
-  };
-
-  const sellPlayer = (player, saleInput) => {
+  const venderJugador = (player, saleInput) => {
     const sellPrice = toOptionalNumber(saleInput);
-    if (sellPrice === null) return;
-    const buyPrice = toOptionalNumber(player.buyPrice);
+    if (sellPrice === null || sellPrice <= 0) return;
+    const buyPrice = toOptionalNumber(player.precioCompra);
     const soldAt = new Date().toISOString();
+    let removed = false;
+    setMyTeam((prev) => {
+      const next = prev.filter((x) => {
+        const matches = x.name.toLowerCase() === player.name.toLowerCase();
+        if (matches) {
+          removed = true;
+        }
+        return !matches;
+      });
+      return next;
+    });
+    if (!removed) return;
     setSales((prev) => [
       ...prev,
       {
@@ -542,9 +585,24 @@ export default function FantasyTeamDashboard() {
         soldAt,
       },
     ]);
-    setMyTeam((prev) =>
-      prev.filter((x) => x.name.toLowerCase() !== player.name.toLowerCase())
-    );
+    actualizarPresupuesto("venta", sellPrice);
+  };
+
+  const purchaseParsed = toOptionalNumber(purchaseValue);
+  const purchaseIsValid = purchaseParsed !== null && purchaseParsed > 0;
+
+  const handleConfirmarCompra = () => {
+    if (!playerToBuy || !purchaseIsValid) return;
+    comprarJugador(playerToBuy, purchaseParsed);
+    cerrarCompra();
+  };
+
+  const handleEliminarJugador = (name) => {
+    const promptMessage = "¿Eliminar jugador sin vender?";
+    const confirmed =
+      typeof window !== "undefined" ? window.confirm(promptMessage) : true;
+    if (!confirmed) return;
+    eliminarJugadorSinVenta(name);
   };
 
   const saleRecords = useMemo(
@@ -622,6 +680,14 @@ export default function FantasyTeamDashboard() {
                 {formatter.format(totals.value)}
               </span>
             </BigNumber>
+            <SummaryRow
+              label="Presupuesto actual del equipo"
+              value={`${formatter.format(presupuestoActual)} €`}
+              valueClassName={
+                presupuestoActual >= 0 ? "text-green-600" : "text-red-600"
+              }
+              testId="team-budget"
+            />
             <DeltaBar
               day={totals.change_day}
               week={totals.change_week}
@@ -676,7 +742,10 @@ export default function FantasyTeamDashboard() {
             </div>
           </Card>
 
-          <Card title="Añadir jugador" className="md:col-span-2 xl:col-span-2">
+          <Card
+            title="Comprar un jugador"
+            className="md:col-span-2 xl:col-span-2"
+          >
             <input
               type="text"
               className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring"
@@ -688,7 +757,7 @@ export default function FantasyTeamDashboard() {
               {filtered.slice(0, 50).map((p) => (
                 <button
                   key={p.name + p.team}
-                  onClick={() => addToTeam(p)}
+                  onClick={() => iniciarCompra(p)}
                   className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between"
                 >
                   <span className="font-medium">{p.name}</span>
@@ -713,7 +782,7 @@ export default function FantasyTeamDashboard() {
                   <Th>Pos.</Th>
                   <Th className="text-right">Valor</Th>
                   <Th className="text-right">Comprado</Th>
-                  <Th className="text-right">Acciones</Th>
+                  <Th className="text-right">Venta</Th>
                   <Th className="text-right">Ganancia</Th>
                   <Th className="text-right">Rentabilidad</Th>
                   <Th className="text-right">Δ día</Th>
@@ -726,33 +795,35 @@ export default function FantasyTeamDashboard() {
               <tbody>
                 {teamPlayers.map((p) => (
                   <tr key={p.name} className="border-b last:border-none">
-                    <Td>{p.name}</Td>
+                    <Td>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="text-xs font-semibold text-gray-400 transition hover:text-red-600"
+                          onClick={() => handleEliminarJugador(p.name)}
+                          aria-label={`Eliminar ${p.name} sin vender`}
+                        >
+                          ×
+                        </button>
+                        <span>{p.name}</span>
+                      </div>
+                    </Td>
                     <Td>{p.team}</Td>
                     <Td>{p.position}</Td>
                     <Td className="text-right">
                       {formatter.format(p.value)}
                     </Td>
                     <Td className="text-right">
-                      <PriceInput
-                        value={p.buyPrice}
-                        onChange={(val) => updateBuyPrice(p.name, val)}
-                        label={`Precio de compra de ${p.name}`}
-                      />
+                      {Number.isFinite(p.precioCompra)
+                        ? formatter.format(p.precioCompra)
+                        : "—"}
                     </Td>
                     <Td className="text-right">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end">
                         <SaleControl
                           player={p}
-                          onSell={(value) => sellPlayer(p, value)}
+                          onSell={(value) => venderJugador(p, value)}
                         />
-                        <button
-                          className="rounded-full border border-gray-200 px-2 text-xs text-gray-500 hover:border-red-500 hover:text-red-600"
-                          onClick={() => removeFromTeam(p.name)}
-                          aria-label={`Quitar ${p.name}`}
-                          type="button"
-                        >
-                          Quitar
-                        </button>
                       </div>
                     </Td>
                     <Td
@@ -905,6 +976,16 @@ export default function FantasyTeamDashboard() {
           público del mercado.
         </footer>
       </div>
+      {playerToBuy && (
+        <PurchaseModal
+          player={playerToBuy}
+          value={purchaseValue}
+          onChange={setPurchaseValue}
+          onCancel={cerrarCompra}
+          onConfirm={handleConfirmarCompra}
+          isValid={purchaseIsValid}
+        />
+      )}
     </div>
   );
 }
@@ -977,7 +1058,7 @@ function SaleControl({ player, onSell, align = "right" }) {
       if (next) {
         const base = Number.isFinite(player?.value)
           ? Math.round(player.value)
-          : player?.buyPrice ?? "";
+          : player?.precioCompra ?? "";
         setValue(base === null || base === undefined ? "" : String(base));
       }
       return next;
@@ -1051,18 +1132,79 @@ function SaleControl({ player, onSell, align = "right" }) {
   );
 }
 
-function PriceInput({ value, onChange, label }) {
+function PurchaseModal({ player, value, onChange, onConfirm, onCancel, isValid }) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onConfirm();
+  };
+
   return (
-    <input
-      type="number"
-      min="0"
-      step="1000"
-      inputMode="numeric"
-      className="w-28 border rounded-lg px-2 py-1 text-right focus:outline-none focus:ring"
-      value={value ?? ""}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder="—"
-      aria-label={label}
-    />
+    <div className="fixed inset-0 z-30 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" onClick={onCancel} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="purchase-modal-title"
+        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+      >
+        <div className="flex items-start justify-between">
+          <h3 id="purchase-modal-title" className="text-lg font-semibold text-gray-900">
+            Comprar a {player.name}
+          </h3>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-xl leading-none text-gray-400 transition hover:text-gray-600"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label className="block text-sm font-medium text-gray-600" htmlFor="purchase-price">
+              Precio de compra
+            </label>
+            <input
+              id="purchase-price"
+              type="number"
+              min="0"
+              step="0.01"
+              inputMode="decimal"
+              className="mt-1 w-full rounded-lg border px-3 py-2 text-right text-base focus:outline-none focus:ring"
+              value={value}
+              onChange={(e) => onChange(e.target.value)}
+              autoFocus
+            />
+            {!isValid && (
+              <p className="mt-1 text-xs text-red-600">
+                Introduce un precio válido mayor que 0.
+              </p>
+            )}
+          </div>
+          <div className="flex justify-end gap-2 text-sm">
+            <button
+              type="button"
+              className="rounded-full px-4 py-1.5 text-gray-500 hover:text-gray-700"
+              onClick={onCancel}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className={`rounded-full px-4 py-1.5 font-semibold ${
+                isValid
+                  ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                  : "bg-gray-200 text-gray-400"
+              }`}
+              disabled={!isValid}
+            >
+              Confirmar compra
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
+

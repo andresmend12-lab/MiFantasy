@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import FantasyTeamDashboard from "./FantasyDashboard";
 
 describe("FantasyTeamDashboard", () => {
@@ -116,24 +116,32 @@ describe("FantasyTeamDashboard", () => {
   it("calcula ganancias, rentabilidad y puntos en la tabla del equipo", async () => {
     window.localStorage.setItem(
       "myTeam",
-      JSON.stringify([{ name: "Nico Williams", buyPrice: 2000000 }])
+      JSON.stringify([{ name: "Nico Williams", precioCompra: 2000000 }])
     );
 
     render(<FantasyTeamDashboard />);
 
-    const input = await screen.findByLabelText(
-      "Precio de compra de Nico Williams"
-    );
-    expect(input).toHaveValue(2000000);
+    const teamTable = await screen.findByTestId("team-table");
+    const playerCell = await within(teamTable).findByText("Nico Williams");
+    const row = playerCell.closest("tr");
+    expect(row).not.toBeNull();
+    if (!row) throw new Error("Fila de Nico Williams no encontrada");
 
-    fireEvent.change(input, { target: { value: "3000000" } });
+    expect(
+      screen.queryByLabelText("Precio de compra de Nico Williams")
+    ).not.toBeInTheDocument();
+    expect(within(row).getByText("2.000.000")).toBeInTheDocument();
 
     expect(await screen.findByTestId("total-value")).toHaveTextContent(
       "2.345.678"
     );
-    expect(screen.getByTestId("total-buy")).toHaveTextContent("3.000.000");
-    expect(screen.getByTestId("total-gain")).toHaveTextContent("-654.322");
-    expect(screen.getByTestId("total-roi")).toHaveTextContent("-21,81%");
+    expect(screen.getByTestId("total-buy")).toHaveTextContent("2.000.000");
+    expect(screen.getByTestId("total-gain")).toHaveTextContent("+345.678");
+    expect(screen.getByTestId("total-roi")).toHaveTextContent("+17,28%");
+    expect(screen.getByTestId("team-budget")).toHaveTextContent(
+      "-8.720.968 €"
+    );
+
     expect(screen.queryByTestId("team-total-points")).not.toBeInTheDocument();
     expect(screen.queryByTestId("team-avg")).not.toBeInTheDocument();
     expect(screen.queryByTestId("team-avg5")).not.toBeInTheDocument();
@@ -145,14 +153,80 @@ describe("FantasyTeamDashboard", () => {
       screen.getByRole("columnheader", { name: "Puntos" })
     ).toBeInTheDocument();
 
-    const teamTable = screen.getByTestId("team-table");
-    expect(within(teamTable).getByText("40,5")).toBeInTheDocument();
+    const teamTableAgain = screen.getByTestId("team-table");
+    expect(within(teamTableAgain).getByText("40,5")).toBeInTheDocument();
+  });
+
+  it("permite comprar un jugador ingresando el precio en el modal", async () => {
+    render(<FantasyTeamDashboard />);
+
+    const buyButton = await screen.findByRole("button", {
+      name: /^Pau Cubarsí/,
+    });
+    fireEvent.click(buyButton);
+
+    const purchaseInput = await screen.findByLabelText("Precio de compra");
+    expect(purchaseInput).toHaveValue(1234567);
+
+    fireEvent.change(purchaseInput, { target: { value: "1500000.5" } });
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar compra" }));
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+
+    const teamTable = await screen.findByTestId("team-table");
+    const row = within(teamTable)
+      .getByText("Pau Cubarsí")
+      .closest("tr");
+    expect(row).not.toBeNull();
+    if (!row) throw new Error("Fila de Pau Cubarsí no encontrada");
+    expect(within(row).getByText("1.500.000,5")).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.getByTestId("team-budget")).toHaveTextContent(
+        "-10.220.968,5 €"
+      )
+    );
+  });
+
+  it("elimina un jugador con la X sin registrar venta ni cambiar el presupuesto", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams", precioCompra: 2000000 }])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    const confirmSpy = jest
+      .spyOn(window, "confirm")
+      .mockReturnValue(true);
+
+    const removeButton = await screen.findByRole("button", {
+      name: "Eliminar Nico Williams sin vender",
+    });
+    fireEvent.click(removeButton);
+
+    await waitFor(() =>
+      expect(
+        within(screen.getByTestId("team-table")).queryByText("Nico Williams")
+      ).not.toBeInTheDocument()
+    );
+
+    expect(screen.getByTestId("team-budget")).toHaveTextContent(
+      "-8.720.968 €"
+    );
+    expect(
+      screen.getByText("Aún no has registrado ventas.")
+    ).toBeInTheDocument();
+
+    confirmSpy.mockRestore();
   });
 
   it("registra una venta y la muestra en la tabla de ventas", async () => {
     window.localStorage.setItem(
       "myTeam",
-      JSON.stringify([{ name: "Pau Cubarsí", buyPrice: 1500000 }])
+      JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
     );
 
     render(<FantasyTeamDashboard />);
@@ -180,5 +254,11 @@ describe("FantasyTeamDashboard", () => {
     expect(within(salesTable).getByText("+500.000")).toBeInTheDocument();
     expect(within(salesTable).getByText("+33,33%"))
       .toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.getByTestId("team-budget")).toHaveTextContent(
+        "-6.720.968 €"
+      )
+    );
   });
 });
