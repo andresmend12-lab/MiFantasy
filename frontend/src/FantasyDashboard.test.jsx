@@ -113,7 +113,7 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.queryByText("Jugadores en mi equipo")).not.toBeInTheDocument();
   });
 
-  it("calcula ganancias, rentabilidad y puntos del equipo", async () => {
+  it("calcula ganancias, rentabilidad y puntos en la tabla del equipo", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Nico Williams", buyPrice: 2000000 }])
@@ -134,11 +134,9 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.getByTestId("total-buy")).toHaveTextContent("3.000.000");
     expect(screen.getByTestId("total-gain")).toHaveTextContent("-654.322");
     expect(screen.getByTestId("total-roi")).toHaveTextContent("-21,81%");
-    expect(screen.getByTestId("team-total-points")).toHaveTextContent(
-      "40,5"
-    );
-    expect(screen.getByTestId("team-avg")).toHaveTextContent("6,8");
-    expect(screen.getByTestId("team-avg5")).toHaveTextContent("6,8");
+    expect(screen.queryByTestId("team-total-points")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("team-avg")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("team-avg5")).not.toBeInTheDocument();
 
     expect(
       screen.queryByRole("columnheader", { name: /historial/i })

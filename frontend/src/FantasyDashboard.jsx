@@ -676,36 +676,6 @@ export default function FantasyTeamDashboard() {
             </div>
           </Card>
 
-          <Card title="Puntos del equipo" className="xl:col-span-2">
-            <SummaryRow
-              label="Puntos totales"
-              value={
-                totals.points_total !== null
-                  ? pointsSummaryFormatter.format(totals.points_total)
-                  : "—"
-              }
-              testId="team-total-points"
-            />
-            <SummaryRow
-              label="Media por jornada"
-              value={
-                totals.avg_points !== null
-                  ? pointsFormatter.format(totals.avg_points)
-                  : "—"
-              }
-              testId="team-avg"
-            />
-            <SummaryRow
-              label="Media últimos 5 partidos"
-              value={
-                totals.avg_points5 !== null
-                  ? pointsFormatter.format(totals.avg_points5)
-                  : "—"
-              }
-              testId="team-avg5"
-            />
-          </Card>
-
           <Card title="Añadir jugador" className="md:col-span-2 xl:col-span-2">
             <input
               type="text"
