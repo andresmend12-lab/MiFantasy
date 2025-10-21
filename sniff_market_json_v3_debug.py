@@ -1,6 +1,6 @@
 # sniff_market_json_v3_debug.py
 from playwright.sync_api import sync_playwright
-import json, re
+import json, re, unicodedata
 from datetime import datetime, timezone
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
@@ -58,6 +58,84 @@ def dedupe_repeated_words(text: str | None) -> str:
     return " ".join(cleaned)
 
 
+def _is_lower_letter(ch: str) -> bool:
+    return ch.isalpha() and ch == ch.lower()
+
+
+def _is_upper_letter(ch: str) -> bool:
+    return ch.isalpha() and ch == ch.upper()
+
+
+def split_camel_chunk(chunk: str) -> list[str]:
+    if not chunk:
+        return []
+    result: list[str] = []
+    current = ""
+    for idx, char in enumerate(chunk):
+        if idx > 0 and _is_upper_letter(char) and _is_lower_letter(chunk[idx - 1]) and len(current) >= 3:
+            result.append(current)
+            current = char
+        else:
+            current += char
+    if current:
+        result.append(current)
+    return result
+
+
+def tokenize_name(text: str | None) -> list[str]:
+    base = normalize_name_text(text)
+    if not base:
+        return []
+    tokens: list[str] = []
+    matcher = re.compile(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9.'’-]+|[^\s]+")
+    for raw in base.split():
+        for part in split_camel_chunk(raw):
+            matches = matcher.findall(part)
+            if matches:
+                tokens.extend(matches)
+            else:
+                tokens.append(part)
+    return tokens
+
+
+def dedupe_trailing_tokens(text: str | None) -> str:
+    tokens = tokenize_name(text)
+    if not tokens:
+        return ""
+
+    def normalize_token(token: str) -> str:
+        base = unicodedata.normalize("NFD", token)
+        base = re.sub(r"[\u0300-\u036f]", "", base)
+        return re.sub(r"[\s.'’´`-]", "", base).casefold()
+
+    deduped: list[str] = []
+    last_norm: str | None = None
+    for token in tokens:
+        norm = normalize_token(token)
+        if norm and norm == last_norm:
+            continue
+        deduped.append(token)
+        last_norm = norm
+
+    end = len(deduped)
+    while end > 0:
+        token = deduped[end - 1]
+        norm = normalize_token(token)
+        if not norm:
+            end -= 1
+            continue
+        preceding = [normalize_token(t) for t in deduped[: end - 1]]
+        if norm in preceding:
+            end -= 1
+            continue
+        if len(norm) <= 2 and any(p.startswith(norm) for p in preceding):
+            end -= 1
+            continue
+        break
+
+    return " ".join(deduped[:end])
+
+
 def dedupe_repeated_suffix(text: str | None) -> str:
     """
     Elimina repeticiones consecutivas del bloque final aunque no exista un separador.
@@ -103,11 +181,12 @@ def dedupe_repeated_suffix(text: str | None) -> str:
 
 
 def clean_name_candidate(text: str | None) -> str:
-    return dedupe_repeated_suffix(
+    return dedupe_trailing_tokens(
+        dedupe_repeated_suffix(
         dedupe_repeated_words(
             dedupe_double_text(text)
         )
-    )
+    ))
 
 def maybe_accept_cookies(page):
     sels = [

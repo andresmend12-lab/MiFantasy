@@ -30,6 +30,89 @@ const dedupeConsecutiveWords = (value) => {
     .join(" ");
 };
 
+const isLowerLetter = (char) => /\p{Ll}/u.test(char);
+const isUpperLetter = (char) => /\p{Lu}/u.test(char);
+
+const splitCamelChunk = (chunk) => {
+  if (!chunk) return [];
+  const result = [];
+  let current = "";
+  for (let i = 0; i < chunk.length; i += 1) {
+    const char = chunk[i];
+    if (i > 0 && isUpperLetter(char) && isLowerLetter(chunk[i - 1]) && current.length >= 3) {
+      result.push(current);
+      current = char;
+    } else {
+      current += char;
+    }
+  }
+  if (current) {
+    result.push(current);
+  }
+  return result;
+};
+
+const tokenizeName = (value) => {
+  const base = collapseWhitespace(normalizeText(value));
+  if (!base) return [];
+  const tokens = [];
+  const matcher = /[\p{L}0-9.'’-]+|[^\s]+/gu;
+  for (const raw of base.split(/\s+/)) {
+    for (const part of splitCamelChunk(raw)) {
+      const matches = part.match(matcher);
+      if (matches) {
+        tokens.push(...matches);
+      } else {
+        tokens.push(part);
+      }
+    }
+  }
+  return tokens;
+};
+
+const dedupeTrailingTokens = (value) => {
+  const tokens = tokenizeName(value);
+  if (!tokens.length) return "";
+  const normalizeToken = (token) =>
+    token
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[\s.'’´`-]/g, "")
+      .toLocaleLowerCase("es-ES");
+  const deduped = [];
+  let lastNorm = null;
+  for (const token of tokens) {
+    const norm = normalizeToken(token);
+    if (norm && norm === lastNorm) {
+      continue;
+    }
+    deduped.push(token);
+    lastNorm = norm;
+  }
+
+  let end = deduped.length;
+  while (end > 0) {
+    const token = deduped[end - 1];
+    const norm = normalizeToken(token);
+    if (!norm) {
+      end -= 1;
+      continue;
+    }
+    const preceding = deduped.slice(0, end - 1).map(normalizeToken);
+    if (preceding.includes(norm)) {
+      end -= 1;
+      continue;
+    }
+    if (norm.length <= 2 && preceding.some((item) => item.startsWith(norm))) {
+      end -= 1;
+      continue;
+    }
+    break;
+  }
+
+  return deduped.slice(0, end).join(" ");
+};
+
 const dedupeTrailingBlock = (value) => {
   const base = collapseWhitespace(normalizeText(value));
   if (!base) return "";
@@ -64,7 +147,10 @@ const sanitizeName = (value) => {
     normalizeText(value)
       .split(/\s*\n\s*/)[0]
   );
-  return dedupeTrailingBlock(dedupeConsecutiveWords(dedupeDuplicateBlock(base)));
+  const cleaned = dedupeTrailingBlock(
+    dedupeConsecutiveWords(dedupeDuplicateBlock(base))
+  );
+  return dedupeTrailingTokens(cleaned);
 };
 
 const toNumber = (value) => {
