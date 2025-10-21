@@ -1,0 +1,7 @@
+{
+  "updated_at": "2025-10-21T09:00:00Z",
+  "players": [
+    { "name": "Jude Bellingham", "team": "Real Madrid", "position": "MC", "value": 32400000, "change_day": -120000, "change_week": 450000 },
+    { "name": "Álvaro Morata", "team": "Atlético", "position": "DL", "value": 15800000, "change_day": 60000, "change_week": 220000 }
+  ]
+}

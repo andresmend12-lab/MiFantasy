@@ -1,0 +1,265 @@
+ import React, { useEffect, useMemo, useState } from "react";
+
+export default function FantasyTeamDashboard() {
+  const [market, setMarket] = useState({ updated_at: null, players: [] });
+  const [query, setQuery] = useState("");
+  const [myTeam, setMyTeam] = useState(() => {
+    try {
+      const raw = localStorage.getItem("myTeam");
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [status, setStatus] = useState("cargando");
+
+  const MARKET_URL = "/market.json";
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        setStatus("cargando");
+        const res = await fetch(MARKET_URL, { cache: "no-store" });
+        if (!res.ok) throw new Error("No se pudo descargar market.json");
+        const data = await res.json();
+        const players = Array.isArray(data.players) ? data.players : [];
+        setMarket({
+          updated_at: data.updated_at || null,
+          players,
+        });
+        setStatus("ok");
+      } catch (e) {
+        console.error(e);
+        setStatus("error");
+      }
+    };
+    load();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("myTeam", JSON.stringify(myTeam));
+  }, [myTeam]);
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return market.players.slice(0, 100);
+    return market.players.filter((p) =>
+      [p.name, p.team, p.position].some((x) =>
+        x.toLowerCase().includes(q)
+      )
+    );
+  }, [query, market.players]);
+
+  const teamPlayers = useMemo(() => {
+    const names = new Set(myTeam.map((t) => t.name.toLowerCase()));
+    return market.players.filter((p) => names.has(p.name.toLowerCase()));
+  }, [myTeam, market.players]);
+
+  const totals = useMemo(() => {
+    const sum = (arr, key) =>
+      arr.reduce((acc, x) => acc + (Number(x[key]) || 0), 0);
+    return {
+      value: sum(teamPlayers, "value"),
+      change_day: sum(teamPlayers, "change_day"),
+      change_week: sum(teamPlayers, "change_week"),
+    };
+  }, [teamPlayers]);
+
+  const addToTeam = (p) => {
+    if (myTeam.some((x) => x.name.toLowerCase() === p.name.toLowerCase()))
+      return;
+    setMyTeam([...myTeam, { name: p.name }]);
+  };
+
+  const removeFromTeam = (name) => {
+    setMyTeam(myTeam.filter((x) => x.name.toLowerCase() !== name.toLowerCase()));
+  };
+
+  const formatter = new Intl.NumberFormat("es-ES");
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
+      <div className="max-w-6xl mx-auto space-y-6">
+        <header className="flex items-center justify-between">
+          <h1 className="text-2xl md:text-3xl font-bold">
+            Mi equipo – LaLiga Fantasy
+          </h1>
+          <div className="text-sm text-gray-600">
+            {status === "ok" && (
+              <span>
+                Última actualización:{" "}
+                {market.updated_at
+                  ? new Date(market.updated_at).toLocaleString("es-ES")
+                  : "desconocida"}
+              </span>
+            )}
+            {status === "cargando" && <span>Cargando mercado…</span>}
+            {status === "error" && (
+              <span className="text-red-600">Error al cargar market.json</span>
+            )}
+          </div>
+        </header>
+
+        {/* Resumen de mi equipo */}
+        <section className="grid md:grid-cols-3 gap-4">
+          <Card title="Valor total">
+            <BigNumber>{formatter.format(totals.value)}</BigNumber>
+            <DeltaBar
+              day={totals.change_day}
+              week={totals.change_week}
+              formatter={formatter}
+            />
+          </Card>
+
+          <Card title="Jugadores en mi equipo">
+            <div className="flex flex-wrap gap-2">
+              {myTeam.length === 0 && (
+                <span className="text-gray-500">
+                  Añade jugadores desde el buscador
+                </span>
+              )}
+              {teamPlayers.map((p) => (
+                <span
+                  key={p.name}
+                  className="px-3 py-1 rounded-full bg-white border shadow-sm text-sm flex items-center gap-2"
+                >
+                  {p.name}
+                  <button
+                    className="text-gray-500 hover:text-red-600"
+                    onClick={() => removeFromTeam(p.name)}
+                    aria-label={`Quitar ${p.name}`}
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
+          </Card>
+
+          <Card title="Añadir jugador">
+            <input
+              type="text"
+              className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring"
+              placeholder="Busca por nombre, equipo o posición…"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            <div className="mt-3 max-h-60 overflow-auto bg-white border rounded-xl divide-y">
+              {filtered.slice(0, 50).map((p) => (
+                <button
+                  key={p.name + p.team}
+                  onClick={() => addToTeam(p)}
+                  className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between"
+                >
+                  <span className="font-medium">{p.name}</span>
+                  <span className="text-xs text-gray-500">
+                    {p.team} · {p.position}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </Card>
+        </section>
+
+        {/* Tabla detallada */}
+        <section className="bg-white border rounded-2xl shadow p-4">
+          <h2 className="text-xl font-semibold mb-3">Detalle del equipo</h2>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead className="bg-gray-100 text-gray-700">
+                <tr>
+                  <Th>Jugador</Th>
+                  <Th>Equipo</Th>
+                  <Th>Pos.</Th>
+                  <Th className="text-right">Valor</Th>
+                  <Th className="text-right">Δ día</Th>
+                  <Th className="text-right">Δ semana</Th>
+                </tr>
+              </thead>
+              <tbody>
+                {teamPlayers.map((p) => (
+                  <tr key={p.name} className="border-b last:border-none">
+                    <Td>{p.name}</Td>
+                    <Td>{p.team}</Td>
+                    <Td>{p.position}</Td>
+                    <Td className="text-right">
+                      {formatter.format(p.value)}
+                    </Td>
+                    <Td
+                      className={`text-right ${
+                        p.change_day >= 0 ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {p.change_day >= 0 ? "+" : ""}
+                      {formatter.format(p.change_day)}
+                    </Td>
+                    <Td
+                      className={`text-right ${
+                        p.change_week >= 0 ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
+                      {p.change_week >= 0 ? "+" : ""}
+                      {formatter.format(p.change_week)}
+                    </Td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <footer className="text-xs text-gray-500">
+          Los datos provienen de un archivo JSON generado a partir del HTML
+          público del mercado.
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function Card({ title, children }) {
+  return (
+    <div className="bg-white rounded-2xl border shadow p-4">
+      <div className="text-sm text-gray-500 mb-2">{title}</div>
+      <div className="space-y-2">{children}</div>
+    </div>
+  );
+}
+
+function BigNumber({ children }) {
+  return <div className="text-3xl font-bold">{children}</div>;
+}
+
+function DeltaBar({ day, week, formatter }) {
+  const Item = ({ label, value }) => (
+    <div className="flex items-center justify-between">
+      <span className="text-xs text-gray-500">{label}</span>
+      <span
+        className={`text-sm ${
+          value >= 0 ? "text-green-600" : "text-red-600"
+        }`}
+      >
+        {value >= 0 ? "+" : ""}
+        {formatter.format(value)}
+      </span>
+    </div>
+  );
+  return (
+    <div className="space-y-1">
+      <Item label="Variación día" value={day} />
+      <Item label="Variación semana" value={week} />
+    </div>
+  );
+}
+
+function Th({ children, className = "" }) {
+  return (
+    <th className={`px-3 py-2 font-semibold text-left ${className}`}>
+      {children}
+    </th>
+  );
+}
+
+function Td({ children, className = "" }) {
+  return <td className={`px-3 py-2 ${className}`}>{children}</td>;
+}
