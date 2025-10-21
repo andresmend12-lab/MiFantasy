@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import FantasyTeamDashboard from "./FantasyDashboard";
 
 describe("FantasyTeamDashboard", () => {
@@ -112,7 +112,7 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.queryByText("Iñaki WilliamsI. Williams")).not.toBeInTheDocument();
   });
 
-  it("calcula ganancias, rentabilidad y medias de puntos", async () => {
+  it("calcula ganancias, rentabilidad y puntos del equipo", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Nico Williams", buyPrice: 2000000 }])
@@ -133,10 +133,53 @@ describe("FantasyTeamDashboard", () => {
     expect(screen.getByTestId("total-buy")).toHaveTextContent("3.000.000");
     expect(screen.getByTestId("total-gain")).toHaveTextContent("-654.322");
     expect(screen.getByTestId("total-roi")).toHaveTextContent("-21,81%");
+    expect(screen.getByTestId("team-total-points")).toHaveTextContent(
+      "40,5"
+    );
     expect(screen.getByTestId("team-avg")).toHaveTextContent("6,8");
     expect(screen.getByTestId("team-avg5")).toHaveTextContent("6,8");
 
-    expect(await screen.findByText("J15: 6,0")).toBeInTheDocument();
-    expect(screen.getByText("J14: 9,0")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("columnheader", { name: /historial/i })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("columnheader", { name: "Puntos" })
+    ).toBeInTheDocument();
+
+    const teamTable = screen.getByTestId("team-table");
+    expect(within(teamTable).getByText("40,5")).toBeInTheDocument();
+  });
+
+  it("registra una venta y la muestra en la tabla de ventas", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Pau Cubarsí", buyPrice: 1500000 }])
+    );
+
+    render(<FantasyTeamDashboard />);
+
+    const sellButtons = await screen.findAllByRole("button", {
+      name: "Vender a Pau Cubarsí",
+    });
+    const sellButton = sellButtons[sellButtons.length - 1];
+    fireEvent.click(sellButton);
+
+    const sellInput = await screen.findByLabelText(
+      "Precio de venta de Pau Cubarsí"
+    );
+    fireEvent.change(sellInput, { target: { value: "2000000" } });
+
+    fireEvent.click(screen.getByRole("button", { name: "Confirmar venta" }));
+
+    const updatedTeamTable = await screen.findByTestId("team-table");
+    expect(within(updatedTeamTable).queryByText("Pau Cubarsí")).not.toBeInTheDocument();
+
+    const salesTable = screen.getByTestId("sales-table");
+    expect(within(salesTable).getByText("Pau Cubarsí")).toBeInTheDocument();
+    expect(within(salesTable).getByText("1.500.000")).toBeInTheDocument();
+    expect(within(salesTable).getByText("2.000.000")).toBeInTheDocument();
+    expect(within(salesTable).getByText("+500.000")).toBeInTheDocument();
+    expect(within(salesTable).getByText("+33,33%"))
+      .toBeInTheDocument();
   });
 });

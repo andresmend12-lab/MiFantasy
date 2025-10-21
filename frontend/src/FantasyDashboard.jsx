@@ -241,6 +241,15 @@ const normalizePointsHistory = (value) => {
   return Array.from(entries.values()).sort((a, b) => a.matchday - b.matchday);
 };
 
+const historyTotal = (history) => {
+  if (!history.length) return null;
+  const values = history
+    .map((item) => toOptionalNumber(item.points))
+    .filter((value) => value !== null);
+  if (!values.length) return null;
+  return values.reduce((acc, value) => acc + value, 0);
+};
+
 const historyAverage = (history, lastCount = null) => {
   if (!history.length) return null;
   const items =
@@ -284,6 +293,15 @@ const normalizePlayer = (player) => {
 
   const avgFromHistory = directAvg ?? historyAverage(history);
   const last5FromHistory = directLast5 ?? historyAverage(history, 5);
+  const directTotal = toOptionalNumber(
+    player?.points_total ??
+      player?.total_points ??
+      player?.totalPoints ??
+      player?.puntos_totales ??
+      player?.puntos ??
+      player?.points
+  );
+  const totalFromHistory = historyTotal(history);
 
   return {
     ...player,
@@ -296,6 +314,7 @@ const normalizePlayer = (player) => {
     points_history: history,
     points_avg: avgFromHistory,
     points_last5: last5FromHistory,
+    points_total: directTotal ?? totalFromHistory,
   };
 };
 
@@ -320,6 +339,26 @@ const sanitizeStoredTeam = (entries) => {
   }, []);
 };
 
+const sanitizeStoredSales = (entries) => {
+  if (!Array.isArray(entries)) return [];
+  return entries.reduce((acc, item) => {
+    const name = sanitizeName(item?.name);
+    if (!name) return acc;
+    const buyPrice = toOptionalNumber(item?.buyPrice ?? item?.buy_price);
+    const sellPrice = toOptionalNumber(item?.sellPrice ?? item?.sell_price);
+    const soldAtRaw = collapseWhitespace(
+      normalizeText(item?.soldAt ?? item?.sold_at)
+    );
+    acc.push({
+      name,
+      buyPrice,
+      sellPrice,
+      soldAt: soldAtRaw || null,
+    });
+    return acc;
+  }, []);
+};
+
 export default function FantasyTeamDashboard() {
   const [market, setMarket] = useState({ updated_at: null, players: [] });
   const [query, setQuery] = useState("");
@@ -327,6 +366,14 @@ export default function FantasyTeamDashboard() {
     try {
       const raw = localStorage.getItem("myTeam");
       return raw ? sanitizeStoredTeam(JSON.parse(raw)) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [sales, setSales] = useState(() => {
+    try {
+      const raw = localStorage.getItem("mySales");
+      return raw ? sanitizeStoredSales(JSON.parse(raw)) : [];
     } catch {
       return [];
     }
@@ -361,6 +408,10 @@ export default function FantasyTeamDashboard() {
   useEffect(() => {
     localStorage.setItem("myTeam", JSON.stringify(myTeam));
   }, [myTeam]);
+
+  useEffect(() => {
+    localStorage.setItem("mySales", JSON.stringify(sales));
+  }, [sales]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -403,7 +454,7 @@ export default function FantasyTeamDashboard() {
   const totals = useMemo(() => {
     const sum = (arr, key) =>
       arr.reduce((acc, item) => {
-        const value = Number(item[key]);
+        const value = item[key];
         return Number.isFinite(value) ? acc + value : acc;
       }, 0);
     const aggregate = (arr, key) =>
@@ -423,6 +474,7 @@ export default function FantasyTeamDashboard() {
     const avgAll = aggregate(teamPlayers, "points_avg");
     const avgRecent = aggregate(teamPlayers, "points_last5");
     const roi = buy.sum > 0 && gain.count > 0 ? (gain.sum / buy.sum) * 100 : null;
+    const pointsTotal = teamPlayers.length > 0 ? sum(teamPlayers, "points_total") : null;
     return {
       value: sum(teamPlayers, "value"),
       change_day: sum(teamPlayers, "change_day"),
@@ -433,6 +485,7 @@ export default function FantasyTeamDashboard() {
       roi,
       avg_points: avgAll.count > 0 ? avgAll.sum / avgAll.count : null,
       avg_points5: avgRecent.count > 0 ? avgRecent.sum / avgRecent.count : null,
+      points_total: pointsTotal,
     };
   }, [teamPlayers]);
 
@@ -475,6 +528,48 @@ export default function FantasyTeamDashboard() {
     });
   };
 
+  const sellPlayer = (player, saleInput) => {
+    const sellPrice = toOptionalNumber(saleInput);
+    if (sellPrice === null) return;
+    const buyPrice = toOptionalNumber(player.buyPrice);
+    const soldAt = new Date().toISOString();
+    setSales((prev) => [
+      ...prev,
+      {
+        name: player.name,
+        buyPrice,
+        sellPrice,
+        soldAt,
+      },
+    ]);
+    setMyTeam((prev) =>
+      prev.filter((x) => x.name.toLowerCase() !== player.name.toLowerCase())
+    );
+  };
+
+  const saleRecords = useMemo(
+    () =>
+      sales.map((entry, index) => {
+        const buyPrice = entry.buyPrice;
+        const sellPrice = entry.sellPrice;
+        const gain =
+          sellPrice !== null && buyPrice !== null
+            ? sellPrice - buyPrice
+            : sellPrice;
+        const roi =
+          sellPrice !== null && buyPrice !== null && buyPrice > 0
+            ? ((sellPrice - buyPrice) / buyPrice) * 100
+            : null;
+        return {
+          ...entry,
+          key: `${entry.name}-${entry.soldAt ?? index}`,
+          gain,
+          roi,
+        };
+      }),
+    [sales]
+  );
+
   const formatter = new Intl.NumberFormat("es-ES");
   const percentFormatter = new Intl.NumberFormat("es-ES", {
     maximumFractionDigits: 2,
@@ -484,6 +579,17 @@ export default function FantasyTeamDashboard() {
     maximumFractionDigits: 1,
     minimumFractionDigits: 1,
   });
+  const pointsSummaryFormatter = new Intl.NumberFormat("es-ES", {
+    maximumFractionDigits: 1,
+    minimumFractionDigits: 0,
+  });
+
+  const formatSoldAt = (value) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    return date.toLocaleString("es-ES");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
@@ -570,7 +676,16 @@ export default function FantasyTeamDashboard() {
             </div>
           </Card>
 
-          <Card title="Medias de puntos" className="xl:col-span-2">
+          <Card title="Puntos del equipo" className="xl:col-span-2">
+            <SummaryRow
+              label="Puntos totales"
+              value={
+                totals.points_total !== null
+                  ? pointsSummaryFormatter.format(totals.points_total)
+                  : "—"
+              }
+              testId="team-total-points"
+            />
             <SummaryRow
               label="Media por jornada"
               value={
@@ -604,9 +719,14 @@ export default function FantasyTeamDashboard() {
               {teamPlayers.map((p) => (
                 <span
                   key={p.name}
-                  className="px-3 py-1 rounded-full bg-white border shadow-sm text-sm flex items-center gap-2"
+                  className="relative px-3 py-1 rounded-full bg-white border shadow-sm text-sm flex items-center gap-2"
                 >
                   {p.name}
+                  <SaleControl
+                    player={p}
+                    onSell={(value) => sellPlayer(p, value)}
+                    align="left"
+                  />
                   <button
                     className="text-gray-500 hover:text-red-600"
                     onClick={() => removeFromTeam(p.name)}
@@ -648,7 +768,7 @@ export default function FantasyTeamDashboard() {
         <section className="bg-white border rounded-2xl shadow p-4">
           <h2 className="text-xl font-semibold mb-3">Detalle del equipo</h2>
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
+            <table className="min-w-full text-sm" data-testid="team-table">
               <thead className="bg-gray-100 text-gray-700">
                 <tr>
                   <Th>Jugador</Th>
@@ -656,13 +776,14 @@ export default function FantasyTeamDashboard() {
                   <Th>Pos.</Th>
                   <Th className="text-right">Valor</Th>
                   <Th className="text-right">Comprado</Th>
+                  <Th className="text-right">Acciones</Th>
                   <Th className="text-right">Ganancia</Th>
                   <Th className="text-right">Rentabilidad</Th>
                   <Th className="text-right">Δ día</Th>
                   <Th className="text-right">Δ semana</Th>
+                  <Th className="text-right">Puntos</Th>
                   <Th className="text-right">Media</Th>
                   <Th className="text-right">Media (5)</Th>
-                  <Th className="text-right">Historial (5)</Th>
                 </tr>
               </thead>
               <tbody>
@@ -680,6 +801,22 @@ export default function FantasyTeamDashboard() {
                         onChange={(val) => updateBuyPrice(p.name, val)}
                         label={`Precio de compra de ${p.name}`}
                       />
+                    </Td>
+                    <Td className="text-right">
+                      <div className="flex justify-end gap-2">
+                        <SaleControl
+                          player={p}
+                          onSell={(value) => sellPlayer(p, value)}
+                        />
+                        <button
+                          className="rounded-full border border-gray-200 px-2 text-xs text-gray-500 hover:border-red-500 hover:text-red-600"
+                          onClick={() => removeFromTeam(p.name)}
+                          aria-label={`Quitar ${p.name}`}
+                          type="button"
+                        >
+                          Quitar
+                        </button>
+                      </div>
                     </Td>
                     <Td
                       className={`text-right ${
@@ -728,6 +865,11 @@ export default function FantasyTeamDashboard() {
                       {formatter.format(p.change_week)}
                     </Td>
                     <Td className="text-right text-gray-700">
+                      {p.points_total !== null
+                        ? pointsFormatter.format(p.points_total)
+                        : "—"}
+                    </Td>
+                    <Td className="text-right text-gray-700">
                       {p.points_avg !== null
                         ? pointsFormatter.format(p.points_avg)
                         : "—"}
@@ -737,29 +879,88 @@ export default function FantasyTeamDashboard() {
                         ? pointsFormatter.format(p.points_last5)
                         : "—"}
                     </Td>
-                    <Td className="text-right text-gray-700">
-                      {p.points_history.length ? (
-                        <div className="flex flex-wrap justify-end gap-1">
-                          {p.points_history
-                            .slice(-5)
-                            .map(({ matchday, points }) => (
-                              <span
-                                key={matchday}
-                                className="inline-flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700"
-                              >
-                                {`J${matchday}: ${pointsFormatter.format(points)}`}
-                              </span>
-                            ))}
-                        </div>
-                      ) : (
-                        <span className="text-gray-400">—</span>
-                      )}
-                    </Td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+        </section>
+
+        <section className="bg-white border rounded-2xl shadow p-4">
+          <h2 className="text-xl font-semibold mb-3">Ventas realizadas</h2>
+          {saleRecords.length === 0 ? (
+            <p className="text-sm text-gray-500">
+              Aún no has registrado ventas.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-sm" data-testid="sales-table">
+                <thead className="bg-gray-100 text-gray-700">
+                  <tr>
+                    <Th>Jugador</Th>
+                    <Th className="text-right">Comprado</Th>
+                    <Th className="text-right">Vendido</Th>
+                    <Th className="text-right">Ganancia</Th>
+                    <Th className="text-right">Rentabilidad</Th>
+                    <Th className="text-right">Fecha</Th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {saleRecords.map((sale, index) => (
+                    <tr
+                      key={sale.key || `${sale.name}-${index}`}
+                      className="border-b last:border-none"
+                    >
+                      <Td>{sale.name}</Td>
+                      <Td className="text-right">
+                        {sale.buyPrice !== null
+                          ? formatter.format(sale.buyPrice)
+                          : "—"}
+                      </Td>
+                      <Td className="text-right">
+                        {sale.sellPrice !== null
+                          ? formatter.format(sale.sellPrice)
+                          : "—"}
+                      </Td>
+                      <Td
+                        className={`text-right ${
+                          sale.gain !== null
+                            ? sale.gain >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {sale.gain !== null
+                          ? `${sale.gain >= 0 ? "+" : "-"}${formatter.format(
+                              Math.abs(sale.gain)
+                            )}`
+                          : "—"}
+                      </Td>
+                      <Td
+                        className={`text-right ${
+                          sale.roi !== null
+                            ? sale.roi >= 0
+                              ? "text-green-600"
+                              : "text-red-600"
+                            : "text-gray-500"
+                        }`}
+                      >
+                        {sale.roi !== null
+                          ? `${sale.roi >= 0 ? "+" : "-"}${percentFormatter.format(
+                              Math.abs(sale.roi)
+                            )}%`
+                          : "—"}
+                      </Td>
+                      <Td className="text-right text-gray-600">
+                        {formatSoldAt(sale.soldAt)}
+                      </Td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </section>
 
         <footer className="text-xs text-gray-500">
@@ -825,6 +1026,90 @@ function SummaryRow({ label, value, valueClassName = "", testId }) {
       <span className={`font-medium ${valueClassName}`} data-testid={testId}>
         {value}
       </span>
+    </div>
+  );
+}
+
+function SaleControl({ player, onSell, align = "right" }) {
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
+
+  const toggle = () => {
+    setOpen((prev) => {
+      const next = !prev;
+      if (next) {
+        const base = Number.isFinite(player?.value)
+          ? Math.round(player.value)
+          : player?.buyPrice ?? "";
+        setValue(base === null || base === undefined ? "" : String(base));
+      }
+      return next;
+    });
+  };
+
+  const parsed = toOptionalNumber(value);
+
+  const handleConfirm = () => {
+    if (parsed === null) return;
+    onSell(parsed);
+    setOpen(false);
+  };
+
+  return (
+    <div className="relative inline-block text-left">
+      <button
+        type="button"
+        className="text-xs font-medium text-indigo-600 hover:text-indigo-800"
+        onClick={toggle}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-label={`Vender a ${player.name}`}
+      >
+        Vender
+      </button>
+      {open && (
+        <div
+          className={`absolute z-20 mt-2 w-56 rounded-xl border bg-white p-3 shadow-lg ${
+            align === "left" ? "left-0" : "right-0"
+          }`}
+        >
+          <div className="space-y-2">
+            <label className="block text-xs font-medium text-gray-600">
+              Precio de venta de {player.name}
+              <input
+                type="number"
+                min="0"
+                step="1000"
+                inputMode="numeric"
+                className="mt-1 w-full rounded-lg border px-2 py-1 text-right focus:outline-none focus:ring"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+              />
+            </label>
+            <div className="flex justify-end gap-2 text-xs">
+              <button
+                type="button"
+                className="rounded-full px-3 py-1 text-gray-500 hover:text-gray-700"
+                onClick={() => setOpen(false)}
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                className={`rounded-full px-3 py-1 font-semibold ${
+                  parsed === null
+                    ? "bg-gray-200 text-gray-400"
+                    : "bg-indigo-600 text-white hover:bg-indigo-700"
+                }`}
+                onClick={handleConfirm}
+                disabled={parsed === null}
+              >
+                Confirmar venta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

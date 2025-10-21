@@ -368,6 +368,15 @@ def compute_average_from_history(history: list[dict], last: int | None = None) -
         return None
     return sum(values) / len(values)
 
+
+def compute_total_points(history: list[dict]) -> float | None:
+    if not history:
+        return None
+    values = [item["points"] for item in history if isinstance(item.get("points"), (int, float))]
+    if not values:
+        return None
+    return float(sum(values))
+
 def normalize_name_text(text: str | None) -> str:
     if not text:
         return ""
@@ -680,9 +689,22 @@ def extract_all(page):
             "data-ult5",
             "data-puntos5",
         )
+        total_points_attr = grab_first(
+            "data-puntos-total",
+            "data-puntos_total",
+            "data-puntos-totales",
+            "data-puntos_totales",
+            "data-total-puntos",
+            "data-total_puntos",
+            "data-totalpuntos",
+            "data-puntos-temporada",
+            "data-puntos-season",
+            "data-puntos_temporada",
+        )
 
         data["points_avg"] = to_float(avg_points_attr)
         data["points_last5"] = to_float(recent_points_attr)
+        data["points_total"] = to_float(total_points_attr)
 
         if pid is not None and pid in history_cache:
             history = history_cache[pid]
@@ -701,6 +723,11 @@ def extract_all(page):
             recent_from_history = compute_average_from_history(history, last=5)
             if recent_from_history is not None:
                 data["points_last5"] = recent_from_history
+
+        if data["points_total"] is None:
+            total_from_history = compute_total_points(history)
+            if total_from_history is not None:
+                data["points_total"] = total_from_history
 
         # Debug de lectura por jugador
         val_fmt = f"{data['value']:,}".replace(",", ".")
