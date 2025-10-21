@@ -245,6 +245,35 @@ describe("FantasyTeamDashboard", () => {
     );
   });
 
+  it("permite modificar manualmente el presupuesto del equipo", async () => {
+    render(<FantasyTeamDashboard />);
+
+    const editButton = await screen.findByRole("button", {
+      name: "Modificar presupuesto del equipo",
+    });
+    fireEvent.click(editButton);
+
+    const budgetInput = await screen.findByLabelText("Nuevo presupuesto");
+    expect(budgetInput).toHaveValue(-8720968);
+
+    fireEvent.change(budgetInput, { target: { value: "1000000" } });
+
+    const saveButton = screen.getByRole("button", { name: "Guardar presupuesto" });
+    expect(saveButton).not.toBeDisabled();
+
+    fireEvent.click(saveButton);
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("team-budget")).toHaveTextContent(
+        /1\.000\.000\s?€/
+      )
+    );
+  });
+
   it("elimina un jugador con la X sin registrar venta ni cambiar el presupuesto", async () => {
     window.localStorage.setItem(
       "myTeam",

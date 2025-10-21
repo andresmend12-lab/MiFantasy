@@ -1163,6 +1163,13 @@ export default function FantasyTeamDashboard() {
   const [formacionesIncompletas, setFormacionesIncompletas] = useState([]);
   const [recomendacionSeleccionada, setRecomendacionSeleccionada] = useState(null);
   const recommendationScoresRef = useRef(new Map());
+  const [editBudgetOpen, setEditBudgetOpen] = useState(false);
+  const [budgetDraft, setBudgetDraft] = useState("");
+  const budgetParsed = useMemo(
+    () => toOptionalNumber(budgetDraft),
+    [budgetDraft]
+  );
+  const budgetIsValid = budgetParsed !== null;
 
   const MARKET_URL = "/market.json";
 
@@ -2261,6 +2268,24 @@ export default function FantasyTeamDashboard() {
         : "text-gray-600 hover:text-gray-900"
     }`;
 
+  const openBudgetEditor = useCallback(() => {
+    setBudgetDraft(
+      Number.isFinite(presupuestoActual) ? String(presupuestoActual) : ""
+    );
+    setEditBudgetOpen(true);
+  }, [presupuestoActual]);
+
+  const closeBudgetEditor = useCallback(() => {
+    setEditBudgetOpen(false);
+    setBudgetDraft("");
+  }, []);
+
+  const confirmBudgetEdit = useCallback(() => {
+    if (budgetParsed === null) return;
+    setPresupuestoActual(budgetParsed);
+    closeBudgetEditor();
+  }, [budgetParsed, closeBudgetEditor]);
+
   const dashboardView = (
     <>
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -2277,6 +2302,17 @@ export default function FantasyTeamDashboard() {
               presupuestoActual >= 0 ? "text-green-600" : "text-red-600"
             }
             testId="team-budget"
+            actions={
+              <button
+                type="button"
+                className="rounded-full border border-indigo-200 px-2 py-0.5 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50 focus:outline-none focus-visible:ring focus-visible:ring-indigo-200"
+                onClick={openBudgetEditor}
+                aria-label="Modificar presupuesto del equipo"
+                aria-haspopup="dialog"
+              >
+                Modificar
+              </button>
+            }
           />
           <DeltaBar
             day={totals.change_day}
@@ -2996,6 +3032,15 @@ export default function FantasyTeamDashboard() {
           fetchedAt={detailScoreInfo.fetchedAt}
         />
       )}
+      {editBudgetOpen && (
+        <EditBudgetModal
+          value={budgetDraft}
+          onChange={setBudgetDraft}
+          onCancel={closeBudgetEditor}
+          onConfirm={confirmBudgetEdit}
+          isValid={budgetIsValid}
+        />
+      )}
       {playerToBuy && (
         <PurchaseModal
           player={playerToBuy}
@@ -3065,13 +3110,16 @@ function Td({ children, className = "" }) {
   return <td className={`px-3 py-2 ${className}`}>{children}</td>;
 }
 
-function SummaryRow({ label, value, valueClassName = "", testId }) {
+function SummaryRow({ label, value, valueClassName = "", testId, actions = null }) {
   return (
     <div className="flex items-center justify-between text-sm">
       <span className="text-gray-500">{label}</span>
-      <span className={`font-medium ${valueClassName}`} data-testid={testId}>
-        {value}
-      </span>
+      <div className="flex items-center gap-2">
+        <span className={`font-medium ${valueClassName}`} data-testid={testId}>
+          {value}
+        </span>
+        {actions}
+      </div>
     </div>
   );
 }
@@ -3156,6 +3204,85 @@ function SaleControl({ player, onSell, align = "right" }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function EditBudgetModal({ value, onChange, onCancel, onConfirm, isValid }) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onConfirm();
+  };
+
+  return (
+    <div className="fixed inset-0 z-30 flex items-center justify-center px-4">
+      <div className="absolute inset-0 bg-black/40" aria-hidden="true" onClick={onCancel} />
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="edit-budget-modal-title"
+        className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl"
+      >
+        <div className="flex items-start justify-between">
+          <h3
+            id="edit-budget-modal-title"
+            className="text-lg font-semibold text-gray-900"
+          >
+            Modificar presupuesto del equipo
+          </h3>
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-xl leading-none text-gray-400 transition hover:text-gray-600"
+            aria-label="Cerrar"
+          >
+            ×
+          </button>
+        </div>
+        <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label
+              className="block text-sm font-medium text-gray-600"
+              htmlFor="budget-input"
+            >
+              Nuevo presupuesto
+            </label>
+            <input
+              id="budget-input"
+              type="number"
+              step="0.01"
+              inputMode="decimal"
+              autoFocus
+              className="mt-1 w-full rounded-lg border px-3 py-2 text-right focus:outline-none focus:ring"
+              value={value}
+              onChange={(event) => onChange(event.target.value)}
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Introduce la cantidad exacta que quieras guardar, con o sin decimales.
+            </p>
+          </div>
+          <div className="flex justify-end gap-2 text-sm">
+            <button
+              type="button"
+              className="rounded-full px-3 py-1 text-gray-500 hover:text-gray-700"
+              onClick={onCancel}
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className={`rounded-full px-3 py-1 font-semibold ${
+                isValid
+                  ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                  : "bg-gray-200 text-gray-400"
+              }`}
+              disabled={!isValid}
+            >
+              Guardar presupuesto
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
