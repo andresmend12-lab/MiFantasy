@@ -189,6 +189,78 @@ const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
+const SNIFFER_COMMAND_ENDPOINTS = {
+  market: "/api/sniff/market",
+  points: "/api/sniff/points",
+};
+
+const getSnifferFriendlyName = (type) =>
+  type === "points"
+    ? "puntos de jornada"
+    : type === "market"
+    ? "valor de mercado"
+    : "actualización";
+
+async function executeSnifferCommand(type) {
+  const endpoint = SNIFFER_COMMAND_ENDPOINTS[type];
+  if (!endpoint) {
+    return null;
+  }
+  if (typeof fetch !== "function") {
+    const error = new Error(
+      `No se puede ejecutar la ${getSnifferFriendlyName(
+        type
+      )} desde este entorno.`
+    );
+    error.isSnifferCommandError = true;
+    throw error;
+  }
+
+  let response;
+  try {
+    response = await fetch(endpoint, { method: "POST" });
+  } catch (networkError) {
+    const error = new Error(
+      `No se pudo lanzar la ${getSnifferFriendlyName(type)} (${networkError?.message ?? "error de red"}).`
+    );
+    error.isSnifferCommandError = true;
+    error.cause = networkError;
+    throw error;
+  }
+
+  if (!response || !response.ok) {
+    let details = "";
+    try {
+      details = await response.text();
+    } catch {
+      /* noop */
+    }
+    const message = details?.trim()
+      ? details.trim()
+      : `La ${getSnifferFriendlyName(type)} finalizó con errores (${response?.status ?? "desconocido"}).`;
+    const error = new Error(message);
+    error.isSnifferCommandError = true;
+    error.status = response?.status;
+    throw error;
+  }
+
+  try {
+    const contentType = response.headers?.get?.("content-type") ?? "";
+    if (contentType.includes("application/json")) {
+      return await response.json();
+    }
+  } catch {
+    /* ignore parse errors */
+  }
+
+  try {
+    await response.text();
+  } catch {
+    /* noop */
+  }
+  return null;
+}
+
 const sanitizeMarketCacheValue = (value) => {
   const parsed = toOptionalNumber(value);
   return parsed !== null ? parsed : null;
@@ -321,25 +393,37 @@ async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = 
 }
 
 export async function sniff_market_json_v3_debug_market(options = {}) {
-  const ids = storeControl.getPlayerIds();
-  if (!ids.length) {
-    return [];
-  }
   storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
-  const results = await runMarketSniffer(ids, options);
-  storeControl.pushToast?.("Actualización completada", { type: "success" });
-  return results;
+  try {
+    await executeSnifferCommand("market");
+    const ids = storeControl.getPlayerIds();
+    const results = ids.length ? await runMarketSniffer(ids, options) : [];
+    storeControl.pushToast?.("Actualización completada", { type: "success" });
+    return results;
+  } catch (error) {
+    storeControl.pushToast?.(
+      error?.message ?? "No se pudo completar la actualización de mercado.",
+      { type: "error" }
+    );
+    throw error;
+  }
 }
 
 export async function sniff_market_json_v3_debug_points(options = {}) {
-  const ids = storeControl.getPlayerIds();
-  if (!ids.length) {
-    return [];
-  }
   storeControl.pushToast?.("Actualizando puntos de jornada…", { type: "info" });
-  const results = await runPointsSniffer(ids, options);
-  storeControl.pushToast?.("Actualización completada", { type: "success" });
-  return results;
+  try {
+    await executeSnifferCommand("points");
+    const ids = storeControl.getPlayerIds();
+    const results = ids.length ? await runPointsSniffer(ids, options) : [];
+    storeControl.pushToast?.("Actualización completada", { type: "success" });
+    return results;
+  } catch (error) {
+    storeControl.pushToast?.(
+      error?.message ?? "No se pudo completar la actualización de puntos.",
+      { type: "error" }
+    );
+    throw error;
+  }
 }
 
 const normalizeScoreEntries = (value) =>
@@ -2324,9 +2408,11 @@ export default function FantasyTeamDashboard() {
       await sniff_market_json_v3_debug_market({ concurrency: 4 });
     } catch (error) {
       console.warn("Error al actualizar los valores de mercado", error);
-      pushToast("Hubo errores al actualizar el valor de mercado.", {
-        type: "warning",
-      });
+      if (!error?.isSnifferCommandError) {
+        pushToast("Hubo errores al actualizar el valor de mercado.", {
+          type: "warning",
+        });
+      }
     } finally {
       setMarketSnifferRunning(false);
     }
@@ -2339,9 +2425,11 @@ export default function FantasyTeamDashboard() {
       await sniff_market_json_v3_debug_points({ concurrency: 3 });
     } catch (error) {
       console.warn("Error al actualizar las puntuaciones", error);
-      pushToast("Hubo errores al actualizar las puntuaciones.", {
-        type: "warning",
-      });
+      if (!error?.isSnifferCommandError) {
+        pushToast("Hubo errores al actualizar las puntuaciones.", {
+          type: "warning",
+        });
+      }
     } finally {
       setPointsSnifferRunning(false);
     }

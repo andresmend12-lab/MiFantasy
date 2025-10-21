@@ -24,6 +24,12 @@ describe("FantasyTeamDashboard", () => {
       };
     };
     global.fetch = jest.fn((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(createJsonResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(createJsonResponse({ success: true }));
+      }
       if (typeof url === "string" && url.includes("/api/v3/player/")) {
         return Promise.resolve(
           createJsonResponse({
@@ -237,6 +243,12 @@ describe("FantasyTeamDashboard", () => {
     };
 
     global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
       if (typeof url === "string" && url.includes("/api/v3/player/")) {
         playerFetchCount += 1;
         return Promise.resolve(
@@ -375,6 +387,12 @@ describe("FantasyTeamDashboard", () => {
 
     let marketCall = 0;
     global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
       if (typeof url === "string" && url.includes("/api/v3/player/")) {
         return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
       }
@@ -443,6 +461,12 @@ describe("FantasyTeamDashboard", () => {
 
     let marketCall = 0;
     global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
       if (typeof url === "string" && url.includes("/api/v3/player/")) {
         return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
       }
