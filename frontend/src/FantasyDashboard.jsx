@@ -158,6 +158,23 @@ const toNumber = (value) => {
   return Number.isFinite(num) ? num : 0;
 };
 
+const toOptionalNumber = (value) => {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+  const base = collapseWhitespace(normalizeText(value));
+  if (!base) return null;
+  let cleaned = base.replace(/%/g, "");
+  if (cleaned.includes(",")) {
+    cleaned = cleaned.replace(/\./g, "").replace(/,/g, ".");
+  }
+  cleaned = cleaned.replace(/[^0-9.+-]/g, "").trim();
+  if (!cleaned) return null;
+  const num = Number(cleaned);
+  return Number.isFinite(num) ? num : null;
+};
+
 const fmtEUR = new Intl.NumberFormat("es-ES", {
   style: "currency",
   currency: "EUR",
@@ -165,10 +182,165 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
   maximumFractionDigits: 2,
 });
 
+const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
+const MARKET_ENDPOINT = "/market.json";
 const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+
+const sanitizeMarketCacheValue = (value) => {
+  const parsed = toOptionalNumber(value);
+  return parsed !== null ? parsed : null;
+};
+
+const sanitizeMarketCache = (value) => {
+  if (!value || typeof value !== "object") return {};
+  return Object.entries(value).reduce((acc, [key, entry]) => {
+    if (!key) return acc;
+    const num = sanitizeMarketCacheValue(entry);
+    if (num !== null) {
+      acc[key] = num;
+    }
+    return acc;
+  }, {});
+};
+
+const sleep = (ms) =>
+  new Promise((resolve) => {
+    const timeout = Number.isFinite(ms) && ms > 0 ? ms : 0;
+    setTimeout(resolve, timeout);
+  });
+
+const store = {
+  jugadoresEquipo: [],
+  cacheMercado: {},
+  cachePuntuaciones: {},
+};
+
+const storeControl = {
+  refreshMarketFor: null,
+  refreshPointsFor: null,
+  pushToast: null,
+  getPlayerIds: () =>
+    store.jugadoresEquipo
+      .map((jugador) =>
+        jugador?.id !== null && jugador?.id !== undefined
+          ? Number(jugador.id)
+          : null
+      )
+      .filter((value) => Number.isFinite(value)),
+};
+
+const toastStyles = {
+  info: "border border-gray-200 bg-white text-gray-700",
+  success: "border border-green-200 bg-green-50 text-green-700",
+  warning: "border border-yellow-200 bg-yellow-50 text-yellow-700",
+  error: "border border-red-200 bg-red-50 text-red-700",
+};
+
+const runWithConcurrency = async (items, concurrency, handler) => {
+  const queue = Array.from(items);
+  if (!queue.length) {
+    return [];
+  }
+  const results = [];
+  let nextIndex = 0;
+  const takeNext = () => {
+    if (nextIndex >= queue.length) {
+      return null;
+    }
+    const value = queue[nextIndex];
+    nextIndex += 1;
+    return value;
+  };
+  const workers = Array.from(
+    { length: Math.max(1, Math.min(concurrency ?? 1, queue.length)) },
+    () =>
+      (async () => {
+        while (true) {
+          const item = takeNext();
+          if (item === null) {
+            break;
+          }
+          try {
+            const result = await handler(item);
+            results.push({ status: "fulfilled", value: result, item });
+          } catch (error) {
+            results.push({ status: "rejected", reason: error, item });
+          }
+        }
+      })()
+  );
+  await Promise.all(workers);
+  return results;
+};
+
+async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {}) {
+  const ids = Array.from(
+    new Set(
+      (playerIds || [])
+        .map((id) =>
+          id === null || id === undefined || id === "" ? null : Number(id)
+        )
+        .filter((value) => Number.isFinite(value))
+    )
+  );
+  if (!ids.length || typeof storeControl.refreshMarketFor !== "function") {
+    return [];
+  }
+  const results = await runWithConcurrency(ids, concurrency, (id) =>
+    storeControl.refreshMarketFor(id, { force })
+  );
+  if (typeof window !== "undefined" && window?.dispatchEvent) {
+    try {
+      window.dispatchEvent(new CustomEvent("market:updated"));
+    } catch (error) {
+      console.warn("No se pudo emitir el evento market:updated", error);
+    }
+  }
+  return results;
+}
+
+async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = {}) {
+  const ids = Array.from(
+    new Set(
+      (playerIds || [])
+        .map((id) =>
+          id === null || id === undefined || id === "" ? null : Number(id)
+        )
+        .filter((value) => Number.isFinite(value))
+    )
+  );
+  if (!ids.length || typeof storeControl.refreshPointsFor !== "function") {
+    return [];
+  }
+  return runWithConcurrency(ids, concurrency, (id) =>
+    storeControl.refreshPointsFor(id, { force })
+  );
+}
+
+export async function sniff_market_json_v3_debug_market(options = {}) {
+  const ids = storeControl.getPlayerIds();
+  if (!ids.length) {
+    return [];
+  }
+  storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
+  const results = await runMarketSniffer(ids, options);
+  storeControl.pushToast?.("Actualización completada", { type: "success" });
+  return results;
+}
+
+export async function sniff_market_json_v3_debug_points(options = {}) {
+  const ids = storeControl.getPlayerIds();
+  if (!ids.length) {
+    return [];
+  }
+  storeControl.pushToast?.("Actualizando puntos de jornada…", { type: "info" });
+  const results = await runPointsSniffer(ids, options);
+  storeControl.pushToast?.("Actualización completada", { type: "success" });
+  return results;
+}
 
 const normalizeScoreEntries = (value) =>
   normalizePointsHistory(value).map((item) => ({
@@ -334,6 +506,162 @@ const parseScoreDataFromHtml = (html) => {
   return [];
 };
 
+let marketPayloadCache = null;
+let lastMarketPayload = null;
+
+const loadMarketPayload = async () => {
+  if (marketPayloadCache) {
+    return marketPayloadCache;
+  }
+  const request = (async () => {
+    if (typeof fetch !== "function") {
+      throw new Error("fetch no está disponible en este entorno");
+    }
+    const response = await fetch(MARKET_ENDPOINT, { credentials: "include" });
+    if (!response || !response.ok) {
+      throw new Error(
+        `Respuesta no válida al cargar el mercado (${response?.status ?? "desconocido"})`
+      );
+    }
+    const data = await response.json();
+    lastMarketPayload = data;
+    return data;
+  })();
+  marketPayloadCache = request
+    .catch((error) => {
+      console.warn("No se pudo refrescar el mercado", error);
+      if (lastMarketPayload) {
+        return lastMarketPayload;
+      }
+      throw error;
+    })
+    .finally(() => {
+      marketPayloadCache = null;
+    });
+  return marketPayloadCache;
+};
+
+export async function fetchValorMercadoJugador(playerId) {
+  if (playerId === null || playerId === undefined || playerId === "") {
+    throw new Error("ID de jugador no válido");
+  }
+  const normalizedId = String(playerId);
+  const payload = await loadMarketPayload();
+  const players = Array.isArray(payload?.players) ? payload.players : [];
+  const normalizeNameKey = (value) =>
+    sanitizeName(value ?? "")?.toLocaleLowerCase("es-ES") ?? null;
+  const byId = players.find((entry) => {
+    if (!entry || typeof entry !== "object") return false;
+    const rawId =
+      entry.id ??
+      entry.playerId ??
+      entry.player_id ??
+      entry.playerID ??
+      entry.idJugador ??
+      entry.jugadorId;
+    if (rawId === null || rawId === undefined || rawId === "") {
+      return false;
+    }
+    return String(rawId) === normalizedId;
+  });
+
+  let candidate = byId;
+  if (!candidate) {
+    const targetName = normalizeNameKey(
+      store.jugadoresEquipo.find((jugador) => {
+        const id =
+          jugador?.id ??
+          jugador?.playerId ??
+          jugador?.player_id ??
+          jugador?.playerID ??
+          jugador?.idJugador;
+        return id !== null && id !== undefined && String(id) === normalizedId;
+      })?.name
+    );
+    if (targetName) {
+      candidate = players.find((entry) => {
+        const entryName = normalizeNameKey(entry?.name ?? entry?.nombre);
+        return entryName && entryName === targetName;
+      });
+    }
+  }
+
+  if (!candidate) {
+    throw new Error(`No se encontró el jugador ${normalizedId} en el mercado`);
+  }
+
+  const valueCandidates = [
+    candidate.valorMercado,
+    candidate.valor,
+    candidate.valor_actual,
+    candidate.market_value,
+    candidate.marketValue,
+    candidate.value,
+    candidate.precio,
+    candidate.price,
+  ];
+
+  let resolvedValue = null;
+  for (const valueCandidate of valueCandidates) {
+    const parsed = sanitizeMarketCacheValue(valueCandidate);
+    if (parsed !== null) {
+      resolvedValue = parsed;
+      break;
+    }
+  }
+
+  if (resolvedValue === null) {
+    throw new Error(
+      `No se pudo determinar el valor de mercado del jugador ${normalizedId}`
+    );
+  }
+
+  const pickNumber = (candidates) => {
+    for (const candidateValue of candidates) {
+      const parsed = toOptionalNumber(candidateValue);
+      if (parsed !== null) {
+        return parsed;
+      }
+    }
+    return null;
+  };
+
+  const changeDay = pickNumber([
+    candidate.change_day,
+    candidate.diff_1,
+    candidate.diffDay,
+    candidate.diff_day,
+    candidate.changeDay,
+    candidate.changeDia,
+    candidate.variacion_dia,
+    candidate.variacionDia,
+    candidate.delta_day,
+    candidate.day_delta,
+    candidate.diferencia_dia,
+    candidate.diferenciaDia,
+  ]);
+
+  const changeWeek = pickNumber([
+    candidate.change_week,
+    candidate.diff_7,
+    candidate.diffWeek,
+    candidate.diff_week,
+    candidate.changeWeek,
+    candidate.variacion_semana,
+    candidate.variacionSemana,
+    candidate.delta_week,
+    candidate.week_delta,
+    candidate.diferencia_semana,
+    candidate.diferenciaSemana,
+  ]);
+
+  return {
+    value: resolvedValue,
+    changeDay,
+    changeWeek,
+  };
+}
+
 export async function fetchPuntuacionJugador(playerId) {
   const url = buildPlayerDetailUrl(playerId);
   if (!url || typeof fetch !== "function") {
@@ -383,23 +711,6 @@ export async function fetchPuntuacionJugador(playerId) {
   }
   return [];
 }
-
-const toOptionalNumber = (value) => {
-  if (value === null || value === undefined) return null;
-  if (typeof value === "number") {
-    return Number.isFinite(value) ? value : null;
-  }
-  const base = collapseWhitespace(normalizeText(value));
-  if (!base) return null;
-  let cleaned = base.replace(/%/g, "");
-  if (cleaned.includes(",")) {
-    cleaned = cleaned.replace(/\./g, "").replace(/,/g, ".");
-  }
-  cleaned = cleaned.replace(/[^0-9.+-]/g, "").trim();
-  if (!cleaned) return null;
-  const num = Number(cleaned);
-  return Number.isFinite(num) ? num : null;
-};
 
 const normalizePointsHistory = (value) => {
   if (!value) return [];
@@ -1118,6 +1429,14 @@ export default function FantasyTeamDashboard() {
       return [];
     }
   });
+  const [cacheMercado, setCacheMercado] = useState(() => {
+    try {
+      const raw = localStorage.getItem(MARKET_CACHE_STORAGE_KEY);
+      return raw ? sanitizeMarketCache(JSON.parse(raw)) : {};
+    } catch {
+      return {};
+    }
+  });
   const [cachePuntuaciones, setCachePuntuaciones] = useState(() => {
     try {
       const raw = localStorage.getItem(SCORE_CACHE_STORAGE_KEY);
@@ -1152,7 +1471,9 @@ export default function FantasyTeamDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [feedback, setFeedback] = useState(null);
   const feedbackTimeoutRef = useRef(null);
-  const pendingScoreRequests = useRef(new Map());
+  const [playerStates, setPlayerStates] = useState({});
+  const pendingPointsRequests = useRef(new Map());
+  const pendingMarketRequests = useRef(new Map());
   const [saleToRemove, setSaleToRemove] = useState(null);
   const [playerDetailTarget, setPlayerDetailTarget] = useState(null);
   const [playerDetailLoading, setPlayerDetailLoading] = useState(false);
@@ -1165,13 +1486,69 @@ export default function FantasyTeamDashboard() {
   const recommendationScoresRef = useRef(new Map());
   const [editBudgetOpen, setEditBudgetOpen] = useState(false);
   const [budgetDraft, setBudgetDraft] = useState("");
+  const [marketSnifferRunning, setMarketSnifferRunning] = useState(false);
+  const [pointsSnifferRunning, setPointsSnifferRunning] = useState(false);
+  const [toasts, setToasts] = useState([]);
+  const toastIdRef = useRef(0);
   const budgetParsed = useMemo(
     () => toOptionalNumber(budgetDraft),
     [budgetDraft]
   );
   const budgetIsValid = budgetParsed !== null;
 
-  const MARKET_URL = "/market.json";
+  const MARKET_URL = MARKET_ENDPOINT;
+
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => {
+      const next = prev.filter((toast) => toast.id !== id);
+      return next.length === prev.length ? prev : next;
+    });
+  }, []);
+
+  const pushToast = useCallback(
+    (message, { type = "info", duration = 3500 } = {}) => {
+      if (!message) return;
+      setToasts((prev) => {
+        const id = toastIdRef.current + 1;
+        toastIdRef.current = id;
+        const toast = { id, message, type };
+        if (duration && Number.isFinite(duration) && duration > 0) {
+          setTimeout(() => {
+            removeToast(id);
+          }, duration);
+        }
+        return [...prev, toast];
+      });
+    },
+    [removeToast]
+  );
+
+  const updatePlayerState = useCallback((playerId, updates) => {
+    const id =
+      playerId === null || playerId === undefined || playerId === ""
+        ? null
+        : String(playerId);
+    if (!id || !updates) return;
+    setPlayerStates((prev) => {
+      const previous =
+        prev[id] ?? {
+          marketStatus: "idle",
+          marketError: null,
+          pointsStatus: "idle",
+          pointsError: null,
+        };
+      const next = { ...previous, ...updates };
+      if (
+        previous.marketStatus === next.marketStatus &&
+        previous.marketError === next.marketError &&
+        previous.pointsStatus === next.pointsStatus &&
+        previous.pointsError === next.pointsError
+      ) {
+        return prev;
+      }
+      return { ...prev, [id]: next };
+    });
+  }, []);
 
   const getPlayerIdKey = (item) => {
     if (!item) return null;
@@ -1242,6 +1619,17 @@ export default function FantasyTeamDashboard() {
   useEffect(() => {
     try {
       localStorage.setItem(
+        MARKET_CACHE_STORAGE_KEY,
+        JSON.stringify(cacheMercado)
+      );
+    } catch {
+      /* noop */
+    }
+  }, [cacheMercado]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
         SCORE_CACHE_STORAGE_KEY,
         JSON.stringify(cachePuntuaciones)
       );
@@ -1300,6 +1688,22 @@ export default function FantasyTeamDashboard() {
     return () => clearTimeout(timeout);
   }, [feedback]);
 
+  const playerIndex = useMemo(() => {
+    const byName = new Map();
+    const byId = new Map();
+    market.players.forEach((player) => {
+      if (!player) return;
+      const nameKey = player.name ? player.name.toLowerCase() : null;
+      if (nameKey) {
+        byName.set(nameKey, player);
+      }
+      if (player.id !== null && player.id !== undefined) {
+        byId.set(String(player.id), player);
+      }
+    });
+    return { byName, byId };
+  }, [market.players]);
+
   const isScoreCacheStale = (timestamp) => {
     if (!timestamp) return true;
     const value = new Date(timestamp).getTime();
@@ -1345,90 +1749,127 @@ export default function FantasyTeamDashboard() {
 
   const getPuntuacionJugador = (playerId) => getCachedScoreInfo(playerId).data;
 
-  const syncPuntuacionJugador = async (playerId, { force = false } = {}) => {
-    const id =
-      playerId === null || playerId === undefined ? null : String(playerId);
-    if (!id) return [];
-    const current = getCachedScoreInfo(id);
-    const shouldFetch =
-      force || !current.fetchedAt || isScoreCacheStale(current.fetchedAt);
-    if (!shouldFetch && current.data.length) {
-      return current.data;
-    }
-    const pending = pendingScoreRequests.current.get(id);
-    if (pending) {
-      return pending;
-    }
-    const fetchPromise = (async () => {
-      try {
-        const fetched = await fetchPuntuacionJugador(id);
-        const normalized = normalizeScoreEntries(fetched);
-        const nextData =
-          normalized.length || !current.data.length ? normalized : current.data;
-        const fetchedAt = new Date().toISOString();
-        setCachePuntuaciones((prev) => {
-          const prevEntry = prev[id];
-          if (
-            prevEntry &&
-            Array.isArray(prevEntry.data) &&
-            prevEntry.data.length === nextData.length &&
-            prevEntry.data.every(
-              (item, index) =>
-                item.jornada === nextData[index]?.jornada &&
-                item.puntos === nextData[index]?.puntos
-            ) &&
-            prevEntry.fetchedAt === fetchedAt
-          ) {
-            return prev;
-          }
-          return {
-            ...prev,
-            [id]: { data: nextData, fetchedAt },
-          };
-        });
-        setMyTeam((prev) => {
-          let mutated = false;
-          const candidate = playerIndex.byId.get(id);
-          const next = prev.map((entry) => {
-            if (!entry || typeof entry !== "object") return entry;
-            const entryId = getPlayerIdKey(entry);
-            const matches = entryId
-              ? entryId === id
-              : candidate
-              ? entryMatchesPlayer(entry, candidate)
-              : false;
-            if (!matches) return entry;
-            const updated = {
-              ...entry,
-              puntuacionPorJornada: nextData,
-              cacheFechaPuntuacion: fetchedAt,
-            };
-            if (
-              !entryId &&
-              candidate?.id !== null &&
-              candidate?.id !== undefined
-            ) {
-              updated.id = String(candidate.id);
-            }
-            mutated = true;
-            return updated;
-          });
-          return mutated ? next : prev;
-        });
-        return nextData;
-      } catch (error) {
-        console.warn(
-          `No se pudieron sincronizar las puntuaciones del jugador ${id}`,
-          error
-        );
-        return current.data;
-      } finally {
-        pendingScoreRequests.current.delete(id);
+  const refreshPointsFor = useCallback(
+    async (playerId, { force = false } = {}) => {
+      const id =
+        playerId === null || playerId === undefined || playerId === ""
+          ? null
+          : String(playerId);
+      if (!id) {
+        return [];
       }
-    })();
-    pendingScoreRequests.current.set(id, fetchPromise);
-    return fetchPromise;
-  };
+      const current = getCachedScoreInfo(id);
+      const shouldFetch =
+        force || !current.fetchedAt || isScoreCacheStale(current.fetchedAt);
+      if (!shouldFetch && current.data.length) {
+        updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
+        return current.data;
+      }
+      const pending = pendingPointsRequests.current.get(id);
+      if (pending) {
+        return pending;
+      }
+      const fetchPromise = (async () => {
+        updatePlayerState(id, { pointsStatus: "loading", pointsError: null });
+        try {
+          const fetched = await fetchPuntuacionJugador(id);
+          const normalized = normalizeScoreEntries(fetched);
+          const nextData =
+            normalized.length || !current.data.length ? normalized : current.data;
+          if (!nextData.length) {
+            throw new Error("No hay puntuaciones disponibles");
+          }
+          const fetchedAt = new Date().toISOString();
+          setCachePuntuaciones((prev) => {
+            const prevEntry = prev[id];
+            if (
+              prevEntry &&
+              Array.isArray(prevEntry.data) &&
+              prevEntry.data.length === nextData.length &&
+              prevEntry.data.every(
+                (item, index) =>
+                  item.jornada === nextData[index]?.jornada &&
+                  item.puntos === nextData[index]?.puntos
+              ) &&
+              prevEntry.fetchedAt === fetchedAt
+            ) {
+              return prev;
+            }
+            return {
+              ...prev,
+              [id]: { data: nextData, fetchedAt },
+            };
+          });
+          setMyTeam((prev) => {
+            let mutated = false;
+            const candidate = playerIndex.byId.get(id);
+            const next = prev.map((entry) => {
+              if (!entry || typeof entry !== "object") return entry;
+              const entryId = getPlayerIdKey(entry);
+              const matches = entryId
+                ? entryId === id
+                : candidate
+                ? entryMatchesPlayer(entry, candidate)
+                : false;
+              if (!matches) return entry;
+              const updated = {
+                ...entry,
+                puntuacionPorJornada: nextData,
+                cacheFechaPuntuacion: fetchedAt,
+              };
+              if (
+                !entryId &&
+                candidate?.id !== null &&
+                candidate?.id !== undefined
+              ) {
+                updated.id = String(candidate.id);
+              }
+              mutated = true;
+              return updated;
+            });
+            return mutated ? next : prev;
+          });
+          updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
+          return nextData;
+        } catch (error) {
+          const nameFromMarket =
+            playerIndex.byId.get(id)?.name ??
+            myTeam.find((entry) => getPlayerIdKey(entry) === id)?.name ??
+            `Jugador ${id}`;
+          const message =
+            error?.message ?? "No se pudieron sincronizar las puntuaciones";
+          console.warn(
+            `No se pudieron sincronizar las puntuaciones del jugador ${id}`,
+            error
+          );
+          updatePlayerState(id, {
+            pointsStatus: "error",
+            pointsError: message,
+          });
+          pushToast(
+            `No se actualizaron los puntos de ${nameFromMarket}.`,
+            { type: "warning" }
+          );
+          throw error;
+        } finally {
+          pendingPointsRequests.current.delete(id);
+        }
+      })();
+      pendingPointsRequests.current.set(id, fetchPromise);
+      return fetchPromise;
+    },
+    [
+      getCachedScoreInfo,
+      isScoreCacheStale,
+      pendingPointsRequests,
+      setCachePuntuaciones,
+      myTeam,
+      setMyTeam,
+      playerIndex,
+      updatePlayerState,
+      pushToast,
+    ]
+  );
 
   const ensurePuntuacionesUltimos5 = useCallback(
     async ({ force = false } = {}) => {
@@ -1445,7 +1886,7 @@ export default function FantasyTeamDashboard() {
           !cached.data.length ||
           isScoreCacheStale(cached.fetchedAt);
         if (shouldSync) {
-          tasks.push(syncPuntuacionJugador(id, { force: true }));
+          tasks.push(refreshPointsFor(id, { force: true }));
         }
       });
       if (!tasks.length) {
@@ -1453,7 +1894,7 @@ export default function FantasyTeamDashboard() {
       }
       await Promise.allSettled(tasks);
     },
-    [myTeam, getCachedScoreInfo, isScoreCacheStale, syncPuntuacionJugador]
+    [myTeam, getCachedScoreInfo, isScoreCacheStale, refreshPointsFor]
   );
 
   const abrirDetalleJugador = (player) => {
@@ -1476,7 +1917,7 @@ export default function FantasyTeamDashboard() {
       return;
     }
     setPlayerDetailLoading(true);
-    syncPuntuacionJugador(playerId, { force: true })
+    refreshPointsFor(playerId, { force: true })
       .then(() => {
         setPlayerDetailError(null);
       })
@@ -1490,21 +1931,175 @@ export default function FantasyTeamDashboard() {
       });
   };
 
-  const playerIndex = useMemo(() => {
-    const byName = new Map();
-    const byId = new Map();
-    market.players.forEach((player) => {
-      if (!player) return;
-      const nameKey = player.name ? player.name.toLowerCase() : null;
-      if (nameKey) {
-        byName.set(nameKey, player);
+  const refreshMarketFor = useCallback(
+    async (playerId, { force = true } = {}) => {
+      const id =
+        playerId === null || playerId === undefined || playerId === ""
+          ? null
+          : String(playerId);
+      if (!id) {
+        return null;
       }
-      if (player.id !== null && player.id !== undefined) {
-        byId.set(String(player.id), player);
+      const pending = pendingMarketRequests.current.get(id);
+      if (pending) {
+        return pending;
       }
-    });
-    return { byName, byId };
-  }, [market.players]);
+
+      const state = playerStates[id];
+      const marketEntry = playerIndex.byId.get(id);
+      const cachedValue = cacheMercado[id];
+      const fallbackValue = marketEntry
+        ? toOptionalNumber(
+            marketEntry.value ??
+              marketEntry.valorMercado ??
+              marketEntry.valor ??
+              marketEntry.valor_actual ??
+              marketEntry.market_value ??
+              marketEntry.marketValue ??
+              marketEntry.precio ??
+              marketEntry.price
+          )
+        : null;
+      const resolvedCachedValue = Number.isFinite(cachedValue)
+        ? Number(cachedValue)
+        : Number.isFinite(fallbackValue)
+        ? Number(fallbackValue)
+        : null;
+
+      if (
+        !force &&
+        state?.marketStatus !== "error" &&
+        resolvedCachedValue !== null
+      ) {
+        if (!Number.isFinite(cachedValue) && Number.isFinite(fallbackValue)) {
+          setCacheMercado((prev) => {
+            if (Number.isFinite(prev[id])) {
+              return prev;
+            }
+            return { ...prev, [id]: Number(fallbackValue) };
+          });
+        }
+        updatePlayerState(id, { marketStatus: "ready", marketError: null });
+        return resolvedCachedValue;
+      }
+
+      const fetchPromise = (async () => {
+        updatePlayerState(id, { marketStatus: "loading", marketError: null });
+        const playerName =
+          marketEntry?.name ??
+          myTeam.find((entry) => getPlayerIdKey(entry) === id)?.name ??
+          `Jugador ${id}`;
+        let lastError = null;
+        for (let attempt = 0; attempt < 3; attempt += 1) {
+          try {
+            const marketInfo = await fetchValorMercadoJugador(id);
+            const fetchedValueRaw =
+              marketInfo && typeof marketInfo === "object"
+                ? marketInfo.value
+                : marketInfo;
+            const nextValue = toOptionalNumber(fetchedValueRaw);
+            if (nextValue === null) {
+              throw new Error("Valor de mercado no disponible");
+            }
+            const changeDayRaw =
+              marketInfo && typeof marketInfo === "object"
+                ? marketInfo.changeDay ?? marketInfo.change_day ?? null
+                : null;
+            const changeWeekRaw =
+              marketInfo && typeof marketInfo === "object"
+                ? marketInfo.changeWeek ?? marketInfo.change_week ?? null
+                : null;
+            const nextChangeDay =
+              changeDayRaw !== null && changeDayRaw !== undefined
+                ? toOptionalNumber(changeDayRaw)
+                : null;
+            const nextChangeWeek =
+              changeWeekRaw !== null && changeWeekRaw !== undefined
+                ? toOptionalNumber(changeWeekRaw)
+                : null;
+
+            setCacheMercado((prev) => {
+              const prevValue = prev[id];
+              if (prevValue === nextValue) {
+                return prev;
+              }
+              return { ...prev, [id]: nextValue };
+            });
+            setMarket((prev) => {
+              const players = Array.isArray(prev.players) ? prev.players : [];
+              let mutated = false;
+              const nextPlayers = players.map((player) => {
+                if (!player || typeof player !== "object") return player;
+                const candidateId = getPlayerIdKey(player);
+                if (!candidateId || candidateId !== id) {
+                  return player;
+                }
+                mutated = true;
+                const updated = {
+                  ...player,
+                  value: nextValue,
+                  valorMercado: nextValue,
+                  valor: nextValue,
+                  valor_actual: nextValue,
+                  market_value: nextValue,
+                  marketValue: nextValue,
+                  precio: nextValue,
+                  price: nextValue,
+                };
+                if (nextChangeDay !== null) {
+                  updated.change_day = nextChangeDay;
+                  updated.diff_1 = nextChangeDay;
+                }
+                if (nextChangeWeek !== null) {
+                  updated.change_week = nextChangeWeek;
+                  updated.diff_7 = nextChangeWeek;
+                }
+                return updated;
+              });
+              if (!mutated) {
+                return prev;
+              }
+              return { ...prev, players: nextPlayers };
+            });
+            updatePlayerState(id, { marketStatus: "ready", marketError: null });
+            return nextValue;
+          } catch (error) {
+            lastError = error;
+            if (attempt < 2) {
+              await sleep(attempt === 0 ? 300 : 1000);
+            }
+          }
+        }
+        const message =
+          lastError?.message ?? "No se pudo actualizar el valor del jugador";
+        updatePlayerState(id, {
+          marketStatus: "error",
+          marketError: message,
+        });
+        pushToast(`No se actualizó el valor de ${playerName}.`, {
+          type: "warning",
+        });
+        throw lastError ?? new Error(message);
+      })();
+      pendingMarketRequests.current.set(id, fetchPromise);
+      try {
+        return await fetchPromise;
+      } finally {
+        pendingMarketRequests.current.delete(id);
+      }
+    },
+    [
+      pendingMarketRequests,
+      playerStates,
+      playerIndex,
+      cacheMercado,
+      myTeam,
+      setCacheMercado,
+      updatePlayerState,
+      setMarket,
+      pushToast,
+    ]
+  );
 
   useEffect(() => {
     if (!playerIndex.byName.size && !playerIndex.byId.size) {
@@ -1604,9 +2199,21 @@ export default function FantasyTeamDashboard() {
             : null) ?? playerIndex.byName.get(nameKey);
         if (!player) return null;
         const precioCompra = toOptionalNumber(entry.precioCompra);
+        const playerId =
+          storedId ?? (player.id !== null && player.id !== undefined
+            ? String(player.id)
+            : null);
+        const overrideValue =
+          playerId !== null && playerId !== undefined
+            ? cacheMercado[playerId]
+            : null;
+        const rawValue = toOptionalNumber(player.value);
+        const marketValue = Number.isFinite(overrideValue)
+          ? Number(overrideValue)
+          : rawValue;
         const gain =
-          precioCompra !== null && Number.isFinite(player.value)
-            ? player.value - precioCompra
+          precioCompra !== null && marketValue !== null
+            ? marketValue - precioCompra
             : null;
         const roi =
           precioCompra !== null && precioCompra > 0 && gain !== null
@@ -1614,10 +2221,6 @@ export default function FantasyTeamDashboard() {
             : null;
         const zone = getZoneFromPosition(player.position ?? entry.position);
         const playerKey = getPlayerKey(player) ?? `name:${nameKey}`;
-        const playerId =
-          storedId ?? (player.id !== null && player.id !== undefined
-            ? String(player.id)
-            : null);
         const scoreInfo = getCachedScoreInfo(playerId);
         const summary = getResumenPuntos(
           scoreInfo.data.length ? scoreInfo.data : player.points_history
@@ -1634,8 +2237,20 @@ export default function FantasyTeamDashboard() {
           summary.mediaUltimas5 !== null
             ? summary.mediaUltimas5
             : player.points_last5;
+        const state = playerId ? playerStates[playerId] ?? {} : {};
+        const defaultMarketStatus = Number.isFinite(marketValue)
+          ? "ready"
+          : "idle";
+        const defaultPointsStatus =
+          scoreInfo.data.length && !isScoreCacheStale(scoreInfo.fetchedAt)
+            ? "ready"
+            : "idle";
+        const marketStatus = state.marketStatus ?? defaultMarketStatus;
+        const pointsStatus = state.pointsStatus ?? defaultPointsStatus;
         return {
           ...player,
+          value: marketValue ?? rawValue ?? null,
+          valorMercado: marketValue ?? rawValue ?? null,
           precioCompra,
           gain,
           roi,
@@ -1647,10 +2262,112 @@ export default function FantasyTeamDashboard() {
           points_last5: pointsLast5,
           scoreSummary: summary,
           scoreFetchedAt: scoreInfo.fetchedAt ?? entry.cacheFechaPuntuacion ?? null,
+          _marketStatus: marketStatus,
+          _marketError: state.marketError ?? null,
+          _pointsStatus: pointsStatus,
+          _pointsError: state.pointsError ?? null,
         };
       })
       .filter(Boolean);
-  }, [myTeam, playerIndex, cachePuntuaciones]);
+  }, [
+    myTeam,
+    playerIndex,
+    cachePuntuaciones,
+    cacheMercado,
+    playerStates,
+    isScoreCacheStale,
+  ]);
+
+  useEffect(() => {
+    store.jugadoresEquipo = teamPlayers;
+  }, [teamPlayers]);
+
+  useEffect(() => {
+    store.cacheMercado = cacheMercado;
+  }, [cacheMercado]);
+
+  useEffect(() => {
+    store.cachePuntuaciones = cachePuntuaciones;
+  }, [cachePuntuaciones]);
+
+  useEffect(() => {
+    storeControl.pushToast = pushToast;
+    return () => {
+      if (storeControl.pushToast === pushToast) {
+        storeControl.pushToast = null;
+      }
+    };
+  }, [pushToast]);
+
+  useEffect(() => {
+    storeControl.refreshMarketFor = refreshMarketFor;
+    return () => {
+      if (storeControl.refreshMarketFor === refreshMarketFor) {
+        storeControl.refreshMarketFor = null;
+      }
+    };
+  }, [refreshMarketFor]);
+
+  useEffect(() => {
+    storeControl.refreshPointsFor = refreshPointsFor;
+    return () => {
+      if (storeControl.refreshPointsFor === refreshPointsFor) {
+        storeControl.refreshPointsFor = null;
+      }
+    };
+  }, [refreshPointsFor]);
+
+  const handleMarketSniffer = useCallback(async () => {
+    if (marketSnifferRunning) return;
+    setMarketSnifferRunning(true);
+    try {
+      await sniff_market_json_v3_debug_market({ concurrency: 4 });
+    } catch (error) {
+      console.warn("Error al actualizar los valores de mercado", error);
+      pushToast("Hubo errores al actualizar el valor de mercado.", {
+        type: "warning",
+      });
+    } finally {
+      setMarketSnifferRunning(false);
+    }
+  }, [marketSnifferRunning, pushToast]);
+
+  const handlePointsSniffer = useCallback(async () => {
+    if (pointsSnifferRunning) return;
+    setPointsSnifferRunning(true);
+    try {
+      await sniff_market_json_v3_debug_points({ concurrency: 3 });
+    } catch (error) {
+      console.warn("Error al actualizar las puntuaciones", error);
+      pushToast("Hubo errores al actualizar las puntuaciones.", {
+        type: "warning",
+      });
+    } finally {
+      setPointsSnifferRunning(false);
+    }
+  }, [pointsSnifferRunning, pushToast]);
+
+  const retryMarketForPlayer = useCallback(
+    (player) => {
+      const id = getPlayerIdKey(player);
+      if (!id) return;
+      refreshMarketFor(id, { force: true }).catch(() => {
+        /* handled via status */
+      });
+    },
+    [refreshMarketFor]
+  );
+
+  const retryPointsForPlayer = useCallback(
+    (player) => {
+      const id = getPlayerIdKey(player);
+      if (!id) return;
+      refreshPointsFor(id, { force: true }).catch(() => {
+        /* handled via status */
+      });
+    },
+    [refreshPointsFor]
+  );
 
   useEffect(() => {
     if (activeTab !== "alineacion") return;
@@ -1679,7 +2396,7 @@ export default function FantasyTeamDashboard() {
     let cancelled = false;
     setPlayerDetailLoading(true);
     setPlayerDetailError(null);
-    syncPuntuacionJugador(playerId)
+    refreshPointsFor(playerId)
       .then(() => {
         if (cancelled) return;
         setPlayerDetailError(null);
@@ -2470,7 +3187,14 @@ export default function FantasyTeamDashboard() {
                   </Td>
                   <Td>{p.team}</Td>
                   <Td>{p.position}</Td>
-                  <Td className="text-right">{fmtEUR.format(p.value)}</Td>
+                  <Td className="text-right">
+                    <MarketValueCell
+                      value={p.valorMercado ?? p.value}
+                      status={p._marketStatus}
+                      error={p._marketError}
+                      onRetry={() => retryMarketForPlayer(p)}
+                    />
+                  </Td>
                   <Td className="text-right">
                     {Number.isFinite(p.precioCompra)
                       ? fmtEUR.format(p.precioCompra)
@@ -2531,19 +3255,32 @@ export default function FantasyTeamDashboard() {
                     {fmtEUR.format(p.change_week)}
                   </Td>
                   <Td className="text-right text-gray-700">
-                    {p.points_total !== null
-                      ? pointsFormatter.format(p.points_total)
-                      : "—"}
+                    <PointsCell
+                      value={p.points_total}
+                      status={p._pointsStatus}
+                      error={p._pointsError}
+                      formatter={pointsFormatter}
+                      onRetry={() => retryPointsForPlayer(p)}
+                      showRetry
+                    />
                   </Td>
                   <Td className="text-right text-gray-700">
-                    {p.points_avg !== null
-                      ? pointsFormatter.format(p.points_avg)
-                      : "—"}
+                    <PointsCell
+                      value={p.points_avg}
+                      status={p._pointsStatus}
+                      error={p._pointsError}
+                      formatter={pointsFormatter}
+                      onRetry={() => retryPointsForPlayer(p)}
+                    />
                   </Td>
                   <Td className="text-right text-gray-700">
-                    {p.points_last5 !== null
-                      ? pointsFormatter.format(p.points_last5)
-                      : "—"}
+                    <PointsCell
+                      value={p.points_last5}
+                      status={p._pointsStatus}
+                      error={p._pointsError}
+                      formatter={pointsFormatter}
+                      onRetry={() => retryPointsForPlayer(p)}
+                    />
                   </Td>
                 </tr>
               ))}
@@ -2987,6 +3724,29 @@ export default function FantasyTeamDashboard() {
           </div>
         </header>
 
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            className="rounded-full bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
+            onClick={handleMarketSniffer}
+            disabled={marketSnifferRunning}
+          >
+            {marketSnifferRunning
+              ? "Actualizando mercado…"
+              : "Actualizar valor de mercado"}
+          </button>
+          <button
+            type="button"
+            className="rounded-full border border-indigo-200 px-4 py-1.5 text-sm font-semibold text-indigo-600 transition hover:border-indigo-400 hover:text-indigo-800 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400"
+            onClick={handlePointsSniffer}
+            disabled={pointsSnifferRunning}
+          >
+            {pointsSnifferRunning
+              ? "Actualizando puntuaciones…"
+              : "Actualizar puntos de jornada"}
+          </button>
+        </div>
+
         <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-2">
           <button
             type="button"
@@ -3057,6 +3817,28 @@ export default function FantasyTeamDashboard() {
           onCancel={cancelarEliminarVenta}
           onConfirm={confirmarEliminarVenta}
         />
+      )}
+      {toasts.length > 0 && (
+        <div className="pointer-events-none fixed right-4 top-4 z-50 space-y-2">
+          {toasts.map((toast) => (
+            <div
+              key={toast.id}
+              className={`pointer-events-auto flex max-w-xs items-start gap-3 rounded-xl px-4 py-2 text-sm shadow-lg ${
+                toastStyles[toast.type ?? "info"] ?? toastStyles.info
+              }`}
+            >
+              <span className="flex-1 leading-snug">{toast.message}</span>
+              <button
+                type="button"
+                className="text-lg font-semibold leading-none text-gray-400 transition hover:text-gray-600"
+                onClick={() => removeToast(toast.id)}
+                aria-label="Cerrar aviso"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
@@ -3206,6 +3988,88 @@ function SaleControl({ player, onSell, align = "right" }) {
       )}
     </div>
   );
+}
+
+function MarketValueCell({ value, status = "idle", error = null, onRetry }) {
+  const formatted = Number.isFinite(value) ? fmtEUR.format(value) : "—";
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-end gap-2 text-xs text-gray-500">
+        <span
+          className="inline-flex h-4 w-4 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600"
+          aria-label="Actualizando valor de mercado"
+        />
+        <span>Actualizando…</span>
+      </div>
+    );
+  }
+  if (status === "error") {
+    return (
+      <div className="flex items-center justify-end gap-2 text-xs text-red-600">
+        <span
+          role="img"
+          aria-label="Error al actualizar valor"
+          title={error || "No se pudo actualizar el valor de mercado"}
+        >
+          ⚠️
+        </span>
+        <button
+          type="button"
+          className="rounded-full border border-red-200 px-2 py-0.5 font-semibold text-red-600 transition hover:border-red-300 hover:text-red-800"
+          onClick={() => onRetry?.()}
+        >
+          Reintentar
+        </button>
+      </div>
+    );
+  }
+  return <span>{formatted}</span>;
+}
+
+function PointsCell({
+  value,
+  status = "idle",
+  error = null,
+  formatter,
+  onRetry,
+  showRetry = false,
+}) {
+  const fmt = formatter ??
+    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  const display = Number.isFinite(value) ? fmt.format(value) : "—";
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-end">
+        <span
+          className="inline-flex h-3 w-3 animate-spin rounded-full border border-indigo-200 border-t-indigo-600"
+          aria-label="Actualizando puntos"
+        />
+      </div>
+    );
+  }
+  if (status === "error") {
+    return (
+      <div className="flex items-center justify-end gap-2 text-xs text-red-600">
+        <span
+          role="img"
+          aria-label="Error al actualizar puntos"
+          title={error || "No se pudieron actualizar las puntuaciones"}
+        >
+          ⚠️
+        </span>
+        {showRetry && (
+          <button
+            type="button"
+            className="rounded-full border border-red-200 px-2 py-0.5 font-semibold text-red-600 transition hover:border-red-300 hover:text-red-800"
+            onClick={() => onRetry?.()}
+          >
+            Reintentar
+          </button>
+        )}
+      </div>
+    );
+  }
+  return <span>{display}</span>;
 }
 
 function EditBudgetModal({ value, onChange, onCancel, onConfirm, isValid }) {

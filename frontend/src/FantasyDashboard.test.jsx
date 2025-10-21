@@ -1,5 +1,7 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import FantasyTeamDashboard from "./FantasyDashboard";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import FantasyTeamDashboard, {
+  sniff_market_json_v3_debug_market,
+} from "./FantasyDashboard";
 
 describe("FantasyTeamDashboard", () => {
   const originalFetch = global.fetch;
@@ -208,6 +210,281 @@ describe("FantasyTeamDashboard", () => {
 
     const teamTableAgain = screen.getByTestId("team-table");
     expect(within(teamTableAgain).getByText("40,5")).toBeInTheDocument();
+  });
+
+  it("muestra botones de actualización y sincroniza los puntos del equipo", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+
+    let playerFetchCount = 0;
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        playerFetchCount += 1;
+        return Promise.resolve(
+          makeResponse({
+            data: {
+              jornadas: [
+                { jornada: 1, puntos: 10 },
+                { jornada: 2, puntos: 12 },
+              ],
+            },
+          })
+        );
+      }
+      return Promise.resolve(
+        makeResponse({
+          updated_at: "2025-01-01T00:00:00Z",
+          players: [
+            {
+              id: 2,
+              name: "Nico WilliamsN. Williams",
+              team: "Athletic",
+              team_id: "5",
+              position: "Delantero",
+              value: "2345678",
+              diff_1: 0,
+              diff_7: 0,
+              points_avg: null,
+              points_last5: null,
+              points_history: [
+                { matchday: 10, points: 6.5 },
+                { matchday: 11, points: 7.0 },
+              ],
+            },
+          ],
+        })
+      );
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    expect(
+      await screen.findByRole("button", { name: "Actualizar valor de mercado" })
+    ).toBeInTheDocument();
+    const pointsButton = screen.getByRole("button", {
+      name: "Actualizar puntos de jornada",
+    });
+    expect(pointsButton).toBeInTheDocument();
+
+    const teamTable = await screen.findByTestId("team-table");
+    const locateRow = () => {
+      const cell = within(teamTable).getByText("Nico Williams");
+      const row = cell.closest("tr");
+      if (!row) {
+        throw new Error("Fila del jugador no encontrada");
+      }
+      return row;
+    };
+
+    const playerRow = locateRow();
+    const getPointsText = (row) => {
+      const cells = within(row).getAllByRole("cell");
+      return cells[10]?.textContent ?? "";
+    };
+
+    const initialPoints = getPointsText(playerRow);
+
+    fireEvent.click(pointsButton);
+
+    await waitFor(() => {
+      expect(playerFetchCount).toBeGreaterThanOrEqual(1);
+    });
+
+    await waitFor(() => {
+      const updatedRow = locateRow();
+      expect(getPointsText(updatedRow)).toBe("22,0");
+    });
+
+    expect(initialPoints).not.toBe("22,0");
+  });
+
+  it("actualiza el valor y las variaciones de mercado tras ejecutar el sniffer", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    const marketPayloads = [
+      {
+        updated_at: "2025-01-01T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2000000",
+            diff_1: "-100000",
+            diff_7: "500000",
+          },
+        ],
+      },
+      {
+        updated_at: "2025-01-02T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2450000",
+            diff_1: "75000",
+            diff_7: "620000",
+          },
+        ],
+      },
+    ];
+
+    let marketCall = 0;
+    global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+      }
+      const payload =
+        marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
+      marketCall += 1;
+      return Promise.resolve(makeResponse(payload));
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    const teamTable = await screen.findByTestId("team-table");
+    const getRow = () => {
+      const cell = within(teamTable).getByText("Nico Williams");
+      const row = cell.closest("tr");
+      if (!row) {
+        throw new Error("Fila del jugador no encontrada");
+      }
+      return row;
+    };
+
+    const initialRow = await waitFor(() => getRow());
+    const initialCells = within(initialRow).getAllByRole("cell");
+    expect(initialCells[3].textContent).toContain("2.000.000");
+    expect(initialCells[8].textContent).toContain("-100.000");
+    expect(initialCells[9].textContent).toContain("+500.000");
+
+    const marketButton = await screen.findByRole("button", {
+      name: "Actualizar valor de mercado",
+    });
+    fireEvent.click(marketButton);
+
+    await waitFor(() => {
+      const updatedRow = getRow();
+      const updatedCells = within(updatedRow).getAllByRole("cell");
+      expect(updatedCells[3].textContent).toContain("2.450.000");
+      expect(updatedCells[8].textContent).toContain("+75.000");
+      expect(updatedCells[9].textContent).toContain("+620.000");
+    });
+
+    expect(marketCall).toBeGreaterThanOrEqual(2);
+  });
+
+  it("omite peticiones de mercado cuando force es false y la cache está poblada", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    let marketCall = 0;
+    global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+      }
+      marketCall += 1;
+      return Promise.resolve(
+        makeResponse({
+          updated_at: "2025-01-01T00:00:00Z",
+          players: [
+            {
+              id: 2,
+              name: "Nico WilliamsN. Williams",
+              team: "Athletic",
+              team_id: "5",
+              position: "Delantero",
+              value: "2000000",
+              diff_1: "0",
+              diff_7: "0",
+            },
+          ],
+        })
+      );
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    await screen.findByRole("button", {
+      name: "Ver detalle de Nico Williams",
+    });
+
+    await act(async () => {
+      await sniff_market_json_v3_debug_market();
+    });
+
+    expect(marketCall).toBeGreaterThanOrEqual(2);
+
+    const callsBefore = marketCall;
+
+    await act(async () => {
+      await sniff_market_json_v3_debug_market({ force: false });
+    });
+
+    expect(marketCall).toBe(callsBefore);
   });
 
   it("permite comprar un jugador ingresando el precio en el modal", async () => {
