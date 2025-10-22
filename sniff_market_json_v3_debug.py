@@ -1,9 +1,93 @@
 # sniff_market_json_v3_debug.py
 from playwright.sync_api import sync_playwright
+import argparse
 import json, re, unicodedata
 from datetime import datetime, timezone
+from pathlib import Path
+from contextlib import suppress
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
+
+
+FETCH_POINTS_HISTORY = False
+
+REPO_ROOT = Path(__file__).resolve().parent
+FRONTEND_PUBLIC_DIR = REPO_ROOT / "frontend" / "public"
+
+
+class ProgressReporter:
+    def __init__(self, mode: str):
+        normalized_mode = (mode or "market").lower()
+        if normalized_mode not in {"market", "points"}:
+            normalized_mode = "market"
+        self.mode = normalized_mode
+        self.file_path = FRONTEND_PUBLIC_DIR / f"{self.mode}-progress.json"
+        self.total = 0
+        self.completed = 0
+        self.status = "idle"
+        self.label = ""
+
+    def clear(self):
+        with suppress(FileNotFoundError, PermissionError, OSError):
+            self.file_path.unlink()
+
+    def _write(self):
+        payload = {
+            "mode": self.mode,
+            "status": self.status,
+            "label": self.label,
+            "completed": int(self.completed),
+            "total": int(self.total),
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        }
+        try:
+            self.file_path.parent.mkdir(parents=True, exist_ok=True)
+            tmp_path = self.file_path.with_suffix(".tmp")
+            with tmp_path.open("w", encoding="utf-8") as fh:
+                json.dump(payload, fh, ensure_ascii=False, indent=2)
+            tmp_path.replace(self.file_path)
+        except Exception:
+            pass
+
+    def update(self, completed: int | None = None, label: str | None = None):
+        if completed is not None:
+            try:
+                value = int(completed)
+            except Exception:
+                value = 0
+            if self.total > 0:
+                value = max(0, min(value, self.total))
+            else:
+                value = max(0, value)
+            self.completed = value
+        if label is not None:
+            self.label = str(label)
+        self.status = "running"
+        self._write()
+
+    def start(self, total: int, label: str | None = None):
+        self.total = max(0, int(total)) if total is not None else 0
+        self.completed = 0
+        self.status = "running"
+        if label is not None:
+            self.label = str(label)
+        elif not self.label:
+            self.label = ""
+        self._write()
+
+    def complete(self, label: str | None = None):
+        if self.total > 0 and self.completed < self.total:
+            self.completed = self.total
+        self.status = "completed"
+        if label is not None:
+            self.label = str(label)
+        self._write()
+
+    def fail(self, label: str | None = None):
+        self.status = "error"
+        if label is not None:
+            self.label = str(label)
+        self._write()
 
 
 def to_int(s: str | None) -> int:
@@ -575,6 +659,9 @@ def extract_points_history(page, locator, pid, label: str | None = None) -> list
     if normalized:
         return normalized
 
+    if not FETCH_POINTS_HISTORY:
+        return []
+
     if pid is None:
         return []
 
@@ -601,12 +688,18 @@ def maybe_accept_cookies(page):
         except:
             pass
 
-def extract_all(page):
+def extract_all(page, progress: ProgressReporter | None = None):
     # Lee TODOS los jugadores del contenedor (aunque algunos estén ocultos por paginación client-side)
     page.wait_for_selector("div.lista_elementos div.elemento_jugador", timeout=90_000)
     cards = page.locator("div.lista_elementos div.elemento_jugador")
     n = cards.count()
     print(f"🔍 Detectados {n} elementos .elemento_jugador")
+
+    if progress:
+        if n:
+            progress.start(n, "Leyendo jugadores del mercado…")
+        else:
+            progress.start(0, "No se encontraron jugadores en el mercado")
 
     players = []
     history_cache: dict[int, list[dict]] = {}
@@ -745,31 +838,100 @@ def extract_all(page):
 
         players.append(data)
 
+        if progress:
+            label_name = data.get("name") or clean_name or f"Jugador {i + 1}"
+            progress.update(
+                i + 1,
+                f"Leyendo jugador {i + 1}/{n}: {label_name}",
+            )
+
     print(f"✅ Lectura completa: {len(players)} jugadores extraídos.")
+    if progress:
+        progress.update(n, "Lectura de jugadores completada")
     return players
 
 def main():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        ctx = browser.new_context()
-        page = ctx.new_page()
+    parser = argparse.ArgumentParser(
+        description="Genera market.json a partir del mercado web de FutbolFantasy"
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["market", "points"],
+        default="market",
+        help=(
+            "Selecciona 'market' para capturar solo valores de mercado o 'points' "
+            "para capturar también los historiales de puntos"
+        ),
+    )
+    parser.add_argument(
+        "--headless",
+        dest="headless",
+        action="store_true",
+        help="Ejecuta el navegador en modo headless",
+    )
+    parser.add_argument(
+        "--no-headless",
+        dest="headless",
+        action="store_false",
+        help="Fuerza el modo visible del navegador",
+    )
+    parser.set_defaults(headless=False)
+    args = parser.parse_args()
 
-        print(f"🌐 Abriendo {URL} …")
-        page.goto(URL, wait_until="domcontentloaded", timeout=90_000)
-        maybe_accept_cookies(page)
+    global FETCH_POINTS_HISTORY
+    FETCH_POINTS_HISTORY = args.mode == "points"
 
-        page.wait_for_selector("div.lista_elementos", timeout=90_000)
-        players = extract_all(page)
+    if FETCH_POINTS_HISTORY:
+        print(
+            "🔁 Modo puntos: se capturará el historial de puntuaciones de cada jugador."
+        )
+    else:
+        print(
+            "ℹ️ Modo mercado: se omite la lectura detallada del historial de puntuaciones."
+        )
 
-        browser.close()
+    progress = ProgressReporter(args.mode)
+    progress.clear()
+    progress.update(0, "Preparando lectura del mercado…")
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=args.headless)
+            ctx = None
+            page = None
+            try:
+                ctx = browser.new_context()
+                page = ctx.new_page()
+
+                print(f"🌐 Abriendo {URL} …")
+                page.goto(URL, wait_until="domcontentloaded", timeout=90_000)
+                maybe_accept_cookies(page)
+
+                page.wait_for_selector("div.lista_elementos", timeout=90_000)
+                players = extract_all(page, progress=progress)
+            finally:
+                if page is not None:
+                    with suppress(Exception):
+                        page.close()
+                if ctx is not None:
+                    with suppress(Exception):
+                        ctx.close()
+                with suppress(Exception):
+                    browser.close()
+    except Exception:
+        progress.fail("Error al generar market.json")
+        raise
 
     payload = {
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(players),
         "players": players,
+        "mode": args.mode,
     }
+    progress.update(len(players), "Generando fichero market.json…")
     with open("market.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+    progress.complete("market.json actualizado")
     print(f"💾 market.json guardado con {len(players)} jugadores.")
 
 if __name__ == "__main__":
