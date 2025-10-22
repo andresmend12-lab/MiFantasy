@@ -1769,7 +1769,7 @@ export default function FantasyTeamDashboard() {
     });
   }, []);
 
-  const getPlayerIdKey = (item) => {
+  const getPlayerIdKey = useCallback((item) => {
     if (!item) return null;
     const rawId =
       item.id ??
@@ -1781,7 +1781,7 @@ export default function FantasyTeamDashboard() {
     return rawId !== null && rawId !== undefined && rawId !== ""
       ? String(rawId)
       : null;
-  };
+  }, []);
 
   const getPlayerNameKey = (item) => {
     const base = sanitizeName(item?.name);
