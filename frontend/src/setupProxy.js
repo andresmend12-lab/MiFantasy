@@ -30,6 +30,15 @@ const runPythonScript = (scriptName) =>
       cwd: repoRoot,
       stdio: ["ignore", "pipe", "pipe"],
       shell: false,
+      env: {
+        ...process.env,
+        PYTHONIOENCODING:
+          process.env.PYTHONIOENCODING &&
+          /utf-?8/i.test(process.env.PYTHONIOENCODING)
+            ? process.env.PYTHONIOENCODING
+            : "utf-8",
+        PYTHONUTF8: process.env.PYTHONUTF8 ?? "1",
+      },
     });
 
     let stdout = "";
