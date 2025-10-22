@@ -22,11 +22,12 @@ const copyMarketJson = async () => {
   return marketJsonDestination;
 };
 
-const runPythonScript = (scriptName) =>
+const runPythonScript = (scriptName, args = []) =>
   new Promise((resolve, reject) => {
     const pythonExecutable = getPythonExecutable();
-    const commandLabel = `${pythonExecutable} ${scriptName}`.trim();
-    const child = spawn(pythonExecutable, [scriptName], {
+    const commandArgs = [scriptName, ...(Array.isArray(args) ? args : [])];
+    const commandLabel = `${pythonExecutable} ${commandArgs.join(" ")}`.trim();
+    const child = spawn(pythonExecutable, commandArgs, {
       cwd: repoRoot,
       stdio: ["ignore", "pipe", "pipe"],
       shell: false,
@@ -90,9 +91,9 @@ const respondWithError = (res, type, error) => {
   res.status(500).json(payload);
 };
 
-const handleSnifferRequest = (app, type, scriptName) => {
+const handleSnifferRequest = (app, type, scriptName, args = []) => {
   app.post(`/api/sniff/${type}`, (req, res) => {
-    runPythonScript(scriptName)
+    runPythonScript(scriptName, args)
       .then((result) =>
         copyMarketJson().then(() =>
           res.json({
@@ -108,6 +109,12 @@ const handleSnifferRequest = (app, type, scriptName) => {
 };
 
 module.exports = function setupProxy(app) {
-  handleSnifferRequest(app, "market", "sniff_market_json_v3_debug.py");
-  handleSnifferRequest(app, "points", "sniff_puntos_json_v3_debug.py");
+  handleSnifferRequest(app, "market", "sniff_market_json_v3_debug.py", [
+    "--mode",
+    "market",
+  ]);
+  handleSnifferRequest(app, "points", "sniff_market_json_v3_debug.py", [
+    "--mode",
+    "points",
+  ]);
 };
