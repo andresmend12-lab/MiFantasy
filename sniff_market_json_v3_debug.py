@@ -3,91 +3,12 @@ from playwright.sync_api import sync_playwright
 import argparse
 import json, re, unicodedata
 from datetime import datetime, timezone
-from pathlib import Path
 from contextlib import suppress
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
 
 
 FETCH_POINTS_HISTORY = False
-
-REPO_ROOT = Path(__file__).resolve().parent
-FRONTEND_PUBLIC_DIR = REPO_ROOT / "frontend" / "public"
-
-
-class ProgressReporter:
-    def __init__(self, mode: str):
-        normalized_mode = (mode or "market").lower()
-        if normalized_mode not in {"market", "points"}:
-            normalized_mode = "market"
-        self.mode = normalized_mode
-        self.file_path = FRONTEND_PUBLIC_DIR / f"{self.mode}-progress.json"
-        self.total = 0
-        self.completed = 0
-        self.status = "idle"
-        self.label = ""
-
-    def clear(self):
-        with suppress(FileNotFoundError, PermissionError, OSError):
-            self.file_path.unlink()
-
-    def _write(self):
-        payload = {
-            "mode": self.mode,
-            "status": self.status,
-            "label": self.label,
-            "completed": int(self.completed),
-            "total": int(self.total),
-            "updated_at": datetime.now(timezone.utc).isoformat(),
-        }
-        try:
-            self.file_path.parent.mkdir(parents=True, exist_ok=True)
-            tmp_path = self.file_path.with_suffix(".tmp")
-            with tmp_path.open("w", encoding="utf-8") as fh:
-                json.dump(payload, fh, ensure_ascii=False, indent=2)
-            tmp_path.replace(self.file_path)
-        except Exception:
-            pass
-
-    def update(self, completed: int | None = None, label: str | None = None):
-        if completed is not None:
-            try:
-                value = int(completed)
-            except Exception:
-                value = 0
-            if self.total > 0:
-                value = max(0, min(value, self.total))
-            else:
-                value = max(0, value)
-            self.completed = value
-        if label is not None:
-            self.label = str(label)
-        self.status = "running"
-        self._write()
-
-    def start(self, total: int, label: str | None = None):
-        self.total = max(0, int(total)) if total is not None else 0
-        self.completed = 0
-        self.status = "running"
-        if label is not None:
-            self.label = str(label)
-        elif not self.label:
-            self.label = ""
-        self._write()
-
-    def complete(self, label: str | None = None):
-        if self.total > 0 and self.completed < self.total:
-            self.completed = self.total
-        self.status = "completed"
-        if label is not None:
-            self.label = str(label)
-        self._write()
-
-    def fail(self, label: str | None = None):
-        self.status = "error"
-        if label is not None:
-            self.label = str(label)
-        self._write()
 
 
 def to_int(s: str | None) -> int:
@@ -688,18 +609,12 @@ def maybe_accept_cookies(page):
         except:
             pass
 
-def extract_all(page, progress: ProgressReporter | None = None):
+def extract_all(page):
     # Lee TODOS los jugadores del contenedor (aunque algunos estén ocultos por paginación client-side)
     page.wait_for_selector("div.lista_elementos div.elemento_jugador", timeout=90_000)
     cards = page.locator("div.lista_elementos div.elemento_jugador")
     n = cards.count()
     print(f"🔍 Detectados {n} elementos .elemento_jugador")
-
-    if progress:
-        if n:
-            progress.start(n, "Leyendo jugadores del mercado…")
-        else:
-            progress.start(0, "No se encontraron jugadores en el mercado")
 
     players = []
     history_cache: dict[int, list[dict]] = {}
@@ -838,16 +753,7 @@ def extract_all(page, progress: ProgressReporter | None = None):
 
         players.append(data)
 
-        if progress:
-            label_name = data.get("name") or clean_name or f"Jugador {i + 1}"
-            progress.update(
-                i + 1,
-                f"Leyendo jugador {i + 1}/{n}: {label_name}",
-            )
-
     print(f"✅ Lectura completa: {len(players)} jugadores extraídos.")
-    if progress:
-        progress.update(n, "Lectura de jugadores completada")
     return players
 
 def main():
@@ -890,10 +796,6 @@ def main():
             "ℹ️ Modo mercado: se omite la lectura detallada del historial de puntuaciones."
         )
 
-    progress = ProgressReporter(args.mode)
-    progress.clear()
-    progress.update(0, "Preparando lectura del mercado…")
-
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=args.headless)
@@ -908,7 +810,7 @@ def main():
                 maybe_accept_cookies(page)
 
                 page.wait_for_selector("div.lista_elementos", timeout=90_000)
-                players = extract_all(page, progress=progress)
+                players = extract_all(page)
             finally:
                 if page is not None:
                     with suppress(Exception):
@@ -919,7 +821,6 @@ def main():
                 with suppress(Exception):
                     browser.close()
     except Exception:
-        progress.fail("Error al generar market.json")
         raise
 
     payload = {
@@ -928,10 +829,8 @@ def main():
         "players": players,
         "mode": args.mode,
     }
-    progress.update(len(players), "Generando fichero market.json…")
     with open("market.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    progress.complete("market.json actualizado")
     print(f"💾 market.json guardado con {len(players)} jugadores.")
 
 if __name__ == "__main__":

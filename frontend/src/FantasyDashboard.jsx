@@ -185,7 +185,6 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
 const MARKET_ENDPOINT = "/market.json";
-const MARKET_PROGRESS_ENDPOINT = "/market-progress.json";
 const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
@@ -193,13 +192,6 @@ const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const SNIFFER_COMMAND_ENDPOINTS = {
   market: "/api/sniff/market",
   points: "/api/sniff/points",
-};
-
-const POINTS_PROGRESS_ENDPOINT = "/points-progress.json";
-
-const SNIFFER_PROGRESS_ENDPOINTS = {
-  market: MARKET_PROGRESS_ENDPOINT,
-  points: POINTS_PROGRESS_ENDPOINT,
 };
 
 const getSnifferFriendlyName = (type) =>
@@ -292,64 +284,6 @@ const sleep = (ms) =>
     setTimeout(resolve, timeout);
   });
 
-const watchSnifferProgress = (
-  type,
-  { onUpdate, signal, interval = 600 } = {}
-) => {
-  const endpoint = SNIFFER_PROGRESS_ENDPOINTS[type];
-  if (!endpoint || typeof fetch !== "function") {
-    return () => {};
-  }
-
-  const controller = new AbortController();
-  const cleanup = () => controller.abort();
-
-  if (signal) {
-    if (signal.aborted) {
-      controller.abort();
-    } else {
-      const handleAbort = () => controller.abort();
-      signal.addEventListener("abort", handleAbort, { once: true });
-      controller.signal.addEventListener("abort", () => {
-        signal.removeEventListener("abort", handleAbort);
-      });
-    }
-  }
-
-  const emit = (payload) => {
-    if (typeof onUpdate !== "function") return;
-    try {
-      onUpdate(payload);
-    } catch (error) {
-      console.warn("Error al manejar el progreso remoto", error);
-    }
-  };
-
-  (async () => {
-    while (!controller.signal.aborted) {
-      try {
-        const response = await fetch(`${endpoint}?t=${Date.now()}`, {
-          cache: "no-store",
-          credentials: "include",
-          signal: controller.signal,
-        });
-        if (response?.ok) {
-          const data = await response.json();
-          emit(data);
-        }
-      } catch (error) {
-        if (controller.signal.aborted) {
-          break;
-        }
-        await sleep(150);
-      }
-      await sleep(interval);
-    }
-  })();
-
-  return cleanup;
-};
-
 const store = {
   jugadoresEquipo: [],
   cacheMercado: {},
@@ -361,8 +295,6 @@ const storeControl = {
   refreshMarketFor: null,
   refreshPointsFor: null,
   pushToast: null,
-  setMarketProgress: null,
-  setPointsProgress: null,
   applyMarketPayload: null,
   getPlayerIds: () =>
     store.jugadoresEquipo
@@ -372,30 +304,6 @@ const storeControl = {
           : null
       )
       .filter((value) => Number.isFinite(value)),
-};
-
-const progressClearTimers = {
-  market: null,
-  points: null,
-};
-
-const clearProgressTimer = (type) => {
-  if (progressClearTimers[type]) {
-    clearTimeout(progressClearTimers[type]);
-    progressClearTimers[type] = null;
-  }
-};
-
-const scheduleProgressClear = (type, delay = 900) => {
-  clearProgressTimer(type);
-  progressClearTimers[type] = setTimeout(() => {
-    progressClearTimers[type] = null;
-    if (type === "market") {
-      storeControl.setMarketProgress?.(null);
-    } else if (type === "points") {
-      storeControl.setPointsProgress?.(null);
-    }
-  }, Math.max(0, delay));
 };
 
 const toastStyles = {
@@ -548,84 +456,9 @@ async function runPointsSniffer(
 export async function sniff_market_json_v3_debug_market(options = {}) {
   storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
   const ids = storeControl.getPlayerIds();
-  const totalSteps = Math.max(1, 1 + ids.length);
-  const commandStageWeight = Math.min(1, totalSteps);
-  const defaultCommandLabel = "Generando market.json…";
-  const followupLabel = ids.length
-    ? "Actualizando valores individuales…"
-    : "Mercado descargado";
-
-  clearProgressTimer("market");
-
-  let commandCompleted = 0;
-  let playerCompleted = 0;
-  let currentLabel = defaultCommandLabel;
-
-  const updateProgress = () => {
-    storeControl.setMarketProgress?.({
-      label: currentLabel,
-      completed: Math.min(totalSteps, commandCompleted + playerCompleted),
-      total: totalSteps,
-    });
-  };
-
-  const applyCommandProgress = (fraction, label) => {
-    const normalized = Number.isFinite(fraction)
-      ? Math.min(Math.max(fraction, 0), 1)
-      : 0;
-    commandCompleted = commandStageWeight * normalized;
-    if (typeof label === "string" && label.trim()) {
-      currentLabel = label.trim();
-    } else if (!currentLabel) {
-      currentLabel = defaultCommandLabel;
-    }
-    updateProgress();
-  };
-
-  const applyPlayerProgress = (completedCount, label) => {
-    const normalized = Number.isFinite(completedCount)
-      ? Math.max(0, completedCount)
-      : 0;
-    playerCompleted = Math.min(ids.length, normalized);
-    if (typeof label === "string" && label.trim()) {
-      currentLabel = label.trim();
-    }
-    updateProgress();
-  };
-
-  applyCommandProgress(0, defaultCommandLabel);
-
-  const abortController = new AbortController();
-  let stopWatching = null;
 
   try {
-    stopWatching = watchSnifferProgress("market", {
-      signal: abortController.signal,
-      onUpdate: (payload) => {
-        if (!payload || typeof payload !== "object") {
-          return;
-        }
-        const total = Number(payload.total ?? 0);
-        const completed = Number(payload.completed ?? 0);
-        const fraction =
-          total > 0 ? completed / Math.max(1, total) : completed > 0 ? 1 : 0;
-        const label =
-          typeof payload.label === "string" ? payload.label.trim() : null;
-        applyCommandProgress(fraction, label);
-      },
-    });
-
     await executeSnifferCommand("market");
-
-    abortController.abort();
-    try {
-      stopWatching?.();
-    } catch {
-      /* noop */
-    }
-    stopWatching = null;
-
-    applyCommandProgress(1, followupLabel);
 
     let marketPayload = null;
     for (let attempt = 0; attempt < 5; attempt += 1) {
@@ -651,49 +484,21 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
       store.marketPayload = null;
     }
 
-    const formatPlayerLabel = (value) =>
-      ids.length
-        ? `${followupLabel} (${Math.min(ids.length, value)}/${ids.length})`
-        : followupLabel;
-
-    applyPlayerProgress(0, formatPlayerLabel(0));
-
     const results = ids.length
       ? await runMarketSniffer(ids, {
           ...options,
           payload: marketPayload,
-          onProgress: ({ completed }) => {
-            applyPlayerProgress(completed, formatPlayerLabel(completed));
-          },
         })
       : [];
-
-    const finalLabel = "Valores de mercado actualizados";
-    applyPlayerProgress(ids.length, finalLabel);
-    commandCompleted = commandStageWeight;
-    currentLabel = finalLabel;
-    updateProgress();
 
     storeControl.pushToast?.("Actualización completada", { type: "success" });
     return results;
   } catch (error) {
-    storeControl.setMarketProgress?.((prev) => {
-      if (!prev) return prev;
-      return { ...prev, label: "Actualización de mercado interrumpida" };
-    });
     storeControl.pushToast?.(
       error?.message ?? "No se pudo completar la actualización de mercado.",
       { type: "error" }
     );
     throw error;
-  } finally {
-    abortController.abort();
-    try {
-      stopWatching?.();
-    } catch {
-      /* noop */
-    }
-    scheduleProgressClear("market");
   }
 }
 
@@ -701,54 +506,21 @@ export async function sniff_market_json_v3_debug_points(options = {}) {
   storeControl.pushToast?.("Actualizando puntos de jornada…", { type: "info" });
   try {
     const ids = storeControl.getPlayerIds();
-    const totalSteps = Math.max(1, 1 + ids.length);
-    clearProgressTimer("points");
-    let currentCompleted = 0;
-    const setProgress = (label, completed) => {
-      currentCompleted = Math.min(Math.max(0, completed), totalSteps);
-      storeControl.setPointsProgress?.({
-        label,
-        completed: currentCompleted,
-        total: totalSteps,
-      });
-    };
-
-    setProgress("Consultando puntuaciones en FutbolFantasy…", 0);
 
     await executeSnifferCommand("points");
 
-    setProgress(
-      ids.length ? "Sincronizando jugadores…" : "Puntuaciones descargadas",
-      Math.min(1, totalSteps)
-    );
-
     const results = ids.length
-      ? await runPointsSniffer(ids, {
-          ...options,
-          onProgress: ({ completed }) => {
-            setProgress(
-              "Sincronizando jugadores…",
-              Math.min(totalSteps, 1 + completed)
-            );
-          },
-        })
+      ? await runPointsSniffer(ids, { ...options })
       : [];
 
-    setProgress("Puntuaciones actualizadas", totalSteps);
     storeControl.pushToast?.("Actualización completada", { type: "success" });
     return results;
   } catch (error) {
-    storeControl.setPointsProgress?.((prev) => {
-      if (!prev) return prev;
-      return { ...prev, label: "Actualización de puntos interrumpida" };
-    });
     storeControl.pushToast?.(
       error?.message ?? "No se pudo completar la actualización de puntos.",
       { type: "error" }
     );
     throw error;
-  } finally {
-    scheduleProgressClear("points");
   }
 }
 
@@ -1935,8 +1707,6 @@ export default function FantasyTeamDashboard() {
   const [budgetDraft, setBudgetDraft] = useState("");
   const [marketSnifferRunning, setMarketSnifferRunning] = useState(false);
   const [pointsSnifferRunning, setPointsSnifferRunning] = useState(false);
-  const [marketSnifferProgress, setMarketSnifferProgress] = useState(null);
-  const [pointsSnifferProgress, setPointsSnifferProgress] = useState(null);
   const [toasts, setToasts] = useState([]);
   const toastIdRef = useRef(0);
   const budgetParsed = useMemo(
@@ -2823,24 +2593,6 @@ export default function FantasyTeamDashboard() {
       }
     };
   }, [applyMarketPayload]);
-
-  useEffect(() => {
-    storeControl.setMarketProgress = setMarketSnifferProgress;
-    return () => {
-      if (storeControl.setMarketProgress === setMarketSnifferProgress) {
-        storeControl.setMarketProgress = null;
-      }
-    };
-  }, [setMarketSnifferProgress]);
-
-  useEffect(() => {
-    storeControl.setPointsProgress = setPointsSnifferProgress;
-    return () => {
-      if (storeControl.setPointsProgress === setPointsSnifferProgress) {
-        storeControl.setPointsProgress = null;
-      }
-    };
-  }, [setPointsSnifferProgress]);
 
   const handleMarketSniffer = useCallback(async () => {
     if (marketSnifferRunning) return;
@@ -4276,29 +4028,6 @@ export default function FantasyTeamDashboard() {
           </button>
         </div>
 
-        {(marketSnifferProgress || pointsSnifferProgress) && (
-          <div className="w-full max-w-xl space-y-2 text-xs text-gray-600">
-            {marketSnifferProgress && (
-              <ProgressIndicator
-                label={
-                  marketSnifferProgress.label ?? "Actualización de mercado"
-                }
-                completed={marketSnifferProgress.completed ?? 0}
-                total={marketSnifferProgress.total ?? 0}
-              />
-            )}
-            {pointsSnifferProgress && (
-              <ProgressIndicator
-                label={
-                  pointsSnifferProgress.label ?? "Actualización de puntos"
-                }
-                completed={pointsSnifferProgress.completed ?? 0}
-                total={pointsSnifferProgress.total ?? 0}
-              />
-            )}
-          </div>
-        )}
-
         <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-2">
           <button
             type="button"
@@ -4396,32 +4125,6 @@ export default function FantasyTeamDashboard() {
   );
 }
 
-
-function ProgressIndicator({ label, completed, total }) {
-  const safeTotal = Number.isFinite(total) && total > 0 ? total : 0;
-  const safeCompleted = Number.isFinite(completed) ? completed : 0;
-  const clampedCompleted = Math.min(
-    safeTotal,
-    Math.max(0, safeCompleted)
-  );
-  const percent = safeTotal
-    ? Math.round((clampedCompleted / safeTotal) * 100)
-    : 0;
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center justify-between text-[11px] font-medium uppercase tracking-wide text-gray-500">
-        <span className="truncate pr-2">{label}</span>
-        <span className="text-gray-700">{percent}%</span>
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-200">
-        <div
-          className="h-full rounded-full bg-indigo-500 transition-[width] duration-300 ease-out"
-          style={{ width: `${Math.min(100, Math.max(0, percent))}%` }}
-        />
-      </div>
-    </div>
-  );
-}
 
 function Card({ title, children, className = "" }) {
   return (
