@@ -1,9 +1,13 @@
 # sniff_market_json_v3_debug.py
 from playwright.sync_api import sync_playwright
+import argparse
 import json, re, unicodedata
 from datetime import datetime, timezone
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
+
+
+FETCH_POINTS_HISTORY = False
 
 
 def to_int(s: str | None) -> int:
@@ -575,6 +579,9 @@ def extract_points_history(page, locator, pid, label: str | None = None) -> list
     if normalized:
         return normalized
 
+    if not FETCH_POINTS_HISTORY:
+        return []
+
     if pid is None:
         return []
 
@@ -749,8 +756,47 @@ def extract_all(page):
     return players
 
 def main():
+    parser = argparse.ArgumentParser(
+        description="Genera market.json a partir del mercado web de FutbolFantasy"
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["market", "points"],
+        default="market",
+        help=(
+            "Selecciona 'market' para capturar solo valores de mercado o 'points' "
+            "para capturar también los historiales de puntos"
+        ),
+    )
+    parser.add_argument(
+        "--headless",
+        dest="headless",
+        action="store_true",
+        help="Ejecuta el navegador en modo headless",
+    )
+    parser.add_argument(
+        "--no-headless",
+        dest="headless",
+        action="store_false",
+        help="Fuerza el modo visible del navegador",
+    )
+    parser.set_defaults(headless=False)
+    args = parser.parse_args()
+
+    global FETCH_POINTS_HISTORY
+    FETCH_POINTS_HISTORY = args.mode == "points"
+
+    if FETCH_POINTS_HISTORY:
+        print(
+            "🔁 Modo puntos: se capturará el historial de puntuaciones de cada jugador."
+        )
+    else:
+        print(
+            "ℹ️ Modo mercado: se omite la lectura detallada del historial de puntuaciones."
+        )
+
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=args.headless)
         ctx = browser.new_context()
         page = ctx.new_page()
 
@@ -767,6 +813,7 @@ def main():
         "updated_at": datetime.now(timezone.utc).isoformat(),
         "count": len(players),
         "players": players,
+        "mode": args.mode,
     }
     with open("market.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
