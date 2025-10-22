@@ -458,27 +458,47 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
   const ids = storeControl.getPlayerIds();
 
   try {
+    const { force } = options ?? {};
+    const shouldForceReload = force !== false;
+    const existingPayload = store.marketPayload ?? null;
     await executeSnifferCommand("market");
 
     let marketPayload = null;
-    for (let attempt = 0; attempt < 5; attempt += 1) {
-      try {
-        marketPayload = await loadMarketPayload({ force: true });
-        break;
-      } catch (error) {
-        if (attempt === 4) {
-          throw error;
+    if (shouldForceReload) {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        try {
+          marketPayload = await loadMarketPayload({ force: true });
+          break;
+        } catch (error) {
+          if (attempt === 4) {
+            throw error;
+          }
+          await sleep(250 * (attempt + 1));
         }
-        await sleep(250 * (attempt + 1));
+      }
+    } else {
+      marketPayload = existingPayload;
+      if (!marketPayload) {
+        try {
+          marketPayload = await loadMarketPayload({ force: false });
+        } catch (error) {
+          if (existingPayload) {
+            marketPayload = existingPayload;
+          } else {
+            throw error;
+          }
+        }
       }
     }
 
     if (marketPayload) {
       store.marketPayload = marketPayload;
-      try {
-        storeControl.applyMarketPayload?.(marketPayload);
-      } catch (error) {
-        console.warn("No se pudo aplicar el mercado actualizado", error);
+      if (shouldForceReload || !existingPayload) {
+        try {
+          storeControl.applyMarketPayload?.(marketPayload);
+        } catch (error) {
+          console.warn("No se pudo aplicar el mercado actualizado", error);
+        }
       }
     } else {
       store.marketPayload = null;

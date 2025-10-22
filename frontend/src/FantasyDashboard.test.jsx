@@ -436,6 +436,88 @@ describe("FantasyTeamDashboard", () => {
     expect(marketCall).toBeGreaterThanOrEqual(2);
   });
 
+  it("usa el último valor de mercado al mostrar mi equipo aunque la caché esté desactualizada", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+    window.localStorage.setItem(
+      "playerMarketCache",
+      JSON.stringify({ 2: 1000000 })
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    const payload = {
+      updated_at: "2025-01-03T00:00:00Z",
+      players: [
+        {
+          id: 2,
+          name: "Nico WilliamsN. Williams",
+          team: "Athletic",
+          team_id: "5",
+          position: "Delantero",
+          value: "2450000",
+          diff_1: "50000",
+          diff_7: "620000",
+        },
+      ],
+    };
+
+    global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+      }
+      return Promise.resolve(makeResponse(payload));
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    const teamTable = await screen.findByTestId("team-table");
+    const getRow = () => {
+      const cell = within(teamTable).getByText("Nico Williams");
+      const row = cell.closest("tr");
+      if (!row) {
+        throw new Error("Fila del jugador no encontrada");
+      }
+      return row;
+    };
+
+    await waitFor(() => {
+      const row = getRow();
+      const cells = within(row).getAllByRole("cell");
+      expect(cells[3].textContent).toContain("2.450.000");
+    });
+
+    const storedCache = window.localStorage.getItem("playerMarketCache");
+    expect(storedCache).not.toBeNull();
+    if (storedCache) {
+      const parsed = JSON.parse(storedCache);
+      expect(parsed[2]).toBe(2450000);
+    }
+  });
+
   it("omite peticiones de mercado cuando force es false y la cache está poblada", async () => {
     window.localStorage.setItem(
       "myTeam",
