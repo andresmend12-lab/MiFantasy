@@ -1,9 +1,16 @@
 # sniff_market_json_v3_debug.py
 from playwright.sync_api import sync_playwright
+import argparse
 import json, re, unicodedata
 from datetime import datetime, timezone
+from contextlib import suppress
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
+PLAYER_API_BASE = "https://www.laligafantasymarca.com/api/v3/player"
+PLAYER_API_COMPETITION = "laliga-fantasy"
+
+
+FETCH_POINTS_HISTORY = False
 
 
 def to_int(s: str | None) -> int:
@@ -274,6 +281,58 @@ def collect_history_from_modal(modal) -> list[dict]:
     except Exception:
         pass
     return dedupe_points_history(history)
+
+
+def fetch_points_history_via_api(page, pid, label: str | None = None) -> list[dict]:
+    if pid is None:
+        return []
+    try:
+        context = page.context
+    except Exception:
+        context = None
+    if context is None:
+        return []
+
+    descriptor = f"ID {pid}" if label is None else f"{label} (ID {pid})"
+    url = f"{PLAYER_API_BASE}/{pid}?competition={PLAYER_API_COMPETITION}"
+    print(f"   ↳ Consultando historial vía API para {descriptor}…")
+    try:
+        response = context.request.get(url, timeout=10_000)
+    except Exception as exc:
+        print(f"   ↳ No se pudo acceder a la API para {descriptor}: {exc}")
+        return []
+
+    try:
+        if not response.ok:
+            print(
+                f"   ↳ La API devolvió un estado {response.status} para {descriptor}."
+            )
+            return []
+    except Exception:
+        pass
+
+    history: list[dict] = []
+    try:
+        payload = response.json()
+        history.extend(parse_points_history_payload(payload))
+    except Exception as exc:
+        try:
+            text = response.text()
+        except Exception:
+            text = None
+        if text:
+            history.extend(parse_points_history_payload(text))
+        else:
+            print(
+                f"   ↳ No se pudo interpretar la respuesta de la API para {descriptor}: {exc}"
+            )
+
+    normalized = dedupe_points_history(history)
+    if normalized:
+        print(
+            f"   ↳ Historial obtenido vía API para {descriptor}: {len(normalized)} jornadas."
+        )
+    return normalized
 
 
 def fetch_points_history_via_modal(page, locator, pid, label: str | None = None) -> list[dict]:
@@ -547,6 +606,85 @@ def clean_name_candidate(text: str | None) -> str:
     )
 
 
+def load_existing_market_payload(path: str = "market.json") -> dict | None:
+    try:
+        with open(path, "r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except FileNotFoundError:
+        return None
+    except Exception as exc:
+        print(f"⚠️  No se pudo leer {path}: {exc}")
+        return None
+
+
+def _build_player_indexes(players: list[dict]) -> tuple[dict, dict]:
+    by_id: dict = {}
+    by_name: dict = {}
+    for idx, entry in enumerate(players or []):
+        if not isinstance(entry, dict):
+            continue
+        pid = entry.get("id")
+        if pid is not None:
+            pid_str = str(pid).strip()
+            if pid_str:
+                by_id[pid_str] = idx
+                with suppress(Exception):
+                    by_id[int(pid_str)] = idx
+        name_key = clean_name_candidate(entry.get("name"))
+        if name_key:
+            by_name[name_key.casefold()] = idx
+    return by_id, by_name
+
+
+def merge_player_payload(existing_players: list[dict] | None, updates: list[dict] | None) -> tuple[list[dict], int]:
+    base = list(existing_players or [])
+    if not updates:
+        return base, 0
+
+    by_id, by_name = _build_player_indexes(base)
+    updated = 0
+
+    for entry in updates:
+        if not isinstance(entry, dict):
+            continue
+        idx = None
+        pid = entry.get("id")
+        pid_str = str(pid).strip() if pid is not None else ""
+        if pid_str and pid_str in by_id:
+            idx = by_id[pid_str]
+        else:
+            try:
+                pid_int = int(pid)
+            except Exception:
+                pid_int = None
+            if pid_int is not None and pid_int in by_id:
+                idx = by_id[pid_int]
+
+        if idx is None:
+            name_key = clean_name_candidate(entry.get("name"))
+            if name_key:
+                idx = by_name.get(name_key.casefold())
+
+        if idx is not None:
+            merged = dict(base[idx])
+            merged.update(entry)
+            base[idx] = merged
+        else:
+            base.append(entry)
+            idx = len(base) - 1
+
+        if pid_str:
+            by_id[pid_str] = idx
+            with suppress(Exception):
+                by_id[int(pid_str)] = idx
+        name_key = clean_name_candidate(entry.get("name"))
+        if name_key:
+            by_name[name_key.casefold()] = idx
+        updated += 1
+
+    return base, updated
+
+
 def extract_points_history(page, locator, pid, label: str | None = None) -> list[dict]:
     history: list[dict] = []
     try:
@@ -571,15 +709,40 @@ def extract_points_history(page, locator, pid, label: str | None = None) -> list
     for payload in gather_datasets(locator):
         history.extend(parse_points_history_payload(payload))
 
-    normalized = dedupe_points_history(history)
-    if normalized:
-        return normalized
+    attr_history = dedupe_points_history(history)
+    fallback_history = attr_history or []
+
+    if attr_history:
+        if not FETCH_POINTS_HISTORY:
+            return attr_history
+        max_matchday = 0
+        try:
+            max_matchday = max(
+                int(float(entry.get("matchday", 0)))
+                if isinstance(entry, dict)
+                else 0
+                for entry in attr_history
+            )
+        except Exception:
+            max_matchday = 0
+        if len(attr_history) > 1 or max_matchday > 1:
+            return attr_history
+    else:
+        if not FETCH_POINTS_HISTORY:
+            return []
+
+    api_history = fetch_points_history_via_api(page, pid, label)
+    if api_history:
+        return api_history
 
     if pid is None:
-        return []
+        return fallback_history
 
     detail_history = fetch_points_history_via_modal(page, locator, pid, label)
-    return detail_history or []
+    if detail_history:
+        return detail_history
+
+    return fallback_history
 
 
 def maybe_accept_cookies(page):
@@ -601,7 +764,7 @@ def maybe_accept_cookies(page):
         except:
             pass
 
-def extract_all(page):
+def extract_all(page, target_ids: list[int] | None = None, target_names: list[str] | None = None):
     # Lee TODOS los jugadores del contenedor (aunque algunos estén ocultos por paginación client-side)
     page.wait_for_selector("div.lista_elementos div.elemento_jugador", timeout=90_000)
     cards = page.locator("div.lista_elementos div.elemento_jugador")
@@ -610,6 +773,32 @@ def extract_all(page):
 
     players = []
     history_cache: dict[int, list[dict]] = {}
+
+    target_id_set: set[int] = set()
+    if target_ids:
+        for raw in target_ids:
+            if raw is None:
+                continue
+            try:
+                target_id_set.add(int(raw))
+            except Exception:
+                try:
+                    target_id_set.add(int(str(raw).strip()))
+                except Exception:
+                    continue
+
+    target_name_keys: set[str] = set()
+    if target_names:
+        for raw in target_names:
+            if not raw:
+                continue
+            key = clean_name_candidate(raw)
+            if key:
+                target_name_keys.add(key.casefold())
+
+    filtering = bool(target_id_set or target_name_keys)
+    remaining_ids = set(target_id_set)
+    remaining_names = set(target_name_keys)
     for i in range(n):
         el = cards.nth(i)
 
@@ -617,6 +806,16 @@ def extract_all(page):
         onclick = el.get_attribute("onclick") or ""
         m = re.search(r",\s*([0-9]+)\s*\)\s*;", onclick)
         pid = int(m.group(1)) if m else None
+
+        matches_filter = True
+        matched_by_id = False
+        matched_by_name = False
+        normalized_name_key = ""
+        if filtering:
+            matches_filter = False
+            if pid is not None and pid in remaining_ids:
+                matches_filter = True
+                matched_by_id = True
 
         def ga(name):
             try:
@@ -650,6 +849,21 @@ def extract_all(page):
             )
         if re.search(r"(\b\w+\b)\s+\1", clean_name or "", flags=re.IGNORECASE):
             print("⚠️  Posible repetición en nombre normalizado:", clean_name)
+
+        if filtering and not matches_filter:
+            name_key_candidate = clean_name_candidate(clean_name)
+            normalized_name_key = (
+                name_key_candidate.casefold() if name_key_candidate else ""
+            )
+            if (
+                normalized_name_key
+                and normalized_name_key in remaining_names
+            ):
+                matches_filter = True
+                matched_by_name = True
+
+        if filtering and not matches_filter:
+            continue
 
         # Equipo visible
         try:
@@ -745,32 +959,161 @@ def extract_all(page):
 
         players.append(data)
 
-    print(f"✅ Lectura completa: {len(players)} jugadores extraídos.")
+        if filtering:
+            if matched_by_id and pid is not None:
+                with suppress(Exception):
+                    remaining_ids.discard(int(pid))
+            if normalized_name_key:
+                remaining_names.discard(normalized_name_key)
+            if not remaining_ids and not remaining_names:
+                break
+
+    if filtering:
+        print(f"✅ Lectura completa: {len(players)} jugadores extraídos (filtrado).")
+    else:
+        print(f"✅ Lectura completa: {len(players)} jugadores extraídos.")
     return players
 
 def main():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        ctx = browser.new_context()
-        page = ctx.new_page()
+    parser = argparse.ArgumentParser(
+        description="Genera market.json a partir del mercado web de FutbolFantasy"
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["market", "points"],
+        default="market",
+        help=(
+            "Selecciona 'market' para capturar solo valores de mercado o 'points' "
+            "para capturar también los historiales de puntos"
+        ),
+    )
+    parser.add_argument(
+        "--player-id",
+        dest="player_ids",
+        action="append",
+        help="ID numérico del jugador a actualizar (puede repetirse).",
+    )
+    parser.add_argument(
+        "--player-name",
+        dest="player_names",
+        action="append",
+        help="Nombre aproximado del jugador a actualizar (opcional).",
+    )
+    parser.add_argument(
+        "--headless",
+        dest="headless",
+        action="store_true",
+        help="Ejecuta el navegador en modo headless",
+    )
+    parser.add_argument(
+        "--no-headless",
+        dest="headless",
+        action="store_false",
+        help="Fuerza el modo visible del navegador",
+    )
+    parser.set_defaults(headless=False)
+    args = parser.parse_args()
 
-        print(f"🌐 Abriendo {URL} …")
-        page.goto(URL, wait_until="domcontentloaded", timeout=90_000)
-        maybe_accept_cookies(page)
+    target_ids: list[int] = []
+    if getattr(args, "player_ids", None):
+        for raw in args.player_ids:
+            if raw is None:
+                continue
+            try:
+                target_ids.append(int(str(raw).strip()))
+            except Exception:
+                print(f"⚠️  ID de jugador no válido ignorado: {raw}")
 
-        page.wait_for_selector("div.lista_elementos", timeout=90_000)
-        players = extract_all(page)
+    target_names: list[str] = []
+    if getattr(args, "player_names", None):
+        for raw in args.player_names:
+            if not raw:
+                continue
+            target_names.append(str(raw))
 
-        browser.close()
+    filtering = bool(target_ids or target_names)
 
-    payload = {
-        "updated_at": datetime.now(timezone.utc).isoformat(),
-        "count": len(players),
-        "players": players,
-    }
+    global FETCH_POINTS_HISTORY
+    FETCH_POINTS_HISTORY = args.mode == "points"
+
+    if FETCH_POINTS_HISTORY:
+        print(
+            "🔁 Modo puntos: se capturará el historial de puntuaciones de cada jugador."
+        )
+    else:
+        print(
+            "ℹ️ Modo mercado: se omite la lectura detallada del historial de puntuaciones."
+        )
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=args.headless)
+            ctx = None
+            page = None
+            try:
+                ctx = browser.new_context()
+                page = ctx.new_page()
+
+                print(f"🌐 Abriendo {URL} …")
+                page.goto(URL, wait_until="domcontentloaded", timeout=90_000)
+                maybe_accept_cookies(page)
+
+                page.wait_for_selector("div.lista_elementos", timeout=90_000)
+                players = extract_all(
+                    page,
+                    target_ids=target_ids if target_ids else None,
+                    target_names=target_names if target_names else None,
+                )
+            finally:
+                if page is not None:
+                    with suppress(Exception):
+                        page.close()
+                if ctx is not None:
+                    with suppress(Exception):
+                        ctx.close()
+                with suppress(Exception):
+                    browser.close()
+    except Exception:
+        raise
+
+    timestamp = datetime.now(timezone.utc).isoformat()
+
+    if filtering:
+        existing_payload = load_existing_market_payload() or {}
+        existing_players = (
+            existing_payload.get("players")
+            if isinstance(existing_payload, dict)
+            and isinstance(existing_payload.get("players"), list)
+            else []
+        )
+        merged_players, updated_count = merge_player_payload(existing_players, players)
+
+        if not merged_players and not updated_count and not existing_players:
+            print(
+                "⚠️  No se encontraron jugadores con los criterios indicados y no existe un market.json previo."
+            )
+            return
+
+        payload = dict(existing_payload) if isinstance(existing_payload, dict) else {}
+        payload["players"] = merged_players
+        payload["count"] = len(merged_players)
+        payload["updated_at"] = timestamp
+        payload["mode"] = args.mode
+
+        if updated_count:
+            print(f"💾 Actualizados {updated_count} jugadores en market.json.")
+        else:
+            print("ℹ️ No se modificó ningún jugador con los criterios indicados.")
+    else:
+        payload = {
+            "updated_at": timestamp,
+            "count": len(players),
+            "players": players,
+            "mode": args.mode,
+        }
     with open("market.json", "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print(f"💾 market.json guardado con {len(players)} jugadores.")
+    print(f"💾 market.json guardado con {payload['count']} jugadores.")
 
 if __name__ == "__main__":
     main()
