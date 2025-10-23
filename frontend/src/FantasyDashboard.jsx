@@ -185,17 +185,12 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
 const MARKET_ENDPOINT = "/market.json";
-const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
-const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const MAX_MATCHDAYS = 38;
+const DEFAULT_MATCHDAY = 9;
+const MATCHDAY_STORAGE_KEY = "teamCurrentMatchday";
 
 const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
-const getPointsSnifferEndpoint = (playerId) => {
-  if (playerId === null || playerId === undefined || playerId === "") {
-    return null;
-  }
-  return `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
-};
 
 const getSnifferFriendlyName = (type) =>
   type === "points"
@@ -296,7 +291,6 @@ const store = {
 
 const storeControl = {
   refreshMarketFor: null,
-  refreshPointsFor: null,
   pushToast: null,
   applyMarketPayload: null,
   getPlayerIds: () =>
@@ -427,35 +421,6 @@ async function runMarketSniffer(
   return results;
 }
 
-async function runPointsSniffer(
-  playerIds,
-  { concurrency = 3, force = false, onProgress } = {}
-) {
-  const ids = Array.from(
-    new Set(
-      (playerIds || [])
-        .map((id) =>
-          id === null || id === undefined || id === "" ? null : Number(id)
-        )
-        .filter((value) => Number.isFinite(value))
-    )
-  );
-  if (!ids.length || typeof storeControl.refreshPointsFor !== "function") {
-    try {
-      onProgress?.({ completed: 0, total: ids.length ?? 0 });
-    } catch (error) {
-      console.warn("Error al manejar el progreso", error);
-    }
-    return [];
-  }
-  return runWithConcurrency(
-    ids,
-    concurrency,
-    (id) => storeControl.refreshPointsFor(id, { force }),
-    { onProgress }
-  );
-}
-
 export async function sniff_market_json_v3_debug_market(options = {}) {
   storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
   const ids = storeControl.getPlayerIds();
@@ -525,55 +490,6 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
   }
 }
 
-export async function sniff_market_json_v3_debug_points_for_player(
-  playerId,
-  options = {}
-) {
-  const id =
-    playerId === null || playerId === undefined || playerId === ""
-      ? null
-      : String(playerId);
-  if (!id) {
-    throw new Error("ID de jugador no válido");
-  }
-
-  const endpoint = getPointsSnifferEndpoint(id);
-  if (!endpoint) {
-    throw new Error("No se pudo preparar la actualización de puntos.");
-  }
-
-  await executeSnifferCommand({ type: "points", endpoint });
-
-  const attempts = Number.isFinite(options?.retries) && options.retries > 0
-    ? Math.floor(options.retries)
-    : 5;
-  let marketPayload = null;
-  let lastError = null;
-  for (let attempt = 0; attempt < Math.max(1, attempts); attempt += 1) {
-    try {
-      marketPayload = await loadMarketPayload({ force: true });
-      if (marketPayload) {
-        break;
-      }
-    } catch (error) {
-      lastError = error;
-      if (attempt === Math.max(1, attempts) - 1) {
-        throw error;
-      }
-      await sleep(250 * (attempt + 1));
-    }
-  }
-
-  if (!marketPayload) {
-    if (lastError) {
-      throw lastError;
-    }
-    throw new Error("No se pudo cargar el mercado actualizado.");
-  }
-
-  return marketPayload;
-}
-
 const normalizeScoreEntries = (value) =>
   normalizePointsHistory(value).map((item) => ({
     jornada: item.matchday,
@@ -635,112 +551,8 @@ const sanitizeScoreCache = (value) => {
   }, {});
 };
 
-const buildPlayerDetailUrl = (playerId) => {
-  if (playerId === null || playerId === undefined) return null;
-  const id = String(playerId).trim();
-  if (!id) return null;
-  return `${PLAYER_DETAIL_ENDPOINT}/${encodeURIComponent(
-    id
-  )}?competition=${encodeURIComponent(PLAYER_DETAIL_COMPETITION)}`;
-};
-
-const parseScoreDataFromJson = (payload) => {
-  if (!payload) return [];
-  const candidates = [];
-  const pushCandidate = (value) => {
-    if (value) {
-      candidates.push(value);
-    }
-  };
-
-  if (Array.isArray(payload)) {
-    pushCandidate(payload);
-  }
-  pushCandidate(payload.jornadas);
-  pushCandidate(payload.jornada);
-  pushCandidate(payload.data?.jornadas);
-  pushCandidate(payload.data?.jornada);
-  pushCandidate(payload.player?.jornadas);
-  pushCandidate(payload.player?.points_history);
-  pushCandidate(payload.player?.matchday_points);
-  pushCandidate(payload.player?.matchdays);
-  pushCandidate(payload.player?.statistics?.matchdays);
-  pushCandidate(payload.matchdays);
-  pushCandidate(payload.points_history);
-  pushCandidate(payload.history);
-
-  for (const candidate of candidates) {
-    const normalized = normalizeScoreEntries(candidate);
-    if (normalized.length) {
-      return normalized;
-    }
-  }
-  return [];
-};
-
-const parseScoreDataFromHtml = (html) => {
-  if (typeof DOMParser === "undefined" || !html) return [];
-  try {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const rowCandidates = [];
-
-    doc.querySelectorAll("table").forEach((table) => {
-      table.querySelectorAll("tr").forEach((row) => {
-        const cells = row.querySelectorAll("td,th");
-        if (cells.length < 2) return;
-        const jornadaText = collapseWhitespace(cells[0].textContent ?? "");
-        const puntosText = collapseWhitespace(cells[1].textContent ?? "");
-        rowCandidates.push({ jornada: jornadaText, puntos: puntosText });
-      });
-    });
-
-    if (rowCandidates.length) {
-      const normalized = normalizeScoreEntries(rowCandidates);
-      if (normalized.length) {
-        return normalized;
-      }
-    }
-
-    const dataAttributes = [];
-    doc
-      .querySelectorAll("[data-matchday],[data-jornada]")
-      .forEach((node) => {
-        const jornadaAttr =
-          node.getAttribute("data-matchday") ?? node.getAttribute("data-jornada");
-        const puntosAttr =
-          node.getAttribute("data-points") ??
-          node.getAttribute("data-score") ??
-          node.getAttribute("data-puntos") ??
-          node.textContent;
-        if (jornadaAttr != null) {
-          dataAttributes.push({ jornada: jornadaAttr, puntos: puntosAttr });
-        }
-      });
-    if (dataAttributes.length) {
-      const normalized = normalizeScoreEntries(dataAttributes);
-      if (normalized.length) {
-        return normalized;
-      }
-    }
-
-    const text = collapseWhitespace(doc.body?.textContent ?? "");
-    if (text) {
-      const lines = text.split(/\s*(?:\r?\n|\.|;)+\s*/).filter(Boolean);
-      const normalized = normalizeScoreEntries(lines);
-      if (normalized.length) {
-        return normalized;
-      }
-    }
-  } catch (error) {
-    console.warn("No se pudo parsear el HTML de puntuaciones", error);
-  }
-  return [];
-};
-
 let marketPayloadCache = null;
 let lastMarketPayload = null;
-
 const loadMarketPayload = async ({ force = false } = {}) => {
   if (!force && marketPayloadCache) {
     return marketPayloadCache;
@@ -931,56 +743,6 @@ export async function fetchValorMercadoJugador(
   };
 }
 
-export async function fetchPuntuacionJugador(playerId) {
-  const url = buildPlayerDetailUrl(playerId);
-  if (!url || typeof fetch !== "function") {
-    return [];
-  }
-
-  let lastError = null;
-  for (let attempt = 0; attempt < 2; attempt += 1) {
-    try {
-      const response = await fetch(url, { credentials: "include" });
-      if (!response || !response.ok) {
-        throw new Error(`Respuesta no válida al cargar puntuaciones (${response?.status})`);
-      }
-
-      const clone = response.clone?.();
-      let parsed = [];
-      let jsonError = null;
-      try {
-        const data = await response.json();
-        parsed = parseScoreDataFromJson(data);
-      } catch (error) {
-        jsonError = error;
-      }
-
-      if (!parsed.length && clone && typeof clone.text === "function") {
-        try {
-          const html = await clone.text();
-          parsed = parseScoreDataFromHtml(html);
-        } catch (htmlError) {
-          if (!jsonError) {
-            jsonError = htmlError;
-          }
-        }
-      }
-
-      if (!parsed.length && jsonError) {
-        throw jsonError;
-      }
-
-      return parsed;
-    } catch (error) {
-      lastError = error;
-    }
-  }
-  if (lastError) {
-    console.warn("No se pudieron obtener las puntuaciones del jugador", lastError);
-  }
-  return [];
-}
-
 const normalizePointsHistory = (value) => {
   if (!value) return [];
   const source = Array.isArray(value) ? value : [value];
@@ -1066,6 +828,39 @@ const historyAverage = (history, lastCount = null) => {
   if (!values.length) return null;
   const sum = values.reduce((acc, value) => acc + value, 0);
   return sum / values.length;
+};
+
+const clampMatchday = (value) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return null;
+  const floored = Math.floor(parsed);
+  if (floored < 1) return 1;
+  if (floored > MAX_MATCHDAYS) return MAX_MATCHDAYS;
+  return floored;
+};
+
+const computeMissingMatchdays = (history, targetMatchday) => {
+  const maxMatchday = clampMatchday(targetMatchday);
+  if (!maxMatchday) {
+    return [];
+  }
+  const normalized = normalizeScoreEntries(history);
+  const known = new Set(
+    normalized
+      .map((entry) =>
+        entry?.jornada !== null && entry?.jornada !== undefined
+          ? Number(entry.jornada)
+          : null
+      )
+      .filter((value) => Number.isFinite(value) && value > 0)
+  );
+  const missing = [];
+  for (let jornada = 1; jornada <= maxMatchday; jornada += 1) {
+    if (!known.has(jornada)) {
+      missing.push(jornada);
+    }
+  }
+  return missing;
 };
 
 const normalizePlayer = (player) => {
@@ -1741,7 +1536,6 @@ export default function FantasyTeamDashboard() {
   const [feedback, setFeedback] = useState(null);
   const feedbackTimeoutRef = useRef(null);
   const [playerStates, setPlayerStates] = useState({});
-  const pendingPointsRequests = useRef(new Map());
   const pendingMarketRequests = useRef(new Map());
   const [saleToRemove, setSaleToRemove] = useState(null);
   const [playerDetailTarget, setPlayerDetailTarget] = useState(null);
@@ -1756,8 +1550,23 @@ export default function FantasyTeamDashboard() {
   const [editBudgetOpen, setEditBudgetOpen] = useState(false);
   const [budgetDraft, setBudgetDraft] = useState("");
   const [marketSnifferRunning, setMarketSnifferRunning] = useState(false);
+  const [manualUpdateRunning, setManualUpdateRunning] = useState(false);
   const [toasts, setToasts] = useState([]);
   const toastIdRef = useRef(0);
+  const [currentMatchday, setCurrentMatchday] = useState(() => {
+    try {
+      const raw = localStorage.getItem(MATCHDAY_STORAGE_KEY);
+      if (raw !== null && raw !== undefined) {
+        const parsed = clampMatchday(Number(raw));
+        if (parsed !== null) {
+          return parsed;
+        }
+      }
+    } catch {
+      /* noop */
+    }
+    return DEFAULT_MATCHDAY;
+  });
   const budgetParsed = useMemo(
     () => toOptionalNumber(budgetDraft),
     [budgetDraft]
@@ -1832,6 +1641,19 @@ export default function FantasyTeamDashboard() {
       : null;
   }, []);
 
+  const getPlayerCacheKey = useCallback(
+    (item) => {
+      if (!item) return null;
+      const id = getPlayerIdKey(item);
+      if (id) {
+        return `id:${id}`;
+      }
+      const nameKey = getPlayerNameKey(item);
+      return nameKey ? `name:${nameKey}` : null;
+    },
+    [getPlayerIdKey]
+  );
+
   const getPlayerNameKey = (item) => {
     const base = sanitizeName(item?.name);
     return base ? base.toLowerCase() : null;
@@ -1848,6 +1670,93 @@ export default function FantasyTeamDashboard() {
     const playerName = getPlayerNameKey(player);
     return entryName && playerName ? entryName === playerName : false;
   };
+
+  const updateManualScores = useCallback(
+    (entries, { timestamp = new Date().toISOString() } = {}) => {
+      if (!Array.isArray(entries) || !entries.length) {
+        return false;
+      }
+      const normalizedUpdates = entries
+        .map((item) => {
+          if (!item || !item.player || !item.history) return null;
+          const history = normalizeScoreEntries(item.history);
+          if (!history.length) return null;
+          return { player: item.player, history };
+        })
+        .filter(Boolean);
+      if (!normalizedUpdates.length) {
+        return false;
+      }
+
+      setMyTeam((prev) => {
+        let mutated = false;
+        const next = prev.map((entry) => {
+          const update = normalizedUpdates.find((item) =>
+            entryMatchesPlayer(entry, item.player)
+          );
+          if (!update) {
+            return entry;
+          }
+          mutated = true;
+          return {
+            ...entry,
+            puntuacionPorJornada: update.history,
+            cacheFechaPuntuacion: timestamp,
+          };
+        });
+        return mutated ? next : prev;
+      });
+
+      setCachePuntuaciones((prev) => {
+        let mutated = false;
+        const next = { ...prev };
+        normalizedUpdates.forEach((item) => {
+          const keys = [];
+          const primaryKey = getPlayerCacheKey(item.player);
+          if (primaryKey) {
+            keys.push(primaryKey);
+            if (primaryKey.startsWith("id:")) {
+              keys.push(primaryKey.slice(3));
+            }
+          }
+          const legacyId = getPlayerIdKey(item.player);
+          if (legacyId) {
+            keys.push(`id:${legacyId}`);
+            keys.push(legacyId);
+          }
+          keys.forEach((key) => {
+            if (!key) return;
+            const existing = prev[key];
+            if (
+              existing &&
+              Array.isArray(existing.data) &&
+              existing.data.length === item.history.length &&
+              existing.data.every(
+                (entry, index) =>
+                  entry.jornada === item.history[index]?.jornada &&
+                  entry.puntos === item.history[index]?.puntos
+              ) &&
+              existing.fetchedAt === timestamp
+            ) {
+              return;
+            }
+            next[key] = { data: item.history, fetchedAt: timestamp };
+            mutated = true;
+          });
+        });
+        return mutated ? next : prev;
+      });
+
+      return true;
+    },
+    [
+      setMyTeam,
+      setCachePuntuaciones,
+      entryMatchesPlayer,
+      getPlayerCacheKey,
+      getPlayerIdKey,
+    ]
+  );
 
   const applyMarketPayload = useCallback(
     (payload) => {
@@ -1953,6 +1862,14 @@ export default function FantasyTeamDashboard() {
   }, [cachePuntuaciones]);
 
   useEffect(() => {
+    try {
+      localStorage.setItem(MATCHDAY_STORAGE_KEY, String(currentMatchday));
+    } catch {
+      /* noop */
+    }
+  }, [currentMatchday]);
+
+  useEffect(() => {
     setMyTeam((prev) => {
       let mutated = false;
       const next = prev.map((entry) => {
@@ -2025,305 +1942,300 @@ export default function FantasyTeamDashboard() {
     return Date.now() - value > SCORE_CACHE_TTL_MS;
   };
 
-  const getCachedScoreInfo = (playerId) => {
-    const id =
-      playerId === null || playerId === undefined ? null : String(playerId);
-    if (!id) {
-      return { data: [], fetchedAt: null };
-    }
-    const teamEntry = myTeam.find((entry) => {
-      const entryId = getPlayerIdKey(entry);
-      return entryId ? entryId === id : false;
-    });
-    if (
-      teamEntry &&
-      Array.isArray(teamEntry.puntuacionPorJornada) &&
-      teamEntry.puntuacionPorJornada.length
-    ) {
-      const fetchedAt =
-        typeof teamEntry.cacheFechaPuntuacion === "string"
-          ? teamEntry.cacheFechaPuntuacion
+  const getCachedScoreInfo = useCallback(
+    (playerLike) => {
+      if (!playerLike) {
+        return { data: [], fetchedAt: null };
+      }
+
+      const collectedKeys = new Set();
+      const addKey = (key) => {
+        if (key) {
+          collectedKeys.add(key);
+        }
+      };
+
+      const teamEntry =
+        typeof playerLike === "object" && playerLike
+          ? myTeam.find((entry) => entryMatchesPlayer(entry, playerLike))
           : null;
-      return {
-        data: normalizeScoreEntries(teamEntry.puntuacionPorJornada),
-        fetchedAt,
-      };
-    }
-    const cached = cachePuntuaciones[id];
-    if (cached && Array.isArray(cached.data) && cached.data.length) {
-      const fetchedAt =
-        typeof cached.fetchedAt === "string" ? cached.fetchedAt : null;
-      return {
-        data: normalizeScoreEntries(cached.data),
-        fetchedAt,
-      };
-    }
-    return { data: [], fetchedAt: null };
-  };
 
-  const getPuntuacionJugador = (playerId) => getCachedScoreInfo(playerId).data;
-
-  const applyPlayerScores = useCallback(
-    (playerId, entries, { fetchedAt = null } = {}) => {
-      const id =
-        playerId === null || playerId === undefined || playerId === ""
-          ? null
-          : String(playerId);
-      if (!id) {
-        return [];
-      }
-      const normalized = normalizeScoreEntries(entries);
-      if (!normalized.length) {
-        throw new Error("No hay puntuaciones disponibles");
-      }
-      const timestamp = fetchedAt ?? new Date().toISOString();
-
-      setCachePuntuaciones((prev) => {
-        const prevEntry = prev[id];
-        if (
-          prevEntry &&
-          Array.isArray(prevEntry.data) &&
-          prevEntry.data.length === normalized.length &&
-          prevEntry.data.every(
-            (item, index) =>
-              item.jornada === normalized[index]?.jornada &&
-              item.puntos === normalized[index]?.puntos
-          ) &&
-          prevEntry.fetchedAt === timestamp
-        ) {
-          return prev;
-        }
+      if (
+        teamEntry &&
+        Array.isArray(teamEntry.puntuacionPorJornada) &&
+        teamEntry.puntuacionPorJornada.length
+      ) {
+        const fetchedAt =
+          typeof teamEntry.cacheFechaPuntuacion === "string"
+            ? teamEntry.cacheFechaPuntuacion
+            : null;
         return {
-          ...prev,
-          [id]: { data: normalized, fetchedAt: timestamp },
+          data: normalizeScoreEntries(teamEntry.puntuacionPorJornada),
+          fetchedAt,
         };
-      });
+      }
 
-      setMyTeam((prev) => {
-        let mutated = false;
-        const candidate = playerIndex.byId.get(id);
-        const next = prev.map((entry) => {
-          if (!entry || typeof entry !== "object") return entry;
-          const entryId = getPlayerIdKey(entry);
-          const matches = entryId
-            ? entryId === id
-            : candidate
-            ? entryMatchesPlayer(entry, candidate)
-            : false;
-          if (!matches) return entry;
-          const updated = {
-            ...entry,
-            puntuacionPorJornada: normalized,
-            cacheFechaPuntuacion: timestamp,
+      const pushKeysForItem = (item) => {
+        if (!item) return;
+        const cacheKey = getPlayerCacheKey(item);
+        if (cacheKey) {
+          addKey(cacheKey);
+          if (cacheKey.startsWith("id:")) {
+            addKey(cacheKey.slice(3));
+          }
+        }
+        const legacyId = getPlayerIdKey(item);
+        if (legacyId) {
+          addKey(`id:${legacyId}`);
+          addKey(String(legacyId));
+        }
+        const nameKey = getPlayerNameKey(item);
+        if (nameKey) {
+          addKey(`name:${nameKey}`);
+        }
+      };
+
+      if (typeof playerLike === "string") {
+        if (playerLike.startsWith("id:") || playerLike.startsWith("name:")) {
+          addKey(playerLike);
+        } else {
+          addKey(`id:${playerLike}`);
+          addKey(playerLike);
+        }
+      } else {
+        pushKeysForItem(playerLike);
+      }
+
+      if (teamEntry) {
+        pushKeysForItem(teamEntry);
+      }
+
+      for (const key of collectedKeys) {
+        const cached = cachePuntuaciones[key];
+        if (cached && Array.isArray(cached.data) && cached.data.length) {
+          const fetchedAt =
+            typeof cached.fetchedAt === "string" ? cached.fetchedAt : null;
+          return {
+            data: normalizeScoreEntries(cached.data),
+            fetchedAt,
           };
-          if (
-            !entryId &&
-            candidate?.id !== null &&
-            candidate?.id !== undefined
-          ) {
-            updated.id = String(candidate.id);
-          }
-          mutated = true;
-          return updated;
-        });
-        return mutated ? next : prev;
-      });
+        }
+      }
 
-      updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
-      return normalized;
+      return { data: [], fetchedAt: null };
     },
     [
-      setCachePuntuaciones,
-      setMyTeam,
-      playerIndex,
-      getPlayerIdKey,
+      cachePuntuaciones,
       entryMatchesPlayer,
-      updatePlayerState,
-    ]
-  );
-
-  const refreshPointsFor = useCallback(
-    async (playerId, { force = false } = {}) => {
-      const id =
-        playerId === null || playerId === undefined || playerId === ""
-          ? null
-          : String(playerId);
-      if (!id) {
-        return [];
-      }
-      const current = getCachedScoreInfo(id);
-      const shouldFetch =
-        force || !current.fetchedAt || isScoreCacheStale(current.fetchedAt);
-      if (!shouldFetch && current.data.length) {
-        updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
-        return current.data;
-      }
-      const pending = pendingPointsRequests.current.get(id);
-      if (pending) {
-        return pending;
-      }
-      const fetchPromise = (async () => {
-        updatePlayerState(id, { pointsStatus: "loading", pointsError: null });
-        try {
-          const fetched = await fetchPuntuacionJugador(id);
-          const normalized = normalizeScoreEntries(fetched);
-          const nextData =
-            normalized.length || !current.data.length ? normalized : current.data;
-          if (!nextData.length) {
-            throw new Error("No hay puntuaciones disponibles");
-          }
-          const fetchedAt = new Date().toISOString();
-          return applyPlayerScores(id, nextData, { fetchedAt });
-        } catch (error) {
-          const nameFromMarket =
-            playerIndex.byId.get(id)?.name ??
-            myTeam.find((entry) => getPlayerIdKey(entry) === id)?.name ??
-            `Jugador ${id}`;
-          const message =
-            error?.message ?? "No se pudieron sincronizar las puntuaciones";
-          console.warn(
-            `No se pudieron sincronizar las puntuaciones del jugador ${id}`,
-            error
-          );
-          updatePlayerState(id, {
-            pointsStatus: "error",
-            pointsError: message,
-          });
-          pushToast(
-            `No se actualizaron los puntos de ${nameFromMarket}.`,
-            { type: "warning" }
-          );
-          throw error;
-        } finally {
-          pendingPointsRequests.current.delete(id);
-        }
-      })();
-      pendingPointsRequests.current.set(id, fetchPromise);
-      return fetchPromise;
-    },
-    [
-      getCachedScoreInfo,
-      isScoreCacheStale,
-      pendingPointsRequests,
-      applyPlayerScores,
-      playerIndex,
+      getPlayerCacheKey,
+      getPlayerIdKey,
       myTeam,
-      getPlayerIdKey,
-      updatePlayerState,
-      pushToast,
     ]
   );
 
-  const actualizarPuntosJugador = useCallback(
-    async (player, { silent = false } = {}) => {
-      if (!player) {
-        throw new Error("No se proporcionó ningún jugador");
-      }
-      const playerId = getPlayerIdKey(player);
-      if (!playerId) {
-        const message = "No se pudo identificar al jugador.";
-        if (!silent) {
-          pushToast(message, { type: "error" });
-        }
-        throw new Error(message);
-      }
-      const displayName = sanitizeName(player?.name) || `Jugador ${playerId}`;
-
-      if (!silent) {
-        pushToast(`Actualizando puntos de ${displayName}…`, { type: "info" });
-      }
-
-      updatePlayerState(playerId, { pointsStatus: "loading", pointsError: null });
-
-      try {
-        const payload = await sniff_market_json_v3_debug_points_for_player(playerId);
-        let normalizedPlayers = [];
-        if (payload) {
-          try {
-            const applied = applyMarketPayload(payload);
-            normalizedPlayers = applied?.players ?? [];
-          } catch (error) {
-            console.warn(
-              "No se pudo aplicar el mercado actualizado tras refrescar puntos",
-              error
-            );
-            normalizedPlayers = Array.isArray(payload?.players)
-              ? payload.players.map(normalizePlayer)
-              : [];
-          }
-        }
-
-        const findCandidate = () => {
-          const byId = normalizedPlayers.find((entry) => {
-            const entryId = entry?.id;
-            return (
-              entryId !== null &&
-              entryId !== undefined &&
-              String(entryId) === String(playerId)
-            );
-          });
-          if (byId) {
-            return byId;
-          }
-          const targetName = sanitizeName(player?.name)?.toLowerCase();
-          if (!targetName) {
-            return null;
-          }
-          return normalizedPlayers.find(
-            (entry) => sanitizeName(entry?.name)?.toLowerCase() === targetName
-          );
-        };
-
-        const candidate = findCandidate();
-        if (!candidate) {
-          throw new Error(
-            `No se encontró ${displayName} en el mercado actualizado.`
-          );
-        }
-
-        const historySource =
-          candidate.points_history ?? candidate.pointsHistory ?? [];
-        const appliedHistory = applyPlayerScores(playerId, historySource, {
-          fetchedAt: payload?.updated_at ?? new Date().toISOString(),
-        });
-        if (!appliedHistory.length) {
-          throw new Error(
-            `No hay puntuaciones disponibles para ${displayName}.`
-          );
-        }
-
-        if (!silent) {
-          pushToast(`Puntos de ${displayName} actualizados.`, {
-            type: "success",
-          });
-        }
-
-        return appliedHistory;
-      } catch (error) {
-        const message =
-          error?.message ?? "No se pudieron actualizar las puntuaciones.";
-        updatePlayerState(playerId, {
-          pointsStatus: "error",
-          pointsError: message,
-        });
-        if (!silent) {
-          pushToast(`No se pudieron actualizar los puntos de ${displayName}.`, {
-            type: "warning",
-          });
-        }
-        throw error;
-      }
-    },
-    [
-      getPlayerIdKey,
-      pushToast,
-      updatePlayerState,
-      applyMarketPayload,
-      applyPlayerScores,
-    ]
-  );
+  const getPuntuacionJugador = (playerLike) =>
+    getCachedScoreInfo(playerLike).data;
 
   const ensurePuntuacionesUltimos5 = useCallback(async () => {}, []);
+
+  const iniciarActualizacionManual = useCallback(() => {
+    if (manualUpdateRunning) {
+      return;
+    }
+    if (typeof window === "undefined" || typeof window.prompt !== "function") {
+      pushToast("La edición manual solo está disponible en un navegador.", {
+        type: "warning",
+      });
+      return;
+    }
+    if (!myTeam.length) {
+      pushToast("No tienes jugadores en tu equipo.", { type: "info" });
+      return;
+    }
+    const targetMatchday = clampMatchday(currentMatchday) ?? DEFAULT_MATCHDAY;
+    if (!targetMatchday) {
+      pushToast("Indica una jornada válida para actualizar los puntos.", {
+        type: "warning",
+      });
+      return;
+    }
+
+    setManualUpdateRunning(true);
+    try {
+      const timestamp = new Date().toISOString();
+      const entries = myTeam
+        .map((entry, index) => ({
+          entry,
+          history: normalizeScoreEntries(entry?.puntuacionPorJornada ?? []),
+          name:
+            sanitizeName(entry?.name) ?? entry?.name ?? `Jugador ${index + 1}`,
+        }))
+        .filter((item) => item.entry && item.name)
+        .sort((a, b) =>
+          a.name.localeCompare(b.name, "es", { sensitivity: "base" })
+        );
+
+      const updates = [];
+      let cancelled = false;
+
+      entries.forEach((item) => {
+        if (cancelled) return;
+        const missing = computeMissingMatchdays(item.history, targetMatchday);
+        if (!missing.length) {
+          return;
+        }
+        const map = new Map(
+          item.history.map((entry) => [entry.jornada, { ...entry }])
+        );
+        for (const jornada of missing) {
+          while (true) {
+            const respuesta = window.prompt(
+              `Introduce los puntos de ${item.name} en la jornada ${jornada}`,
+              ""
+            );
+            if (respuesta === null) {
+              cancelled = true;
+              break;
+            }
+            const parsed = toOptionalNumber(respuesta);
+            if (parsed === null) {
+              window.alert(
+                "Introduce un número válido. Puedes utilizar punto o coma para los decimales."
+              );
+              continue;
+            }
+            map.set(jornada, { jornada, puntos: Number(parsed) });
+            break;
+          }
+          if (cancelled) {
+            break;
+          }
+        }
+        if (!cancelled) {
+          const history = Array.from(map.values()).sort(
+            (a, b) => a.jornada - b.jornada
+          );
+          updates.push({ player: item.entry, history });
+        }
+      });
+
+      if (cancelled) {
+        pushToast("Actualización cancelada.", { type: "info" });
+        return;
+      }
+
+      if (!updates.length) {
+        pushToast(
+          `Todos los jugadores ya tienen puntos hasta la jornada ${targetMatchday}.`,
+          { type: "success" }
+        );
+        return;
+      }
+
+      updateManualScores(updates, { timestamp });
+      pushToast("Puntuaciones actualizadas.", { type: "success" });
+    } finally {
+      setManualUpdateRunning(false);
+    }
+  }, [
+    manualUpdateRunning,
+    pushToast,
+    myTeam,
+    currentMatchday,
+    updateManualScores,
+  ]);
+
+  const editarPuntosJugador = useCallback(
+    (player, { modo = "completo" } = {}) => {
+      if (!player) return;
+      if (typeof window === "undefined" || typeof window.prompt !== "function") {
+        pushToast("La edición manual solo está disponible en un navegador.", {
+          type: "warning",
+        });
+        return;
+      }
+      const targetMatchday = clampMatchday(currentMatchday) ?? DEFAULT_MATCHDAY;
+      if (!targetMatchday) {
+        pushToast("Indica una jornada válida antes de editar los puntos.", {
+          type: "warning",
+        });
+        return;
+      }
+
+      const entry = myTeam.find((item) => entryMatchesPlayer(item, player));
+      if (!entry) {
+        pushToast("El jugador no está en tu equipo.", { type: "error" });
+        return;
+      }
+
+      const nombre =
+        sanitizeName(entry?.name ?? player?.name) ??
+        entry?.name ??
+        player?.name ??
+        "Jugador";
+
+      const baseHistory = normalizeScoreEntries(entry?.puntuacionPorJornada ?? []);
+      const map = new Map(baseHistory.map((item) => [item.jornada, { ...item }]));
+      let cancelled = false;
+
+      for (let jornada = 1; jornada <= targetMatchday; jornada += 1) {
+        const existente = map.get(jornada);
+        if (modo === "faltantes" && existente) {
+          continue;
+        }
+        const valorPorDefecto =
+          existente && Number.isFinite(existente.puntos)
+            ? String(existente.puntos)
+            : "";
+        while (true) {
+          const promptText = existente
+            ? `Actualiza los puntos de ${nombre} en la jornada ${jornada}`
+            : `Introduce los puntos de ${nombre} en la jornada ${jornada}`;
+          const respuesta = window.prompt(promptText, valorPorDefecto);
+          if (respuesta === null) {
+            cancelled = true;
+            break;
+          }
+          const parsed = toOptionalNumber(respuesta);
+          if (parsed === null) {
+            window.alert(
+              "Introduce un número válido. Puedes utilizar punto o coma para los decimales."
+            );
+            continue;
+          }
+          map.set(jornada, { jornada, puntos: Number(parsed) });
+          break;
+        }
+        if (cancelled) {
+          break;
+        }
+      }
+
+      if (cancelled) {
+        pushToast("Edición cancelada.", { type: "info" });
+        return;
+      }
+
+      const history = Array.from(map.values()).sort(
+        (a, b) => a.jornada - b.jornada
+      );
+      const timestamp = new Date().toISOString();
+      updateManualScores([{ player: entry, history }], { timestamp });
+      pushToast(`Puntos de ${nombre} actualizados.`, { type: "success" });
+    },
+    [
+      currentMatchday,
+      entryMatchesPlayer,
+      myTeam,
+      pushToast,
+      updateManualScores,
+    ]
+  );
+
+  const handleMatchdayInputChange = useCallback((event) => {
+    const next = clampMatchday(event?.target?.value);
+    setCurrentMatchday((prev) => (next ?? prev));
+  }, []);
 
   const abrirDetalleJugador = (player) => {
     if (!player) return;
@@ -2340,18 +2252,12 @@ export default function FantasyTeamDashboard() {
   const refrescarDetalleJugador = () => {
     if (!playerDetailTarget) return;
     setPlayerDetailLoading(true);
-    actualizarPuntosJugador(playerDetailTarget)
-      .then(() => {
-        setPlayerDetailError(null);
-      })
-      .catch((error) => {
-        const message =
-          error?.message ?? "No se pudieron actualizar las puntuaciones del jugador.";
-        setPlayerDetailError(message);
-      })
-      .finally(() => {
-        setPlayerDetailLoading(false);
-      });
+    try {
+      editarPuntosJugador(playerDetailTarget, { modo: "completo" });
+      setPlayerDetailError(null);
+    } finally {
+      setPlayerDetailLoading(false);
+    }
   };
 
   const refreshMarketFor = useCallback(
@@ -2614,6 +2520,7 @@ export default function FantasyTeamDashboard() {
   }, [query, market.players]);
 
   const teamPlayers = useMemo(() => {
+    const targetMatchday = clampMatchday(currentMatchday) ?? 0;
     return myTeam
       .map((entry) => {
         if (!entry?.name) return null;
@@ -2647,52 +2554,46 @@ export default function FantasyTeamDashboard() {
             : null;
         const zone = getZoneFromPosition(player.position ?? entry.position);
         const playerKey = getPlayerKey(player) ?? `name:${nameKey}`;
-        const scoreInfo = getCachedScoreInfo(playerId);
-        const baseSummary = getResumenPuntos(
-          scoreInfo.data.length ? scoreInfo.data : player.points_history
-        );
-        const summary = {
-          ...baseSummary,
-          total:
-            baseSummary.total !== null && Number.isFinite(baseSummary.total)
-              ? baseSummary.total
-              : null,
-          media:
-            baseSummary.media !== null && Number.isFinite(baseSummary.media)
-              ? baseSummary.media
-              : null,
-          mediaUltimas5:
-            baseSummary.mediaUltimas5 !== null &&
-            Number.isFinite(baseSummary.mediaUltimas5)
-              ? baseSummary.mediaUltimas5
-              : null,
-        };
-        const history =
-          summary.history.length
-            ? summary.history
-            : normalizeScoreEntries(player.points_history);
+
+        const scoreInfo = getCachedScoreInfo(entry);
+        const history = scoreInfo.data.length ? scoreInfo.data : [];
+        const summary = getResumenPuntos(history);
         const pointsTotal =
-          summary.total !== null
+          summary.total !== null && Number.isFinite(summary.total)
             ? summary.total
-            : toOptionalNumber(player.points_total);
+            : null;
         const pointsAvg =
-          summary.media !== null
+          summary.media !== null && Number.isFinite(summary.media)
             ? summary.media
-            : toOptionalNumber(player.points_avg);
+            : null;
         const pointsLast5 =
-          summary.mediaUltimas5 !== null
+          summary.mediaUltimas5 !== null &&
+          Number.isFinite(summary.mediaUltimas5)
             ? summary.mediaUltimas5
-            : toOptionalNumber(player.points_last5);
+            : null;
+        const missingMatchdays = computeMissingMatchdays(history, targetMatchday);
+        const hasHistory = history.length > 0;
+        let pointsStatus = "idle";
+        if (hasHistory && (!targetMatchday || !missingMatchdays.length)) {
+          pointsStatus = "ready";
+        } else if (targetMatchday > 0) {
+          pointsStatus = "missing";
+        }
+        const pointsError =
+          pointsStatus === "missing"
+            ? missingMatchdays.length
+              ? `Faltan las jornadas ${missingMatchdays
+                  .map((jornada) => `J${jornada}`)
+                  .join(", ")}.`
+              : `No hay puntuaciones registradas hasta la jornada ${targetMatchday}.`
+            : null;
+
         const state = playerId ? playerStates[playerId] ?? {} : {};
         const defaultMarketStatus = Number.isFinite(marketValue)
           ? "ready"
           : "idle";
-        const defaultPointsStatus =
-          scoreInfo.data.length && !isScoreCacheStale(scoreInfo.fetchedAt)
-            ? "ready"
-            : "idle";
         const marketStatus = state.marketStatus ?? defaultMarketStatus;
-        const pointsStatus = state.pointsStatus ?? defaultPointsStatus;
+
         return {
           ...player,
           value: marketValue ?? rawValue ?? null,
@@ -2707,21 +2608,23 @@ export default function FantasyTeamDashboard() {
           points_avg: pointsAvg,
           points_last5: pointsLast5,
           scoreSummary: summary,
-          scoreFetchedAt: scoreInfo.fetchedAt ?? entry.cacheFechaPuntuacion ?? null,
+          scoreFetchedAt:
+            scoreInfo.fetchedAt ?? entry.cacheFechaPuntuacion ?? null,
+          missingMatchdays,
           _marketStatus: marketStatus,
           _marketError: state.marketError ?? null,
           _pointsStatus: pointsStatus,
-          _pointsError: state.pointsError ?? null,
+          _pointsError: pointsError,
         };
       })
       .filter(Boolean);
   }, [
     myTeam,
     playerIndex,
-    cachePuntuaciones,
     cacheMercado,
     playerStates,
-    isScoreCacheStale,
+    currentMatchday,
+    getCachedScoreInfo,
   ]);
 
   useEffect(() => {
@@ -2753,15 +2656,6 @@ export default function FantasyTeamDashboard() {
       }
     };
   }, [refreshMarketFor]);
-
-  useEffect(() => {
-    storeControl.refreshPointsFor = refreshPointsFor;
-    return () => {
-      if (storeControl.refreshPointsFor === refreshPointsFor) {
-        storeControl.refreshPointsFor = null;
-      }
-    };
-  }, [refreshPointsFor]);
 
   useEffect(() => {
     storeControl.applyMarketPayload = applyMarketPayload;
@@ -2801,13 +2695,11 @@ export default function FantasyTeamDashboard() {
   );
 
   const retryPointsForPlayer = useCallback(
-    (player) => {
+    (player, mode = "faltantes") => {
       if (!player) return;
-      actualizarPuntosJugador(player, { silent: false }).catch(() => {
-        /* handled via status */
-      });
+      editarPuntosJugador(player, { modo: mode });
     },
-    [actualizarPuntosJugador]
+    [editarPuntosJugador]
   );
 
   useEffect(() => {
@@ -2824,19 +2716,13 @@ export default function FantasyTeamDashboard() {
     if (!playerDetailTarget) {
       return undefined;
     }
-    const playerId = getPlayerIdKey(playerDetailTarget);
-    if (!playerId) {
-      setPlayerDetailError("No se pudo identificar al jugador.");
-      setPlayerDetailLoading(false);
-      return undefined;
-    }
-    const cached = getCachedScoreInfo(playerId);
+    const cached = getCachedScoreInfo(playerDetailTarget);
     if (cached.data.length) {
       setPlayerDetailError(null);
     }
     setPlayerDetailLoading(false);
     return undefined;
-  }, [playerDetailTarget, getPlayerIdKey, getCachedScoreInfo]);
+  }, [playerDetailTarget, getCachedScoreInfo]);
 
   const totals = useMemo(() => {
     const sum = (arr, key) =>
@@ -3383,18 +3269,9 @@ export default function FantasyTeamDashboard() {
   });
 
   const detailScoreInfo = playerDetailTarget
-    ? getCachedScoreInfo(getPlayerIdKey(playerDetailTarget))
+    ? getCachedScoreInfo(playerDetailTarget)
     : { data: [], fetchedAt: null };
-  const detailScores =
-    detailScoreInfo.data && detailScoreInfo.data.length
-      ? detailScoreInfo.data
-      : playerDetailTarget
-      ? normalizeScoreEntries(
-          playerDetailTarget.scoreSummary?.history ??
-            playerDetailTarget.points_history ??
-            []
-        )
-      : [];
+  const detailScores = detailScoreInfo.data ?? [];
 
   const formatSoldAt = (value) => {
     if (!value) return "—";
@@ -3691,7 +3568,7 @@ export default function FantasyTeamDashboard() {
                       status={p._pointsStatus}
                       error={p._pointsError}
                       formatter={pointsFormatter}
-                      onRetry={() => retryPointsForPlayer(p)}
+                      onRetry={() => retryPointsForPlayer(p, "faltantes")}
                       showRetry
                     />
                   </Td>
@@ -3701,7 +3578,7 @@ export default function FantasyTeamDashboard() {
                       status={p._pointsStatus}
                       error={p._pointsError}
                       formatter={pointsFormatter}
-                      onRetry={() => retryPointsForPlayer(p)}
+                      onRetry={() => retryPointsForPlayer(p, "faltantes")}
                     />
                   </Td>
                   <Td className="text-right text-gray-700">
@@ -3710,7 +3587,7 @@ export default function FantasyTeamDashboard() {
                       status={p._pointsStatus}
                       error={p._pointsError}
                       formatter={pointsFormatter}
-                      onRetry={() => retryPointsForPlayer(p)}
+                      onRetry={() => retryPointsForPlayer(p, "faltantes")}
                     />
                   </Td>
                 </tr>
@@ -4166,6 +4043,28 @@ export default function FantasyTeamDashboard() {
               ? "Actualizando mercado…"
               : "Actualizar valor de mercado"}
           </button>
+          <label className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200">
+            <span>Jornada actual</span>
+            <input
+              type="number"
+              min="1"
+              max={MAX_MATCHDAYS}
+              value={currentMatchday}
+              onChange={handleMatchdayInputChange}
+              className="w-16 rounded-md border border-gray-200 px-2 py-1 text-right focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-400"
+              inputMode="numeric"
+            />
+          </label>
+          <button
+            type="button"
+            className="rounded-full bg-amber-500 px-4 py-1.5 text-sm font-semibold text-white shadow hover:bg-amber-600 disabled:cursor-not-allowed disabled:bg-amber-300"
+            onClick={iniciarActualizacionManual}
+            disabled={manualUpdateRunning}
+          >
+            {manualUpdateRunning
+              ? "Registrando puntos…"
+              : "Actualizar puntos de jornada"}
+          </button>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-2">
@@ -4490,6 +4389,28 @@ function PointsCell({
             onClick={() => onRetry?.()}
           >
             Reintentar
+          </button>
+        )}
+      </div>
+    );
+  }
+  if (status === "missing") {
+    return (
+      <div className="flex items-center justify-end gap-2 text-xs text-amber-600">
+        <span
+          role="img"
+          aria-label="Puntuaciones incompletas"
+          title={error || "Faltan jornadas por completar"}
+        >
+          ⚠️
+        </span>
+        {showRetry && (
+          <button
+            type="button"
+            className="rounded-full border border-amber-200 px-2 py-0.5 font-semibold text-amber-600 transition hover:border-amber-300 hover:text-amber-800"
+            onClick={() => onRetry?.()}
+          >
+            Completar
           </button>
         )}
       </div>
@@ -4870,56 +4791,11 @@ function PlayerDetailModal({
       minimumFractionDigits: 1,
     });
   const normalizedScores = normalizeScoreEntries(scores);
-  const fallbackHistories = [
-    normalizedScores,
-    normalizeScoreEntries(player?.scoreSummary?.history ?? []),
-    normalizeScoreEntries(player?.points_history ?? []),
-  ];
-  const summaryHistory =
-    fallbackHistories.find((history) => history.length) ?? [];
-  const summary = getResumenPuntos(summaryHistory);
-  const pickSummaryNumber = (...values) => {
-    for (const candidate of values) {
-      if (candidate === null || candidate === undefined) {
-        continue;
-      }
-      if (typeof candidate === "number") {
-        if (Number.isFinite(candidate)) {
-          return candidate;
-        }
-        continue;
-      }
-      const numeric = toOptionalNumber(candidate);
-      if (numeric !== null) {
-        return numeric;
-      }
-    }
-    return null;
-  };
-  const totalPoints = pickSummaryNumber(
-    summary.total,
-    player?.scoreSummary?.total,
-    player?.scoreSummary?.points_total,
-    player?.points_total
-  );
-  const averagePoints = pickSummaryNumber(
-    summary.media,
-    player?.scoreSummary?.media,
-    player?.scoreSummary?.average,
-    player?.scoreSummary?.points_avg,
-    player?.points_avg
-  );
-  const averageLast5 = pickSummaryNumber(
-    summary.mediaUltimas5,
-    player?.scoreSummary?.mediaUltimas5,
-    player?.scoreSummary?.media_last5,
-    player?.scoreSummary?.recentAverage,
-    player?.scoreSummary?.recent_average,
-    player?.scoreSummary?.points_last5,
-    player?.points_last5
-  );
-  const displayScores =
-    summary.history.length ? summary.history : summaryHistory;
+  const summary = getResumenPuntos(normalizedScores);
+  const totalPoints = summary.total;
+  const averagePoints = summary.media;
+  const averageLast5 = summary.mediaUltimas5;
+  const displayScores = summary.history;
   const infoLine = [player.team, player.position]
     .filter(Boolean)
     .join(" · ");
@@ -5013,7 +4889,7 @@ function PlayerDetailModal({
               <div className="flex items-center gap-2">
                 {loading && (
                   <span className="text-xs font-medium text-indigo-600">
-                    Cargando…
+                    Editando…
                   </span>
                 )}
                 <button
@@ -5022,7 +4898,7 @@ function PlayerDetailModal({
                   onClick={onRefresh}
                   disabled={loading}
                 >
-                  Actualizar puntos
+                  Editar puntos
                 </button>
               </div>
             </div>
