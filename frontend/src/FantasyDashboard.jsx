@@ -288,12 +288,14 @@ const store = {
   jugadoresEquipo: [],
   cacheMercado: {},
   cachePuntuaciones: {},
+  marketPayload: null,
 };
 
 const storeControl = {
   refreshMarketFor: null,
   refreshPointsFor: null,
   pushToast: null,
+  applyMarketPayload: null,
   getPlayerIds: () =>
     store.jugadoresEquipo
       .map((jugador) =>
@@ -311,13 +313,35 @@ const toastStyles = {
   error: "border border-red-200 bg-red-50 text-red-700",
 };
 
-const runWithConcurrency = async (items, concurrency, handler) => {
+const runWithConcurrency = async (
+  items,
+  concurrency,
+  handler,
+  { onProgress } = {}
+) => {
   const queue = Array.from(items);
-  if (!queue.length) {
+  const totalItems = queue.length;
+  if (!totalItems) {
+    try {
+      onProgress?.({ completed: 0, total: 0 });
+    } catch (error) {
+      console.warn("Error al notificar progreso", error);
+    }
     return [];
   }
   const results = [];
   let nextIndex = 0;
+  let completed = 0;
+  const emitProgress = (payload) => {
+    if (typeof onProgress !== "function") {
+      return;
+    }
+    try {
+      onProgress(payload);
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
+  };
   const takeNext = () => {
     if (nextIndex >= queue.length) {
       return null;
@@ -335,11 +359,26 @@ const runWithConcurrency = async (items, concurrency, handler) => {
           if (item === null) {
             break;
           }
+          let status = "fulfilled";
+          let value;
+          let reason;
           try {
-            const result = await handler(item);
-            results.push({ status: "fulfilled", value: result, item });
+            value = await handler(item);
+            results.push({ status: "fulfilled", value, item });
           } catch (error) {
-            results.push({ status: "rejected", reason: error, item });
+            status = "rejected";
+            reason = error;
+            results.push({ status: "rejected", reason, item });
+          } finally {
+            completed += 1;
+            emitProgress({
+              completed,
+              total: totalItems,
+              item,
+              status,
+              value,
+              reason,
+            });
           }
         }
       })()
@@ -348,7 +387,10 @@ const runWithConcurrency = async (items, concurrency, handler) => {
   return results;
 };
 
-async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {}) {
+async function runMarketSniffer(
+  playerIds,
+  { concurrency = 4, force = true, payload = null, onProgress } = {}
+) {
   const ids = Array.from(
     new Set(
       (playerIds || [])
@@ -359,10 +401,18 @@ async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {
     )
   );
   if (!ids.length || typeof storeControl.refreshMarketFor !== "function") {
+    try {
+      onProgress?.({ completed: 0, total: ids.length ?? 0 });
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
     return [];
   }
-  const results = await runWithConcurrency(ids, concurrency, (id) =>
-    storeControl.refreshMarketFor(id, { force })
+  const results = await runWithConcurrency(
+    ids,
+    concurrency,
+    (id) => storeControl.refreshMarketFor(id, { force, payload }),
+    { onProgress }
   );
   if (typeof window !== "undefined" && window?.dispatchEvent) {
     try {
@@ -374,7 +424,10 @@ async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {
   return results;
 }
 
-async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = {}) {
+async function runPointsSniffer(
+  playerIds,
+  { concurrency = 3, force = false, onProgress } = {}
+) {
   const ids = Array.from(
     new Set(
       (playerIds || [])
@@ -385,19 +438,79 @@ async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = 
     )
   );
   if (!ids.length || typeof storeControl.refreshPointsFor !== "function") {
+    try {
+      onProgress?.({ completed: 0, total: ids.length ?? 0 });
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
     return [];
   }
-  return runWithConcurrency(ids, concurrency, (id) =>
-    storeControl.refreshPointsFor(id, { force })
+  return runWithConcurrency(
+    ids,
+    concurrency,
+    (id) => storeControl.refreshPointsFor(id, { force }),
+    { onProgress }
   );
 }
 
 export async function sniff_market_json_v3_debug_market(options = {}) {
   storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
+  const ids = storeControl.getPlayerIds();
+
   try {
+    const { force } = options ?? {};
+    const shouldForceReload = force !== false;
+    const existingPayload = store.marketPayload ?? null;
     await executeSnifferCommand("market");
-    const ids = storeControl.getPlayerIds();
-    const results = ids.length ? await runMarketSniffer(ids, options) : [];
+
+    let marketPayload = null;
+    if (shouldForceReload) {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        try {
+          marketPayload = await loadMarketPayload({ force: true });
+          break;
+        } catch (error) {
+          if (attempt === 4) {
+            throw error;
+          }
+          await sleep(250 * (attempt + 1));
+        }
+      }
+    } else {
+      marketPayload = existingPayload;
+      if (!marketPayload) {
+        try {
+          marketPayload = await loadMarketPayload({ force: false });
+        } catch (error) {
+          if (existingPayload) {
+            marketPayload = existingPayload;
+          } else {
+            throw error;
+          }
+        }
+      }
+    }
+
+    if (marketPayload) {
+      store.marketPayload = marketPayload;
+      if (shouldForceReload || !existingPayload) {
+        try {
+          storeControl.applyMarketPayload?.(marketPayload);
+        } catch (error) {
+          console.warn("No se pudo aplicar el mercado actualizado", error);
+        }
+      }
+    } else {
+      store.marketPayload = null;
+    }
+
+    const results = ids.length
+      ? await runMarketSniffer(ids, {
+          ...options,
+          payload: marketPayload,
+        })
+      : [];
+
     storeControl.pushToast?.("Actualización completada", { type: "success" });
     return results;
   } catch (error) {
@@ -412,9 +525,14 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
 export async function sniff_market_json_v3_debug_points(options = {}) {
   storeControl.pushToast?.("Actualizando puntos de jornada…", { type: "info" });
   try {
-    await executeSnifferCommand("points");
     const ids = storeControl.getPlayerIds();
-    const results = ids.length ? await runPointsSniffer(ids, options) : [];
+
+    await executeSnifferCommand("points");
+
+    const results = ids.length
+      ? await runPointsSniffer(ids, { ...options })
+      : [];
+
     storeControl.pushToast?.("Actualización completada", { type: "success" });
     return results;
   } catch (error) {
@@ -593,15 +711,20 @@ const parseScoreDataFromHtml = (html) => {
 let marketPayloadCache = null;
 let lastMarketPayload = null;
 
-const loadMarketPayload = async () => {
-  if (marketPayloadCache) {
+const loadMarketPayload = async ({ force = false } = {}) => {
+  if (!force && marketPayloadCache) {
     return marketPayloadCache;
   }
-  const request = (async () => {
+
+  const performFetch = async () => {
     if (typeof fetch !== "function") {
       throw new Error("fetch no está disponible en este entorno");
     }
-    const response = await fetch(MARKET_ENDPOINT, { credentials: "include" });
+    const url = force ? `${MARKET_ENDPOINT}?t=${Date.now()}` : MARKET_ENDPOINT;
+    const response = await fetch(url, {
+      credentials: "include",
+      cache: "no-store",
+    });
     if (!response || !response.ok) {
       throw new Error(
         `Respuesta no válida al cargar el mercado (${response?.status ?? "desconocido"})`
@@ -609,12 +732,29 @@ const loadMarketPayload = async () => {
     }
     const data = await response.json();
     lastMarketPayload = data;
+    store.marketPayload = data;
     return data;
-  })();
+  };
+
+  if (force) {
+    try {
+      return await performFetch();
+    } catch (error) {
+      console.warn("No se pudo refrescar el mercado", error);
+      if (lastMarketPayload) {
+        store.marketPayload = lastMarketPayload;
+        return lastMarketPayload;
+      }
+      throw error;
+    }
+  }
+
+  const request = performFetch();
   marketPayloadCache = request
     .catch((error) => {
       console.warn("No se pudo refrescar el mercado", error);
       if (lastMarketPayload) {
+        store.marketPayload = lastMarketPayload;
         return lastMarketPayload;
       }
       throw error;
@@ -625,13 +765,28 @@ const loadMarketPayload = async () => {
   return marketPayloadCache;
 };
 
-export async function fetchValorMercadoJugador(playerId) {
+export async function fetchValorMercadoJugador(
+  playerId,
+  { payload, forceReload = false } = {}
+) {
   if (playerId === null || playerId === undefined || playerId === "") {
     throw new Error("ID de jugador no válido");
   }
   const normalizedId = String(playerId);
-  const payload = await loadMarketPayload();
-  const players = Array.isArray(payload?.players) ? payload.players : [];
+  let payloadSource = null;
+  if (payload && typeof payload === "object") {
+    payloadSource = payload;
+  } else if (!forceReload && store.marketPayload) {
+    payloadSource = store.marketPayload;
+  } else {
+    payloadSource = await loadMarketPayload({ force: forceReload });
+  }
+  if (payloadSource && payloadSource !== store.marketPayload) {
+    store.marketPayload = payloadSource;
+  }
+  const players = Array.isArray(payloadSource?.players)
+    ? payloadSource.players
+    : [];
   const normalizeNameKey = (value) =>
     sanitizeName(value ?? "")?.toLocaleLowerCase("es-ES") ?? null;
   const byId = players.find((entry) => {
@@ -1634,7 +1789,7 @@ export default function FantasyTeamDashboard() {
     });
   }, []);
 
-  const getPlayerIdKey = (item) => {
+  const getPlayerIdKey = useCallback((item) => {
     if (!item) return null;
     const rawId =
       item.id ??
@@ -1646,7 +1801,7 @@ export default function FantasyTeamDashboard() {
     return rawId !== null && rawId !== undefined && rawId !== ""
       ? String(rawId)
       : null;
-  };
+  }, []);
 
   const getPlayerNameKey = (item) => {
     const base = sanitizeName(item?.name);
@@ -1665,6 +1820,58 @@ export default function FantasyTeamDashboard() {
     return entryName && playerName ? entryName === playerName : false;
   };
 
+  const applyMarketPayload = useCallback(
+    (payload) => {
+      if (!payload || typeof payload !== "object") {
+        store.marketPayload = null;
+        return null;
+      }
+      const players = Array.isArray(payload.players) ? payload.players : [];
+      const normalizedPlayers = players.map(normalizePlayer);
+      store.marketPayload = payload;
+      setMarket({
+        updated_at: payload.updated_at ?? null,
+        players: normalizedPlayers,
+      });
+
+      if (normalizedPlayers.length) {
+        const valueById = new Map();
+        normalizedPlayers.forEach((player) => {
+          if (!player || player.id === null || player.id === undefined) {
+            return;
+          }
+          const value = toOptionalNumber(player.value);
+          if (value === null) {
+            return;
+          }
+          valueById.set(String(player.id), value);
+        });
+        if (valueById.size) {
+          setCacheMercado((prev) => {
+            let mutated = false;
+            const next = { ...prev };
+            myTeam.forEach((entry) => {
+              const id = getPlayerIdKey(entry);
+              if (!id) return;
+              if (!valueById.has(id)) return;
+              const nextValue = valueById.get(id);
+              if (prev[id] === nextValue) return;
+              next[id] = nextValue;
+              mutated = true;
+            });
+            return mutated ? next : prev;
+          });
+        }
+      }
+
+      return {
+        updatedAt: payload.updated_at ?? null,
+        players: normalizedPlayers,
+      };
+    },
+    [setMarket, setCacheMercado, myTeam, getPlayerIdKey]
+  );
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -1672,13 +1879,7 @@ export default function FantasyTeamDashboard() {
         const res = await fetch(MARKET_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("No se pudo descargar market.json");
         const data = await res.json();
-        const players = Array.isArray(data.players) ? data.players : [];
-        const normalizedPlayers = players.map(normalizePlayer);
-
-        setMarket({
-          updated_at: data.updated_at || null,
-          players: normalizedPlayers,
-        });
+        applyMarketPayload(data);
         setStatus("ok");
       } catch (e) {
         console.error(e);
@@ -1686,7 +1887,7 @@ export default function FantasyTeamDashboard() {
       }
     };
     load();
-  }, []);
+  }, [applyMarketPayload]);
 
   useEffect(() => {
     localStorage.setItem("myTeam", JSON.stringify(myTeam));
@@ -2016,7 +2217,7 @@ export default function FantasyTeamDashboard() {
   };
 
   const refreshMarketFor = useCallback(
-    async (playerId, { force = true } = {}) => {
+    async (playerId, { force = true, payload = null } = {}) => {
       const id =
         playerId === null || playerId === undefined || playerId === ""
           ? null
@@ -2076,7 +2277,10 @@ export default function FantasyTeamDashboard() {
         let lastError = null;
         for (let attempt = 0; attempt < 3; attempt += 1) {
           try {
-            const marketInfo = await fetchValorMercadoJugador(id);
+            const marketInfo = await fetchValorMercadoJugador(id, {
+              payload,
+              forceReload: !payload && force,
+            });
             const fetchedValueRaw =
               marketInfo && typeof marketInfo === "object"
                 ? marketInfo.value
@@ -2400,6 +2604,15 @@ export default function FantasyTeamDashboard() {
       }
     };
   }, [refreshPointsFor]);
+
+  useEffect(() => {
+    storeControl.applyMarketPayload = applyMarketPayload;
+    return () => {
+      if (storeControl.applyMarketPayload === applyMarketPayload) {
+        storeControl.applyMarketPayload = null;
+      }
+    };
+  }, [applyMarketPayload]);
 
   const handleMarketSniffer = useCallback(async () => {
     if (marketSnifferRunning) return;
