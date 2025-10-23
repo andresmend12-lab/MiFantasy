@@ -158,6 +158,28 @@ const toNumber = (value) => {
   return Number.isFinite(num) ? num : 0;
 };
 
+const PUBLIC_URL_BASE = (() => {
+  if (
+    typeof process !== "undefined" &&
+    process?.env &&
+    typeof process.env.PUBLIC_URL === "string"
+  ) {
+    return process.env.PUBLIC_URL.replace(/\/+$/, "");
+  }
+  return "";
+})();
+
+const resolvePublicPath = (path = "") => {
+  const normalizedPath = path ? (path.startsWith("/") ? path : `/${path}`) : "/";
+  if (!PUBLIC_URL_BASE) {
+    return normalizedPath;
+  }
+  if (!normalizedPath || normalizedPath === "/") {
+    return `${PUBLIC_URL_BASE}/`;
+  }
+  return `${PUBLIC_URL_BASE}${normalizedPath}`;
+};
+
 const toOptionalNumber = (value) => {
   if (value === null || value === undefined) return null;
   if (typeof value === "number") {
@@ -184,13 +206,13 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
-const MARKET_ENDPOINT = "/market.json";
+const MARKET_ENDPOINT = resolvePublicPath("/market.json");
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_MATCHDAYS = 38;
 const DEFAULT_MATCHDAY = 9;
 const MATCHDAY_STORAGE_KEY = "teamCurrentMatchday";
 
-const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
+const MARKET_SNIFFER_ENDPOINT = resolvePublicPath("/api/sniff/market");
 
 const getSnifferFriendlyName = (type) =>
   type === "points"
