@@ -478,6 +478,92 @@ describe("FantasyTeamDashboard", () => {
     expect(marketCall).toBeGreaterThanOrEqual(2);
   });
 
+  it("muestra totales y medias en el detalle aunque falte el historial de puntos", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ id: 8405, name: "Jorge de Frutos" }])
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    const payload = {
+      updated_at: "2025-10-21T22:41:57Z",
+      players: [
+        {
+          id: 8405,
+          name: "Jorge de Frutos",
+          team: "Rayo",
+          team_id: "18",
+          position: "Delantero",
+          value: "41320071",
+          diff_1: 0,
+          diff_7: 0,
+          points_total: 87,
+          points_avg: 5.8,
+          points_last5: 6.4,
+          points_history: [],
+        },
+      ],
+    };
+
+    const previousFetch = global.fetch;
+    global.fetch = jest.fn((url) => {
+      if (typeof url === "string" && url.includes("/market.json")) {
+        return Promise.resolve(makeResponse(payload));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+      }
+      return Promise.resolve(makeResponse({ success: true }));
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    const detailButton = await screen.findByRole("button", {
+      name: "Ver detalle de Jorge de Frutos",
+    });
+    fireEvent.click(detailButton);
+
+    const modal = await screen.findByRole("dialog", {
+      name: /Jorge de Frutos/i,
+    });
+
+    const totalsRow = within(modal).getByText("Puntos totales").closest("div");
+    expect(totalsRow).not.toBeNull();
+    if (!totalsRow) throw new Error("Fila de puntos totales no encontrada");
+    expect(within(totalsRow).getByText("87,0")).toBeInTheDocument();
+
+    const averageRow = within(modal).getByText("Media").closest("div");
+    expect(averageRow).not.toBeNull();
+    if (!averageRow) throw new Error("Fila de media no encontrada");
+    expect(within(averageRow).getByText("5,8")).toBeInTheDocument();
+
+    const recentRow = within(modal).getByText("Media últimas 5").closest("div");
+    expect(recentRow).not.toBeNull();
+    if (!recentRow) throw new Error("Fila de media recientes no encontrada");
+    expect(within(recentRow).getByText("6,4")).toBeInTheDocument();
+
+    global.fetch = previousFetch;
+  });
+
   it("usa el último valor de mercado al mostrar mi equipo aunque la caché esté desactualizada", async () => {
     window.localStorage.setItem(
       "myTeam",

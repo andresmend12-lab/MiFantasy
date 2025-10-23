@@ -3385,7 +3385,16 @@ export default function FantasyTeamDashboard() {
   const detailScoreInfo = playerDetailTarget
     ? getCachedScoreInfo(getPlayerIdKey(playerDetailTarget))
     : { data: [], fetchedAt: null };
-  const detailScores = detailScoreInfo.data ?? [];
+  const detailScores =
+    detailScoreInfo.data && detailScoreInfo.data.length
+      ? detailScoreInfo.data
+      : playerDetailTarget
+      ? normalizeScoreEntries(
+          playerDetailTarget.scoreSummary?.history ??
+            playerDetailTarget.points_history ??
+            []
+        )
+      : [];
 
   const formatSoldAt = (value) => {
     if (!value) return "—";
@@ -4860,13 +4869,57 @@ function PlayerDetailModal({
       maximumFractionDigits: 1,
       minimumFractionDigits: 1,
     });
-  const summary = getResumenPuntos(
-    scores && scores.length ? scores : player.points_history
+  const normalizedScores = normalizeScoreEntries(scores);
+  const fallbackHistories = [
+    normalizedScores,
+    normalizeScoreEntries(player?.scoreSummary?.history ?? []),
+    normalizeScoreEntries(player?.points_history ?? []),
+  ];
+  const summaryHistory =
+    fallbackHistories.find((history) => history.length) ?? [];
+  const summary = getResumenPuntos(summaryHistory);
+  const pickSummaryNumber = (...values) => {
+    for (const candidate of values) {
+      if (candidate === null || candidate === undefined) {
+        continue;
+      }
+      if (typeof candidate === "number") {
+        if (Number.isFinite(candidate)) {
+          return candidate;
+        }
+        continue;
+      }
+      const numeric = toOptionalNumber(candidate);
+      if (numeric !== null) {
+        return numeric;
+      }
+    }
+    return null;
+  };
+  const totalPoints = pickSummaryNumber(
+    summary.total,
+    player?.scoreSummary?.total,
+    player?.scoreSummary?.points_total,
+    player?.points_total
   );
-  const displayScores = summary.history;
-  const totalPoints = summary.total;
-  const averagePoints = summary.media;
-  const averageLast5 = summary.mediaUltimas5;
+  const averagePoints = pickSummaryNumber(
+    summary.media,
+    player?.scoreSummary?.media,
+    player?.scoreSummary?.average,
+    player?.scoreSummary?.points_avg,
+    player?.points_avg
+  );
+  const averageLast5 = pickSummaryNumber(
+    summary.mediaUltimas5,
+    player?.scoreSummary?.mediaUltimas5,
+    player?.scoreSummary?.media_last5,
+    player?.scoreSummary?.recentAverage,
+    player?.scoreSummary?.recent_average,
+    player?.scoreSummary?.points_last5,
+    player?.points_last5
+  );
+  const displayScores =
+    summary.history.length ? summary.history : summaryHistory;
   const infoLine = [player.team, player.position]
     .filter(Boolean)
     .join(" · ");
