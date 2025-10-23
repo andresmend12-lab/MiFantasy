@@ -207,7 +207,6 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
 const MARKET_ENDPOINT = resolvePublicPath("/market.json");
-const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_MATCHDAYS = 38;
 const DEFAULT_MATCHDAY = 9;
 const MATCHDAY_STORAGE_KEY = "teamCurrentMatchday";
@@ -817,7 +816,7 @@ const normalizePointsHistory = (value) => {
 
     if (typeof item === "string") {
       const match = item.match(
-        /(?:j(?:or(?:nada)?)?|gw|md)?\s*(\d{1,3})[^0-9+\-]*([-+]?\d+(?:[.,]\d+)?)/i
+        /(?:j(?:or(?:nada)?)?|gw|md)?\s*(\d{1,3})[^0-9+-]*([-+]?\d+(?:[.,]\d+)?)/i
       );
       if (!match) return;
       const matchday = Number(match[1]);
@@ -1076,23 +1075,6 @@ const findPlayerSlot = (lineup, playerKey) => {
   return null;
 };
 
-const removePlayerFromLineup = (lineup, playerKey) => {
-  if (!lineup || !playerKey) return lineup;
-  let changed = false;
-  const next = {};
-  ZONE_CODES.forEach((zone) => {
-    const arr = Array.isArray(lineup[zone]) ? lineup[zone] : [];
-    next[zone] = arr.map((value) => {
-      if (value === playerKey) {
-        changed = true;
-        return null;
-      }
-      return value;
-    });
-  });
-  return changed ? next : lineup;
-};
-
 const getZoneFromPosition = (position) => {
   const normalized = collapseWhitespace(normalizeText(position)).toLowerCase();
   if (!normalized) return "DEL";
@@ -1175,9 +1157,6 @@ const computePlayerRecommendationInfo = (player, { ponderado = false } = {}) => 
     matchesConsidered: validEntries.length,
   };
 };
-
-const calcularScoreJugadorUlt5 = (jugador, { ponderado = false } = {}) =>
-  computePlayerRecommendationInfo(jugador, { ponderado }).score;
 
 const sortPlayersForRecommendation = (a, b) => {
   const scoreA = Number.isFinite(a?.scoreRecomendacion) ? a.scoreRecomendacion : -Infinity;
@@ -1663,6 +1642,11 @@ export default function FantasyTeamDashboard() {
       : null;
   }, []);
 
+  const getPlayerNameKey = useCallback((item) => {
+    const base = sanitizeName(item?.name);
+    return base ? base.toLowerCase() : null;
+  }, []);
+
   const getPlayerCacheKey = useCallback(
     (item) => {
       if (!item) return null;
@@ -1673,25 +1657,23 @@ export default function FantasyTeamDashboard() {
       const nameKey = getPlayerNameKey(item);
       return nameKey ? `name:${nameKey}` : null;
     },
-    [getPlayerIdKey]
+    [getPlayerIdKey, getPlayerNameKey]
   );
 
-  const getPlayerNameKey = (item) => {
-    const base = sanitizeName(item?.name);
-    return base ? base.toLowerCase() : null;
-  };
-
-  const entryMatchesPlayer = (entry, player) => {
-    if (!entry || !player) return false;
-    const entryId = getPlayerIdKey(entry);
-    const playerId = getPlayerIdKey(player);
-    if (entryId && playerId) {
-      return entryId === playerId;
-    }
-    const entryName = getPlayerNameKey(entry);
-    const playerName = getPlayerNameKey(player);
-    return entryName && playerName ? entryName === playerName : false;
-  };
+  const entryMatchesPlayer = useCallback(
+    (entry, player) => {
+      if (!entry || !player) return false;
+      const entryId = getPlayerIdKey(entry);
+      const playerId = getPlayerIdKey(player);
+      if (entryId && playerId) {
+        return entryId === playerId;
+      }
+      const entryName = getPlayerNameKey(entry);
+      const playerName = getPlayerNameKey(player);
+      return entryName && playerName ? entryName === playerName : false;
+    },
+    [getPlayerIdKey, getPlayerNameKey]
+  );
 
   const updateManualScores = useCallback(
     (entries, { timestamp = new Date().toISOString() } = {}) => {
@@ -1847,7 +1829,7 @@ export default function FantasyTeamDashboard() {
       }
     };
     load();
-  }, [applyMarketPayload]);
+  }, [MARKET_URL, applyMarketPayload]);
 
   useEffect(() => {
     localStorage.setItem("myTeam", JSON.stringify(myTeam));
@@ -1920,7 +1902,7 @@ export default function FantasyTeamDashboard() {
       });
       return mutated ? next : prev;
     });
-  }, [cachePuntuaciones]);
+  }, [cachePuntuaciones, getPlayerIdKey]);
 
   useEffect(() => {
     if (!feedback) {
@@ -1956,13 +1938,6 @@ export default function FantasyTeamDashboard() {
     });
     return { byName, byId };
   }, [market.players]);
-
-  const isScoreCacheStale = (timestamp) => {
-    if (!timestamp) return true;
-    const value = new Date(timestamp).getTime();
-    if (!Number.isFinite(value)) return true;
-    return Date.now() - value > SCORE_CACHE_TTL_MS;
-  };
 
   const getCachedScoreInfo = useCallback(
     (playerLike) => {
@@ -2051,12 +2026,10 @@ export default function FantasyTeamDashboard() {
       entryMatchesPlayer,
       getPlayerCacheKey,
       getPlayerIdKey,
+      getPlayerNameKey,
       myTeam,
     ]
   );
-
-  const getPuntuacionJugador = (playerLike) =>
-    getCachedScoreInfo(playerLike).data;
 
   const ensurePuntuacionesUltimos5 = useCallback(async () => {}, []);
 
@@ -2452,6 +2425,7 @@ export default function FantasyTeamDashboard() {
       updatePlayerState,
       setMarket,
       pushToast,
+      getPlayerIdKey,
     ]
   );
 
@@ -2647,6 +2621,7 @@ export default function FantasyTeamDashboard() {
     playerStates,
     currentMatchday,
     getCachedScoreInfo,
+    getPlayerIdKey,
   ]);
 
   useEffect(() => {
@@ -2713,7 +2688,7 @@ export default function FantasyTeamDashboard() {
         /* handled via status */
       });
     },
-    [refreshMarketFor]
+    [getPlayerIdKey, refreshMarketFor]
   );
 
   const retryPointsForPlayer = useCallback(
@@ -2898,7 +2873,7 @@ export default function FantasyTeamDashboard() {
           playerId: getPlayerIdKey(entry),
         };
       }),
-    [sales]
+    [getPlayerIdKey, sales]
   );
 
   const playerLookup = useMemo(() => {

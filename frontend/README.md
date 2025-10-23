@@ -16,7 +16,12 @@ Para lanzar un despliegue manual ejecuta los siguientes pasos desde la carpeta
 2. Ejecuta `npm run deploy`
 
 El script `deploy` compila la aplicación y publica el contenido de la carpeta
-`build` en la rama `gh-pages`. Asegúrate de que en la configuración del
+`build` en la rama `gh-pages` empleando `gh-pages --no-history`. Esta opción
+evita errores como `spawn ENAMETOOLONG` en Windows al reutilizar la rama. Si ya
+existe una rama `gh-pages` antigua, puedes borrarla desde GitHub antes del
+primer despliegue para comenzar desde cero.
+
+Asegúrate de que en la configuración del
 repositorio de GitHub la opción **Pages** apunte a la rama `gh-pages` (directorio
 `root`). Una vez actualizado, el sitio quedará disponible para cualquier
 dispositivo en la URL anterior.
