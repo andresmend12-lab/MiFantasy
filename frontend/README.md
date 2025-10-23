@@ -15,6 +15,11 @@ Para lanzar un despliegue manual ejecuta los siguientes pasos desde la carpeta
 1. Instala dependencias si todavía no lo has hecho: `npm install`
 2. Ejecuta `npm run deploy`
 
+El comando de despliegue usa `npx --yes gh-pages` para instalar la
+dependencia automáticamente si todavía no está presente en
+`node_modules`. Así evitas reinstalar manualmente tras actualizar el
+proyecto.
+
 El script `deploy` compila la aplicación y publica el contenido de la carpeta
 `build` en la rama `gh-pages` empleando `gh-pages --no-history`. Esta opción
 evita errores como `spawn ENAMETOOLONG` en Windows al reutilizar la rama. Si ya
