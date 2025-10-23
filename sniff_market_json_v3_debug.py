@@ -721,6 +721,8 @@ def extract_all(page, target_ids: list[int] | None = None, target_names: list[st
                 target_name_keys.add(key.casefold())
 
     filtering = bool(target_id_set or target_name_keys)
+    remaining_ids = set(target_id_set)
+    remaining_names = set(target_name_keys)
     for i in range(n):
         el = cards.nth(i)
 
@@ -730,10 +732,14 @@ def extract_all(page, target_ids: list[int] | None = None, target_names: list[st
         pid = int(m.group(1)) if m else None
 
         matches_filter = True
+        matched_by_id = False
+        matched_by_name = False
+        normalized_name_key = ""
         if filtering:
             matches_filter = False
-            if pid is not None and pid in target_id_set:
+            if pid is not None and pid in remaining_ids:
                 matches_filter = True
+                matched_by_id = True
 
         def ga(name):
             try:
@@ -770,8 +776,15 @@ def extract_all(page, target_ids: list[int] | None = None, target_names: list[st
 
         if filtering and not matches_filter:
             name_key_candidate = clean_name_candidate(clean_name)
-            if name_key_candidate and name_key_candidate.casefold() in target_name_keys:
+            normalized_name_key = (
+                name_key_candidate.casefold() if name_key_candidate else ""
+            )
+            if (
+                normalized_name_key
+                and normalized_name_key in remaining_names
+            ):
                 matches_filter = True
+                matched_by_name = True
 
         if filtering and not matches_filter:
             continue
@@ -869,6 +882,15 @@ def extract_all(page, target_ids: list[int] | None = None, target_names: list[st
                 data[f"diff_pct_{k}"] = 0.0
 
         players.append(data)
+
+        if filtering:
+            if matched_by_id and pid is not None:
+                with suppress(Exception):
+                    remaining_ids.discard(int(pid))
+            if normalized_name_key:
+                remaining_names.discard(normalized_name_key)
+            if not remaining_ids and not remaining_names:
+                break
 
     if filtering:
         print(f"✅ Lectura completa: {len(players)} jugadores extraídos (filtrado).")

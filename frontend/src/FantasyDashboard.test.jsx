@@ -328,8 +328,18 @@ describe("FantasyTeamDashboard", () => {
       const cells = within(row).getAllByRole("cell");
       return cells[10]?.textContent ?? "";
     };
+    const getAverageText = (row) => {
+      const cells = within(row).getAllByRole("cell");
+      return cells[11]?.textContent ?? "";
+    };
+    const getRecentAverageText = (row) => {
+      const cells = within(row).getAllByRole("cell");
+      return cells[12]?.textContent ?? "";
+    };
 
     const initialPoints = getPointsText(playerRow);
+    const initialAverage = getAverageText(playerRow);
+    const initialRecent = getRecentAverageText(playerRow);
 
     const detailButton = within(playerRow).getByLabelText(
       "Ver detalle de Nico Williams"
@@ -352,9 +362,13 @@ describe("FantasyTeamDashboard", () => {
     await waitFor(() => {
       const updatedRow = locateRow();
       expect(getPointsText(updatedRow)).toBe("22,0");
+      expect(getAverageText(updatedRow)).toBe("11,0");
+      expect(getRecentAverageText(updatedRow)).toBe("11,0");
     });
 
     expect(initialPoints).not.toBe("22,0");
+    expect(initialAverage).not.toBe("11,0");
+    expect(initialRecent).not.toBe("11,0");
   });
 
   it("actualiza el valor y las variaciones de mercado tras ejecutar el sniffer", async () => {
