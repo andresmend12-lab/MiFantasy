@@ -218,13 +218,12 @@ describe("FantasyTeamDashboard", () => {
     expect(within(teamTableAgain).getByText("40,5")).toBeInTheDocument();
   });
 
-  it("muestra botones de actualización y sincroniza los puntos del equipo", async () => {
+  it("actualiza las puntuaciones de un jugador desde su detalle", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Nico Williams" }])
     );
 
-    let playerFetchCount = 0;
     const makeResponse = (body) => {
       const text = JSON.stringify(body);
       return {
@@ -242,6 +241,53 @@ describe("FantasyTeamDashboard", () => {
       };
     };
 
+    const marketPayloads = [
+      {
+        updated_at: "2025-01-01T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2345678",
+            diff_1: 0,
+            diff_7: 0,
+            points_avg: null,
+            points_last5: null,
+            points_history: [
+              { matchday: 10, points: 6.5 },
+              { matchday: 11, points: 7.0 },
+            ],
+          },
+        ],
+      },
+      {
+        updated_at: "2025-01-02T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2345678",
+            diff_1: 0,
+            diff_7: 0,
+            points_avg: 11,
+            points_last5: 11,
+            points_total: 22,
+            points_history: [
+              { matchday: 10, points: 10 },
+              { matchday: 11, points: 12 },
+            ],
+          },
+        ],
+      },
+    ];
+
+    let marketCall = 0;
     global.fetch.mockImplementation((url) => {
       if (typeof url === "string" && url.includes("/api/sniff/market")) {
         return Promise.resolve(makeResponse({ success: true }));
@@ -249,42 +295,13 @@ describe("FantasyTeamDashboard", () => {
       if (typeof url === "string" && url.includes("/api/sniff/points")) {
         return Promise.resolve(makeResponse({ success: true }));
       }
-      if (typeof url === "string" && url.includes("/api/v3/player/")) {
-        playerFetchCount += 1;
-        return Promise.resolve(
-          makeResponse({
-            data: {
-              jornadas: [
-                { jornada: 1, puntos: 10 },
-                { jornada: 2, puntos: 12 },
-              ],
-            },
-          })
-        );
+      if (typeof url === "string" && url.includes("/market.json")) {
+        const payload =
+          marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
+        marketCall += 1;
+        return Promise.resolve(makeResponse(payload));
       }
-      return Promise.resolve(
-        makeResponse({
-          updated_at: "2025-01-01T00:00:00Z",
-          players: [
-            {
-              id: 2,
-              name: "Nico WilliamsN. Williams",
-              team: "Athletic",
-              team_id: "5",
-              position: "Delantero",
-              value: "2345678",
-              diff_1: 0,
-              diff_7: 0,
-              points_avg: null,
-              points_last5: null,
-              points_history: [
-                { matchday: 10, points: 6.5 },
-                { matchday: 11, points: 7.0 },
-              ],
-            },
-          ],
-        })
-      );
+      return Promise.resolve(makeResponse({ success: true }));
     });
 
     render(<FantasyTeamDashboard />);
@@ -292,10 +309,9 @@ describe("FantasyTeamDashboard", () => {
     expect(
       await screen.findByRole("button", { name: "Actualizar valor de mercado" })
     ).toBeInTheDocument();
-    const pointsButton = screen.getByRole("button", {
-      name: "Actualizar puntos de jornada",
-    });
-    expect(pointsButton).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /Actualizar puntos de jornada/i })
+    ).not.toBeInTheDocument();
 
     const teamTable = await screen.findByTestId("team-table");
     const locateRow = () => {
@@ -315,10 +331,22 @@ describe("FantasyTeamDashboard", () => {
 
     const initialPoints = getPointsText(playerRow);
 
-    fireEvent.click(pointsButton);
+    const detailButton = within(playerRow).getByLabelText(
+      "Ver detalle de Nico Williams"
+    );
+    fireEvent.click(detailButton);
+
+    const updateButton = await screen.findByRole("button", {
+      name: "Actualizar desde mercado",
+    });
+
+    fireEvent.click(updateButton);
 
     await waitFor(() => {
-      expect(playerFetchCount).toBeGreaterThanOrEqual(1);
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining("/api/sniff/points/2"),
+        expect.objectContaining({ method: "POST" })
+      );
     });
 
     await waitFor(() => {
@@ -434,6 +462,88 @@ describe("FantasyTeamDashboard", () => {
     });
 
     expect(marketCall).toBeGreaterThanOrEqual(2);
+  });
+
+  it("usa el último valor de mercado al mostrar mi equipo aunque la caché esté desactualizada", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+    window.localStorage.setItem(
+      "playerMarketCache",
+      JSON.stringify({ 2: 1000000 })
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    const payload = {
+      updated_at: "2025-01-03T00:00:00Z",
+      players: [
+        {
+          id: 2,
+          name: "Nico WilliamsN. Williams",
+          team: "Athletic",
+          team_id: "5",
+          position: "Delantero",
+          value: "2450000",
+          diff_1: "50000",
+          diff_7: "620000",
+        },
+      ],
+    };
+
+    global.fetch.mockImplementation((url) => {
+      if (typeof url === "string" && url.includes("/api/sniff/market")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/sniff/points")) {
+        return Promise.resolve(makeResponse({ success: true }));
+      }
+      if (typeof url === "string" && url.includes("/api/v3/player/")) {
+        return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+      }
+      return Promise.resolve(makeResponse(payload));
+    });
+
+    render(<FantasyTeamDashboard />);
+
+    const teamTable = await screen.findByTestId("team-table");
+    const getRow = () => {
+      const cell = within(teamTable).getByText("Nico Williams");
+      const row = cell.closest("tr");
+      if (!row) {
+        throw new Error("Fila del jugador no encontrada");
+      }
+      return row;
+    };
+
+    await waitFor(() => {
+      const row = getRow();
+      const cells = within(row).getAllByRole("cell");
+      expect(cells[3].textContent).toContain("2.450.000");
+    });
+
+    const storedCache = window.localStorage.getItem("playerMarketCache");
+    expect(storedCache).not.toBeNull();
+    if (storedCache) {
+      const parsed = JSON.parse(storedCache);
+      expect(parsed[2]).toBe(2450000);
+    }
   });
 
   it("omite peticiones de mercado cuando force es false y la cache está poblada", async () => {
@@ -742,7 +852,7 @@ describe("FantasyTeamDashboard", () => {
     );
   });
 
-  it("muestra las últimas jornadas y el detalle con puntuaciones sincronizadas", async () => {
+  it("muestra las últimas jornadas y el detalle con los datos del mercado", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
@@ -772,24 +882,14 @@ describe("FantasyTeamDashboard", () => {
     ).toBeInTheDocument();
 
     expect(
-      await within(detailDialog).findByText(/Puntuaciones sincronizadas:/)
-    ).toBeInTheDocument();
-
-    expect(
-      within(detailDialog).getByRole("button", { name: "Actualizar" })
+      within(detailDialog).getByRole("button", { name: "Actualizar desde mercado" })
     ).toBeInTheDocument();
 
     const scoresTable = within(detailDialog).getByRole("table", {
       name: "Tabla de puntuación por jornada",
     });
-    expect(await within(scoresTable).findByText("6,2")).toBeInTheDocument();
-    expect(within(scoresTable).getByText("7,4")).toBeInTheDocument();
-
-    const detailCall = global.fetch.mock.calls.find(([url]) =>
-      typeof url === "string" && url.includes("/api/v3/player/1")
-    );
-    expect(detailCall).toBeDefined();
-    expect(detailCall?.[1]).toMatchObject({ credentials: "include" });
+    expect(await within(scoresTable).findByText("3,2")).toBeInTheDocument();
+    expect(within(scoresTable).getByText("5,2")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /cerrar detalle/i }));
     await waitFor(() =>

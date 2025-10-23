@@ -189,9 +189,12 @@ const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
-const SNIFFER_COMMAND_ENDPOINTS = {
-  market: "/api/sniff/market",
-  points: "/api/sniff/points",
+const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
+const getPointsSnifferEndpoint = (playerId) => {
+  if (playerId === null || playerId === undefined || playerId === "") {
+    return null;
+  }
+  return `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
 };
 
 const getSnifferFriendlyName = (type) =>
@@ -201,9 +204,9 @@ const getSnifferFriendlyName = (type) =>
     ? "valor de mercado"
     : "actualización";
 
-async function executeSnifferCommand(type) {
-  const endpoint = SNIFFER_COMMAND_ENDPOINTS[type];
-  if (!endpoint) {
+async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
+  const resolvedEndpoint = endpoint ?? (type === "market" ? MARKET_SNIFFER_ENDPOINT : null);
+  if (!resolvedEndpoint) {
     return null;
   }
   if (typeof fetch !== "function") {
@@ -218,7 +221,7 @@ async function executeSnifferCommand(type) {
 
   let response;
   try {
-    response = await fetch(endpoint, { method: "POST" });
+    response = await fetch(resolvedEndpoint, { method: "POST" });
   } catch (networkError) {
     const error = new Error(
       `No se pudo lanzar la ${getSnifferFriendlyName(type)} (${networkError?.message ?? "error de red"}).`
@@ -288,12 +291,14 @@ const store = {
   jugadoresEquipo: [],
   cacheMercado: {},
   cachePuntuaciones: {},
+  marketPayload: null,
 };
 
 const storeControl = {
   refreshMarketFor: null,
   refreshPointsFor: null,
   pushToast: null,
+  applyMarketPayload: null,
   getPlayerIds: () =>
     store.jugadoresEquipo
       .map((jugador) =>
@@ -311,13 +316,35 @@ const toastStyles = {
   error: "border border-red-200 bg-red-50 text-red-700",
 };
 
-const runWithConcurrency = async (items, concurrency, handler) => {
+const runWithConcurrency = async (
+  items,
+  concurrency,
+  handler,
+  { onProgress } = {}
+) => {
   const queue = Array.from(items);
-  if (!queue.length) {
+  const totalItems = queue.length;
+  if (!totalItems) {
+    try {
+      onProgress?.({ completed: 0, total: 0 });
+    } catch (error) {
+      console.warn("Error al notificar progreso", error);
+    }
     return [];
   }
   const results = [];
   let nextIndex = 0;
+  let completed = 0;
+  const emitProgress = (payload) => {
+    if (typeof onProgress !== "function") {
+      return;
+    }
+    try {
+      onProgress(payload);
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
+  };
   const takeNext = () => {
     if (nextIndex >= queue.length) {
       return null;
@@ -335,11 +362,26 @@ const runWithConcurrency = async (items, concurrency, handler) => {
           if (item === null) {
             break;
           }
+          let status = "fulfilled";
+          let value;
+          let reason;
           try {
-            const result = await handler(item);
-            results.push({ status: "fulfilled", value: result, item });
+            value = await handler(item);
+            results.push({ status: "fulfilled", value, item });
           } catch (error) {
-            results.push({ status: "rejected", reason: error, item });
+            status = "rejected";
+            reason = error;
+            results.push({ status: "rejected", reason, item });
+          } finally {
+            completed += 1;
+            emitProgress({
+              completed,
+              total: totalItems,
+              item,
+              status,
+              value,
+              reason,
+            });
           }
         }
       })()
@@ -348,7 +390,10 @@ const runWithConcurrency = async (items, concurrency, handler) => {
   return results;
 };
 
-async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {}) {
+async function runMarketSniffer(
+  playerIds,
+  { concurrency = 4, force = true, payload = null, onProgress } = {}
+) {
   const ids = Array.from(
     new Set(
       (playerIds || [])
@@ -359,10 +404,18 @@ async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {
     )
   );
   if (!ids.length || typeof storeControl.refreshMarketFor !== "function") {
+    try {
+      onProgress?.({ completed: 0, total: ids.length ?? 0 });
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
     return [];
   }
-  const results = await runWithConcurrency(ids, concurrency, (id) =>
-    storeControl.refreshMarketFor(id, { force })
+  const results = await runWithConcurrency(
+    ids,
+    concurrency,
+    (id) => storeControl.refreshMarketFor(id, { force, payload }),
+    { onProgress }
   );
   if (typeof window !== "undefined" && window?.dispatchEvent) {
     try {
@@ -374,7 +427,10 @@ async function runMarketSniffer(playerIds, { concurrency = 4, force = true } = {
   return results;
 }
 
-async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = {}) {
+async function runPointsSniffer(
+  playerIds,
+  { concurrency = 3, force = false, onProgress } = {}
+) {
   const ids = Array.from(
     new Set(
       (playerIds || [])
@@ -385,19 +441,79 @@ async function runPointsSniffer(playerIds, { concurrency = 3, force = false } = 
     )
   );
   if (!ids.length || typeof storeControl.refreshPointsFor !== "function") {
+    try {
+      onProgress?.({ completed: 0, total: ids.length ?? 0 });
+    } catch (error) {
+      console.warn("Error al manejar el progreso", error);
+    }
     return [];
   }
-  return runWithConcurrency(ids, concurrency, (id) =>
-    storeControl.refreshPointsFor(id, { force })
+  return runWithConcurrency(
+    ids,
+    concurrency,
+    (id) => storeControl.refreshPointsFor(id, { force }),
+    { onProgress }
   );
 }
 
 export async function sniff_market_json_v3_debug_market(options = {}) {
   storeControl.pushToast?.("Actualizando valor de mercado…", { type: "info" });
+  const ids = storeControl.getPlayerIds();
+
   try {
-    await executeSnifferCommand("market");
-    const ids = storeControl.getPlayerIds();
-    const results = ids.length ? await runMarketSniffer(ids, options) : [];
+    const { force } = options ?? {};
+    const shouldForceReload = force !== false;
+    const existingPayload = store.marketPayload ?? null;
+    await executeSnifferCommand({ type: "market" });
+
+    let marketPayload = null;
+    if (shouldForceReload) {
+      for (let attempt = 0; attempt < 5; attempt += 1) {
+        try {
+          marketPayload = await loadMarketPayload({ force: true });
+          break;
+        } catch (error) {
+          if (attempt === 4) {
+            throw error;
+          }
+          await sleep(250 * (attempt + 1));
+        }
+      }
+    } else {
+      marketPayload = existingPayload;
+      if (!marketPayload) {
+        try {
+          marketPayload = await loadMarketPayload({ force: false });
+        } catch (error) {
+          if (existingPayload) {
+            marketPayload = existingPayload;
+          } else {
+            throw error;
+          }
+        }
+      }
+    }
+
+    if (marketPayload) {
+      store.marketPayload = marketPayload;
+      if (shouldForceReload || !existingPayload) {
+        try {
+          storeControl.applyMarketPayload?.(marketPayload);
+        } catch (error) {
+          console.warn("No se pudo aplicar el mercado actualizado", error);
+        }
+      }
+    } else {
+      store.marketPayload = null;
+    }
+
+    const results = ids.length
+      ? await runMarketSniffer(ids, {
+          ...options,
+          payload: marketPayload,
+        })
+      : [];
+
     storeControl.pushToast?.("Actualización completada", { type: "success" });
     return results;
   } catch (error) {
@@ -409,21 +525,53 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
   }
 }
 
-export async function sniff_market_json_v3_debug_points(options = {}) {
-  storeControl.pushToast?.("Actualizando puntos de jornada…", { type: "info" });
-  try {
-    await executeSnifferCommand("points");
-    const ids = storeControl.getPlayerIds();
-    const results = ids.length ? await runPointsSniffer(ids, options) : [];
-    storeControl.pushToast?.("Actualización completada", { type: "success" });
-    return results;
-  } catch (error) {
-    storeControl.pushToast?.(
-      error?.message ?? "No se pudo completar la actualización de puntos.",
-      { type: "error" }
-    );
-    throw error;
+export async function sniff_market_json_v3_debug_points_for_player(
+  playerId,
+  options = {}
+) {
+  const id =
+    playerId === null || playerId === undefined || playerId === ""
+      ? null
+      : String(playerId);
+  if (!id) {
+    throw new Error("ID de jugador no válido");
   }
+
+  const endpoint = getPointsSnifferEndpoint(id);
+  if (!endpoint) {
+    throw new Error("No se pudo preparar la actualización de puntos.");
+  }
+
+  await executeSnifferCommand({ type: "points", endpoint });
+
+  const attempts = Number.isFinite(options?.retries) && options.retries > 0
+    ? Math.floor(options.retries)
+    : 5;
+  let marketPayload = null;
+  let lastError = null;
+  for (let attempt = 0; attempt < Math.max(1, attempts); attempt += 1) {
+    try {
+      marketPayload = await loadMarketPayload({ force: true });
+      if (marketPayload) {
+        break;
+      }
+    } catch (error) {
+      lastError = error;
+      if (attempt === Math.max(1, attempts) - 1) {
+        throw error;
+      }
+      await sleep(250 * (attempt + 1));
+    }
+  }
+
+  if (!marketPayload) {
+    if (lastError) {
+      throw lastError;
+    }
+    throw new Error("No se pudo cargar el mercado actualizado.");
+  }
+
+  return marketPayload;
 }
 
 const normalizeScoreEntries = (value) =>
@@ -593,15 +741,20 @@ const parseScoreDataFromHtml = (html) => {
 let marketPayloadCache = null;
 let lastMarketPayload = null;
 
-const loadMarketPayload = async () => {
-  if (marketPayloadCache) {
+const loadMarketPayload = async ({ force = false } = {}) => {
+  if (!force && marketPayloadCache) {
     return marketPayloadCache;
   }
-  const request = (async () => {
+
+  const performFetch = async () => {
     if (typeof fetch !== "function") {
       throw new Error("fetch no está disponible en este entorno");
     }
-    const response = await fetch(MARKET_ENDPOINT, { credentials: "include" });
+    const url = force ? `${MARKET_ENDPOINT}?t=${Date.now()}` : MARKET_ENDPOINT;
+    const response = await fetch(url, {
+      credentials: "include",
+      cache: "no-store",
+    });
     if (!response || !response.ok) {
       throw new Error(
         `Respuesta no válida al cargar el mercado (${response?.status ?? "desconocido"})`
@@ -609,12 +762,29 @@ const loadMarketPayload = async () => {
     }
     const data = await response.json();
     lastMarketPayload = data;
+    store.marketPayload = data;
     return data;
-  })();
+  };
+
+  if (force) {
+    try {
+      return await performFetch();
+    } catch (error) {
+      console.warn("No se pudo refrescar el mercado", error);
+      if (lastMarketPayload) {
+        store.marketPayload = lastMarketPayload;
+        return lastMarketPayload;
+      }
+      throw error;
+    }
+  }
+
+  const request = performFetch();
   marketPayloadCache = request
     .catch((error) => {
       console.warn("No se pudo refrescar el mercado", error);
       if (lastMarketPayload) {
+        store.marketPayload = lastMarketPayload;
         return lastMarketPayload;
       }
       throw error;
@@ -625,13 +795,28 @@ const loadMarketPayload = async () => {
   return marketPayloadCache;
 };
 
-export async function fetchValorMercadoJugador(playerId) {
+export async function fetchValorMercadoJugador(
+  playerId,
+  { payload, forceReload = false } = {}
+) {
   if (playerId === null || playerId === undefined || playerId === "") {
     throw new Error("ID de jugador no válido");
   }
   const normalizedId = String(playerId);
-  const payload = await loadMarketPayload();
-  const players = Array.isArray(payload?.players) ? payload.players : [];
+  let payloadSource = null;
+  if (payload && typeof payload === "object") {
+    payloadSource = payload;
+  } else if (!forceReload && store.marketPayload) {
+    payloadSource = store.marketPayload;
+  } else {
+    payloadSource = await loadMarketPayload({ force: forceReload });
+  }
+  if (payloadSource && payloadSource !== store.marketPayload) {
+    store.marketPayload = payloadSource;
+  }
+  const players = Array.isArray(payloadSource?.players)
+    ? payloadSource.players
+    : [];
   const normalizeNameKey = (value) =>
     sanitizeName(value ?? "")?.toLocaleLowerCase("es-ES") ?? null;
   const byId = players.find((entry) => {
@@ -1571,7 +1756,6 @@ export default function FantasyTeamDashboard() {
   const [editBudgetOpen, setEditBudgetOpen] = useState(false);
   const [budgetDraft, setBudgetDraft] = useState("");
   const [marketSnifferRunning, setMarketSnifferRunning] = useState(false);
-  const [pointsSnifferRunning, setPointsSnifferRunning] = useState(false);
   const [toasts, setToasts] = useState([]);
   const toastIdRef = useRef(0);
   const budgetParsed = useMemo(
@@ -1634,7 +1818,7 @@ export default function FantasyTeamDashboard() {
     });
   }, []);
 
-  const getPlayerIdKey = (item) => {
+  const getPlayerIdKey = useCallback((item) => {
     if (!item) return null;
     const rawId =
       item.id ??
@@ -1646,7 +1830,7 @@ export default function FantasyTeamDashboard() {
     return rawId !== null && rawId !== undefined && rawId !== ""
       ? String(rawId)
       : null;
-  };
+  }, []);
 
   const getPlayerNameKey = (item) => {
     const base = sanitizeName(item?.name);
@@ -1665,6 +1849,58 @@ export default function FantasyTeamDashboard() {
     return entryName && playerName ? entryName === playerName : false;
   };
 
+  const applyMarketPayload = useCallback(
+    (payload) => {
+      if (!payload || typeof payload !== "object") {
+        store.marketPayload = null;
+        return null;
+      }
+      const players = Array.isArray(payload.players) ? payload.players : [];
+      const normalizedPlayers = players.map(normalizePlayer);
+      store.marketPayload = payload;
+      setMarket({
+        updated_at: payload.updated_at ?? null,
+        players: normalizedPlayers,
+      });
+
+      if (normalizedPlayers.length) {
+        const valueById = new Map();
+        normalizedPlayers.forEach((player) => {
+          if (!player || player.id === null || player.id === undefined) {
+            return;
+          }
+          const value = toOptionalNumber(player.value);
+          if (value === null) {
+            return;
+          }
+          valueById.set(String(player.id), value);
+        });
+        if (valueById.size) {
+          setCacheMercado((prev) => {
+            let mutated = false;
+            const next = { ...prev };
+            myTeam.forEach((entry) => {
+              const id = getPlayerIdKey(entry);
+              if (!id) return;
+              if (!valueById.has(id)) return;
+              const nextValue = valueById.get(id);
+              if (prev[id] === nextValue) return;
+              next[id] = nextValue;
+              mutated = true;
+            });
+            return mutated ? next : prev;
+          });
+        }
+      }
+
+      return {
+        updatedAt: payload.updated_at ?? null,
+        players: normalizedPlayers,
+      };
+    },
+    [setMarket, setCacheMercado, myTeam, getPlayerIdKey]
+  );
+
   useEffect(() => {
     const load = async () => {
       try {
@@ -1672,13 +1908,7 @@ export default function FantasyTeamDashboard() {
         const res = await fetch(MARKET_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("No se pudo descargar market.json");
         const data = await res.json();
-        const players = Array.isArray(data.players) ? data.players : [];
-        const normalizedPlayers = players.map(normalizePlayer);
-
-        setMarket({
-          updated_at: data.updated_at || null,
-          players: normalizedPlayers,
-        });
+        applyMarketPayload(data);
         setStatus("ok");
       } catch (e) {
         console.error(e);
@@ -1686,7 +1916,7 @@ export default function FantasyTeamDashboard() {
       }
     };
     load();
-  }, []);
+  }, [applyMarketPayload]);
 
   useEffect(() => {
     localStorage.setItem("myTeam", JSON.stringify(myTeam));
@@ -1833,6 +2063,85 @@ export default function FantasyTeamDashboard() {
 
   const getPuntuacionJugador = (playerId) => getCachedScoreInfo(playerId).data;
 
+  const applyPlayerScores = useCallback(
+    (playerId, entries, { fetchedAt = null } = {}) => {
+      const id =
+        playerId === null || playerId === undefined || playerId === ""
+          ? null
+          : String(playerId);
+      if (!id) {
+        return [];
+      }
+      const normalized = normalizeScoreEntries(entries);
+      if (!normalized.length) {
+        throw new Error("No hay puntuaciones disponibles");
+      }
+      const timestamp = fetchedAt ?? new Date().toISOString();
+
+      setCachePuntuaciones((prev) => {
+        const prevEntry = prev[id];
+        if (
+          prevEntry &&
+          Array.isArray(prevEntry.data) &&
+          prevEntry.data.length === normalized.length &&
+          prevEntry.data.every(
+            (item, index) =>
+              item.jornada === normalized[index]?.jornada &&
+              item.puntos === normalized[index]?.puntos
+          ) &&
+          prevEntry.fetchedAt === timestamp
+        ) {
+          return prev;
+        }
+        return {
+          ...prev,
+          [id]: { data: normalized, fetchedAt: timestamp },
+        };
+      });
+
+      setMyTeam((prev) => {
+        let mutated = false;
+        const candidate = playerIndex.byId.get(id);
+        const next = prev.map((entry) => {
+          if (!entry || typeof entry !== "object") return entry;
+          const entryId = getPlayerIdKey(entry);
+          const matches = entryId
+            ? entryId === id
+            : candidate
+            ? entryMatchesPlayer(entry, candidate)
+            : false;
+          if (!matches) return entry;
+          const updated = {
+            ...entry,
+            puntuacionPorJornada: normalized,
+            cacheFechaPuntuacion: timestamp,
+          };
+          if (
+            !entryId &&
+            candidate?.id !== null &&
+            candidate?.id !== undefined
+          ) {
+            updated.id = String(candidate.id);
+          }
+          mutated = true;
+          return updated;
+        });
+        return mutated ? next : prev;
+      });
+
+      updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
+      return normalized;
+    },
+    [
+      setCachePuntuaciones,
+      setMyTeam,
+      playerIndex,
+      getPlayerIdKey,
+      entryMatchesPlayer,
+      updatePlayerState,
+    ]
+  );
+
   const refreshPointsFor = useCallback(
     async (playerId, { force = false } = {}) => {
       const id =
@@ -1864,57 +2173,7 @@ export default function FantasyTeamDashboard() {
             throw new Error("No hay puntuaciones disponibles");
           }
           const fetchedAt = new Date().toISOString();
-          setCachePuntuaciones((prev) => {
-            const prevEntry = prev[id];
-            if (
-              prevEntry &&
-              Array.isArray(prevEntry.data) &&
-              prevEntry.data.length === nextData.length &&
-              prevEntry.data.every(
-                (item, index) =>
-                  item.jornada === nextData[index]?.jornada &&
-                  item.puntos === nextData[index]?.puntos
-              ) &&
-              prevEntry.fetchedAt === fetchedAt
-            ) {
-              return prev;
-            }
-            return {
-              ...prev,
-              [id]: { data: nextData, fetchedAt },
-            };
-          });
-          setMyTeam((prev) => {
-            let mutated = false;
-            const candidate = playerIndex.byId.get(id);
-            const next = prev.map((entry) => {
-              if (!entry || typeof entry !== "object") return entry;
-              const entryId = getPlayerIdKey(entry);
-              const matches = entryId
-                ? entryId === id
-                : candidate
-                ? entryMatchesPlayer(entry, candidate)
-                : false;
-              if (!matches) return entry;
-              const updated = {
-                ...entry,
-                puntuacionPorJornada: nextData,
-                cacheFechaPuntuacion: fetchedAt,
-              };
-              if (
-                !entryId &&
-                candidate?.id !== null &&
-                candidate?.id !== undefined
-              ) {
-                updated.id = String(candidate.id);
-              }
-              mutated = true;
-              return updated;
-            });
-            return mutated ? next : prev;
-          });
-          updatePlayerState(id, { pointsStatus: "ready", pointsError: null });
-          return nextData;
+          return applyPlayerScores(id, nextData, { fetchedAt });
         } catch (error) {
           const nameFromMarket =
             playerIndex.byId.get(id)?.name ??
@@ -1946,40 +2205,125 @@ export default function FantasyTeamDashboard() {
       getCachedScoreInfo,
       isScoreCacheStale,
       pendingPointsRequests,
-      setCachePuntuaciones,
-      myTeam,
-      setMyTeam,
+      applyPlayerScores,
       playerIndex,
+      myTeam,
+      getPlayerIdKey,
       updatePlayerState,
       pushToast,
     ]
   );
 
-  const ensurePuntuacionesUltimos5 = useCallback(
-    async ({ force = false } = {}) => {
-      const seen = new Set();
-      const tasks = [];
-      myTeam.forEach((entry) => {
-        const id = getPlayerIdKey(entry);
-        if (!id || seen.has(id)) return;
-        seen.add(id);
-        const cached = getCachedScoreInfo(id);
-        const shouldSync =
-          force ||
-          !Array.isArray(cached.data) ||
-          !cached.data.length ||
-          isScoreCacheStale(cached.fetchedAt);
-        if (shouldSync) {
-          tasks.push(refreshPointsFor(id, { force: true }));
-        }
-      });
-      if (!tasks.length) {
-        return;
+  const actualizarPuntosJugador = useCallback(
+    async (player, { silent = false } = {}) => {
+      if (!player) {
+        throw new Error("No se proporcionó ningún jugador");
       }
-      await Promise.allSettled(tasks);
+      const playerId = getPlayerIdKey(player);
+      if (!playerId) {
+        const message = "No se pudo identificar al jugador.";
+        if (!silent) {
+          pushToast(message, { type: "error" });
+        }
+        throw new Error(message);
+      }
+      const displayName = sanitizeName(player?.name) || `Jugador ${playerId}`;
+
+      if (!silent) {
+        pushToast(`Actualizando puntos de ${displayName}…`, { type: "info" });
+      }
+
+      updatePlayerState(playerId, { pointsStatus: "loading", pointsError: null });
+
+      try {
+        const payload = await sniff_market_json_v3_debug_points_for_player(playerId);
+        let normalizedPlayers = [];
+        if (payload) {
+          try {
+            const applied = applyMarketPayload(payload);
+            normalizedPlayers = applied?.players ?? [];
+          } catch (error) {
+            console.warn(
+              "No se pudo aplicar el mercado actualizado tras refrescar puntos",
+              error
+            );
+            normalizedPlayers = Array.isArray(payload?.players)
+              ? payload.players.map(normalizePlayer)
+              : [];
+          }
+        }
+
+        const findCandidate = () => {
+          const byId = normalizedPlayers.find((entry) => {
+            const entryId = entry?.id;
+            return (
+              entryId !== null &&
+              entryId !== undefined &&
+              String(entryId) === String(playerId)
+            );
+          });
+          if (byId) {
+            return byId;
+          }
+          const targetName = sanitizeName(player?.name)?.toLowerCase();
+          if (!targetName) {
+            return null;
+          }
+          return normalizedPlayers.find(
+            (entry) => sanitizeName(entry?.name)?.toLowerCase() === targetName
+          );
+        };
+
+        const candidate = findCandidate();
+        if (!candidate) {
+          throw new Error(
+            `No se encontró ${displayName} en el mercado actualizado.`
+          );
+        }
+
+        const historySource =
+          candidate.points_history ?? candidate.pointsHistory ?? [];
+        const appliedHistory = applyPlayerScores(playerId, historySource, {
+          fetchedAt: payload?.updated_at ?? new Date().toISOString(),
+        });
+        if (!appliedHistory.length) {
+          throw new Error(
+            `No hay puntuaciones disponibles para ${displayName}.`
+          );
+        }
+
+        if (!silent) {
+          pushToast(`Puntos de ${displayName} actualizados.`, {
+            type: "success",
+          });
+        }
+
+        return appliedHistory;
+      } catch (error) {
+        const message =
+          error?.message ?? "No se pudieron actualizar las puntuaciones.";
+        updatePlayerState(playerId, {
+          pointsStatus: "error",
+          pointsError: message,
+        });
+        if (!silent) {
+          pushToast(`No se pudieron actualizar los puntos de ${displayName}.`, {
+            type: "warning",
+          });
+        }
+        throw error;
+      }
     },
-    [myTeam, getCachedScoreInfo, isScoreCacheStale, refreshPointsFor]
+    [
+      getPlayerIdKey,
+      pushToast,
+      updatePlayerState,
+      applyMarketPayload,
+      applyPlayerScores,
+    ]
   );
+
+  const ensurePuntuacionesUltimos5 = useCallback(async () => {}, []);
 
   const abrirDetalleJugador = (player) => {
     if (!player) return;
@@ -1995,20 +2339,15 @@ export default function FantasyTeamDashboard() {
 
   const refrescarDetalleJugador = () => {
     if (!playerDetailTarget) return;
-    const playerId = getPlayerIdKey(playerDetailTarget);
-    if (!playerId) {
-      setPlayerDetailError("No se pudo identificar al jugador.");
-      return;
-    }
     setPlayerDetailLoading(true);
-    refreshPointsFor(playerId, { force: true })
+    actualizarPuntosJugador(playerDetailTarget)
       .then(() => {
         setPlayerDetailError(null);
       })
-      .catch(() => {
-        setPlayerDetailError(
-          "No se pudieron actualizar las puntuaciones del jugador."
-        );
+      .catch((error) => {
+        const message =
+          error?.message ?? "No se pudieron actualizar las puntuaciones del jugador.";
+        setPlayerDetailError(message);
       })
       .finally(() => {
         setPlayerDetailLoading(false);
@@ -2016,7 +2355,7 @@ export default function FantasyTeamDashboard() {
   };
 
   const refreshMarketFor = useCallback(
-    async (playerId, { force = true } = {}) => {
+    async (playerId, { force = true, payload = null } = {}) => {
       const id =
         playerId === null || playerId === undefined || playerId === ""
           ? null
@@ -2076,7 +2415,10 @@ export default function FantasyTeamDashboard() {
         let lastError = null;
         for (let attempt = 0; attempt < 3; attempt += 1) {
           try {
-            const marketInfo = await fetchValorMercadoJugador(id);
+            const marketInfo = await fetchValorMercadoJugador(id, {
+              payload,
+              forceReload: !payload && force,
+            });
             const fetchedValueRaw =
               marketInfo && typeof marketInfo === "object"
                 ? marketInfo.value
@@ -2401,6 +2743,15 @@ export default function FantasyTeamDashboard() {
     };
   }, [refreshPointsFor]);
 
+  useEffect(() => {
+    storeControl.applyMarketPayload = applyMarketPayload;
+    return () => {
+      if (storeControl.applyMarketPayload === applyMarketPayload) {
+        storeControl.applyMarketPayload = null;
+      }
+    };
+  }, [applyMarketPayload]);
+
   const handleMarketSniffer = useCallback(async () => {
     if (marketSnifferRunning) return;
     setMarketSnifferRunning(true);
@@ -2418,23 +2769,6 @@ export default function FantasyTeamDashboard() {
     }
   }, [marketSnifferRunning, pushToast]);
 
-  const handlePointsSniffer = useCallback(async () => {
-    if (pointsSnifferRunning) return;
-    setPointsSnifferRunning(true);
-    try {
-      await sniff_market_json_v3_debug_points({ concurrency: 3 });
-    } catch (error) {
-      console.warn("Error al actualizar las puntuaciones", error);
-      if (!error?.isSnifferCommandError) {
-        pushToast("Hubo errores al actualizar las puntuaciones.", {
-          type: "warning",
-        });
-      }
-    } finally {
-      setPointsSnifferRunning(false);
-    }
-  }, [pointsSnifferRunning, pushToast]);
-
   const retryMarketForPlayer = useCallback(
     (player) => {
       const id = getPlayerIdKey(player);
@@ -2448,13 +2782,12 @@ export default function FantasyTeamDashboard() {
 
   const retryPointsForPlayer = useCallback(
     (player) => {
-      const id = getPlayerIdKey(player);
-      if (!id) return;
-      refreshPointsFor(id, { force: true }).catch(() => {
+      if (!player) return;
+      actualizarPuntosJugador(player, { silent: false }).catch(() => {
         /* handled via status */
       });
     },
-    [refreshPointsFor]
+    [actualizarPuntosJugador]
   );
 
   useEffect(() => {
@@ -2468,7 +2801,9 @@ export default function FantasyTeamDashboard() {
   }, [activeTab, ensurePuntuacionesUltimos5]);
 
   useEffect(() => {
-    if (!playerDetailTarget) return undefined;
+    if (!playerDetailTarget) {
+      return undefined;
+    }
     const playerId = getPlayerIdKey(playerDetailTarget);
     if (!playerId) {
       setPlayerDetailError("No se pudo identificar al jugador.");
@@ -2476,33 +2811,12 @@ export default function FantasyTeamDashboard() {
       return undefined;
     }
     const cached = getCachedScoreInfo(playerId);
-    if (cached.data.length && !isScoreCacheStale(cached.fetchedAt)) {
+    if (cached.data.length) {
       setPlayerDetailError(null);
-      setPlayerDetailLoading(false);
-      return undefined;
     }
-    let cancelled = false;
-    setPlayerDetailLoading(true);
-    setPlayerDetailError(null);
-    refreshPointsFor(playerId)
-      .then(() => {
-        if (cancelled) return;
-        setPlayerDetailError(null);
-      })
-      .catch(() => {
-        if (cancelled) return;
-        setPlayerDetailError(
-          "No se pudieron cargar las puntuaciones del jugador."
-        );
-      })
-      .finally(() => {
-        if (cancelled) return;
-        setPlayerDetailLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [playerDetailTarget]);
+    setPlayerDetailLoading(false);
+    return undefined;
+  }, [playerDetailTarget, getPlayerIdKey, getCachedScoreInfo]);
 
   const totals = useMemo(() => {
     const sum = (arr, key) =>
@@ -3823,16 +4137,6 @@ export default function FantasyTeamDashboard() {
               ? "Actualizando mercado…"
               : "Actualizar valor de mercado"}
           </button>
-          <button
-            type="button"
-            className="rounded-full border border-indigo-200 px-4 py-1.5 text-sm font-semibold text-indigo-600 transition hover:border-indigo-400 hover:text-indigo-800 disabled:cursor-not-allowed disabled:border-gray-200 disabled:text-gray-400"
-            onClick={handlePointsSniffer}
-            disabled={pointsSnifferRunning}
-          >
-            {pointsSnifferRunning
-              ? "Actualizando puntuaciones…"
-              : "Actualizar puntos de jornada"}
-          </button>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 border-b border-gray-200 pb-2">
@@ -4640,7 +4944,7 @@ function PlayerDetailModal({
                   onClick={onRefresh}
                   disabled={loading}
                 >
-                  Actualizar
+                  Actualizar desde mercado
                 </button>
               </div>
             </div>

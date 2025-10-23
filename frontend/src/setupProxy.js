@@ -22,11 +22,12 @@ const copyMarketJson = async () => {
   return marketJsonDestination;
 };
 
-const runPythonScript = (scriptName) =>
+const runPythonScript = (scriptName, args = []) =>
   new Promise((resolve, reject) => {
     const pythonExecutable = getPythonExecutable();
-    const commandLabel = `${pythonExecutable} ${scriptName}`.trim();
-    const child = spawn(pythonExecutable, [scriptName], {
+    const commandArgs = [scriptName, ...(Array.isArray(args) ? args : [])];
+    const commandLabel = `${pythonExecutable} ${commandArgs.join(" ")}`.trim();
+    const child = spawn(pythonExecutable, commandArgs, {
       cwd: repoRoot,
       stdio: ["ignore", "pipe", "pipe"],
       shell: false,
@@ -90,24 +91,46 @@ const respondWithError = (res, type, error) => {
   res.status(500).json(payload);
 };
 
-const handleSnifferRequest = (app, type, scriptName) => {
-  app.post(`/api/sniff/${type}`, (req, res) => {
-    runPythonScript(scriptName)
-      .then((result) =>
-        copyMarketJson().then(() =>
-          res.json({
-            success: true,
-            command: result.command,
-            stdout: result.stdout,
-            stderr: result.stderr,
-          })
-        )
+const handleSnifferRequest = (res, type, scriptName, args = []) =>
+  runPythonScript(scriptName, args)
+    .then((result) =>
+      copyMarketJson().then(() =>
+        res.json({
+          success: true,
+          command: result.command,
+          stdout: result.stdout,
+          stderr: result.stderr,
+        })
       )
-      .catch((error) => respondWithError(res, type, error));
-  });
-};
+    )
+    .catch((error) => respondWithError(res, type, error));
 
 module.exports = function setupProxy(app) {
-  handleSnifferRequest(app, "market", "sniff_market_json_v3_debug.py");
-  handleSnifferRequest(app, "points", "sniff_puntos_json_v3_debug.py");
+  app.post("/api/sniff/market", (req, res) => {
+    handleSnifferRequest(res, "market", "sniff_market_json_v3_debug.py", [
+      "--mode",
+      "market",
+    ]);
+  });
+
+  app.post("/api/sniff/points/:playerId", (req, res) => {
+    const rawId = typeof req.params.playerId === "string" ? req.params.playerId : "";
+    const playerId = rawId.trim();
+    if (!playerId) {
+      res.status(400).json({
+        success: false,
+        error: "ID de jugador no válido",
+        stdout: "",
+        stderr: "",
+      });
+      return;
+    }
+
+    handleSnifferRequest(res, "points", "sniff_market_json_v3_debug.py", [
+      "--mode",
+      "points",
+      "--player-id",
+      playerId,
+    ]);
+  });
 };
