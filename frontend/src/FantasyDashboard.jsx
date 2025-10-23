@@ -2648,21 +2648,41 @@ export default function FantasyTeamDashboard() {
         const zone = getZoneFromPosition(player.position ?? entry.position);
         const playerKey = getPlayerKey(player) ?? `name:${nameKey}`;
         const scoreInfo = getCachedScoreInfo(playerId);
-        const summary = getResumenPuntos(
+        const baseSummary = getResumenPuntos(
           scoreInfo.data.length ? scoreInfo.data : player.points_history
         );
+        const summary = {
+          ...baseSummary,
+          total:
+            baseSummary.total !== null && Number.isFinite(baseSummary.total)
+              ? baseSummary.total
+              : null,
+          media:
+            baseSummary.media !== null && Number.isFinite(baseSummary.media)
+              ? baseSummary.media
+              : null,
+          mediaUltimas5:
+            baseSummary.mediaUltimas5 !== null &&
+            Number.isFinite(baseSummary.mediaUltimas5)
+              ? baseSummary.mediaUltimas5
+              : null,
+        };
         const history =
           summary.history.length
             ? summary.history
             : normalizeScoreEntries(player.points_history);
         const pointsTotal =
-          summary.total !== null ? summary.total : player.points_total;
+          summary.total !== null
+            ? summary.total
+            : toOptionalNumber(player.points_total);
         const pointsAvg =
-          summary.media !== null ? summary.media : player.points_avg;
+          summary.media !== null
+            ? summary.media
+            : toOptionalNumber(player.points_avg);
         const pointsLast5 =
           summary.mediaUltimas5 !== null
             ? summary.mediaUltimas5
-            : player.points_last5;
+            : toOptionalNumber(player.points_last5);
         const state = playerId ? playerStates[playerId] ?? {} : {};
         const defaultMarketStatus = Number.isFinite(marketValue)
           ? "ready"
@@ -4426,9 +4446,14 @@ function PointsCell({
   onRetry,
   showRetry = false,
 }) {
-  const fmt = formatter ??
-    new Intl.NumberFormat("es-ES", { maximumFractionDigits: 1, minimumFractionDigits: 0 });
-  const display = Number.isFinite(value) ? fmt.format(value) : "—";
+  const fmt =
+    formatter ??
+    new Intl.NumberFormat("es-ES", {
+      maximumFractionDigits: 1,
+      minimumFractionDigits: 0,
+    });
+  const parsed = toOptionalNumber(value);
+  const display = parsed !== null ? fmt.format(parsed) : "—";
   if (status === "loading") {
     return (
       <div className="flex items-center justify-end">
