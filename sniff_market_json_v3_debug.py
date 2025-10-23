@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from contextlib import suppress
 
 URL = "https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado"
+PLAYER_API_BASE = "https://www.laligafantasymarca.com/api/v3/player"
+PLAYER_API_COMPETITION = "laliga-fantasy"
 
 
 FETCH_POINTS_HISTORY = False
@@ -279,6 +281,58 @@ def collect_history_from_modal(modal) -> list[dict]:
     except Exception:
         pass
     return dedupe_points_history(history)
+
+
+def fetch_points_history_via_api(page, pid, label: str | None = None) -> list[dict]:
+    if pid is None:
+        return []
+    try:
+        context = page.context
+    except Exception:
+        context = None
+    if context is None:
+        return []
+
+    descriptor = f"ID {pid}" if label is None else f"{label} (ID {pid})"
+    url = f"{PLAYER_API_BASE}/{pid}?competition={PLAYER_API_COMPETITION}"
+    print(f"   ↳ Consultando historial vía API para {descriptor}…")
+    try:
+        response = context.request.get(url, timeout=10_000)
+    except Exception as exc:
+        print(f"   ↳ No se pudo acceder a la API para {descriptor}: {exc}")
+        return []
+
+    try:
+        if not response.ok:
+            print(
+                f"   ↳ La API devolvió un estado {response.status} para {descriptor}."
+            )
+            return []
+    except Exception:
+        pass
+
+    history: list[dict] = []
+    try:
+        payload = response.json()
+        history.extend(parse_points_history_payload(payload))
+    except Exception as exc:
+        try:
+            text = response.text()
+        except Exception:
+            text = None
+        if text:
+            history.extend(parse_points_history_payload(text))
+        else:
+            print(
+                f"   ↳ No se pudo interpretar la respuesta de la API para {descriptor}: {exc}"
+            )
+
+    normalized = dedupe_points_history(history)
+    if normalized:
+        print(
+            f"   ↳ Historial obtenido vía API para {descriptor}: {len(normalized)} jornadas."
+        )
+    return normalized
 
 
 def fetch_points_history_via_modal(page, locator, pid, label: str | None = None) -> list[dict]:
@@ -661,6 +715,10 @@ def extract_points_history(page, locator, pid, label: str | None = None) -> list
 
     if not FETCH_POINTS_HISTORY:
         return []
+
+    api_history = fetch_points_history_via_api(page, pid, label)
+    if api_history:
+        return api_history
 
     if pid is None:
         return []
