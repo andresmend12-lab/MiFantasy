@@ -709,22 +709,40 @@ def extract_points_history(page, locator, pid, label: str | None = None) -> list
     for payload in gather_datasets(locator):
         history.extend(parse_points_history_payload(payload))
 
-    normalized = dedupe_points_history(history)
-    if normalized:
-        return normalized
+    attr_history = dedupe_points_history(history)
+    fallback_history = attr_history or []
 
-    if not FETCH_POINTS_HISTORY:
-        return []
+    if attr_history:
+        if not FETCH_POINTS_HISTORY:
+            return attr_history
+        max_matchday = 0
+        try:
+            max_matchday = max(
+                int(float(entry.get("matchday", 0)))
+                if isinstance(entry, dict)
+                else 0
+                for entry in attr_history
+            )
+        except Exception:
+            max_matchday = 0
+        if len(attr_history) > 1 or max_matchday > 1:
+            return attr_history
+    else:
+        if not FETCH_POINTS_HISTORY:
+            return []
 
     api_history = fetch_points_history_via_api(page, pid, label)
     if api_history:
         return api_history
 
     if pid is None:
-        return []
+        return fallback_history
 
     detail_history = fetch_points_history_via_modal(page, locator, pid, label)
-    return detail_history or []
+    if detail_history:
+        return detail_history
+
+    return fallback_history
 
 
 def maybe_accept_cookies(page):

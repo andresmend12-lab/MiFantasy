@@ -4944,7 +4944,7 @@ function PlayerDetailModal({
                   onClick={onRefresh}
                   disabled={loading}
                 >
-                  Actualizar desde mercado
+                  Actualizar puntos
                 </button>
               </div>
             </div>

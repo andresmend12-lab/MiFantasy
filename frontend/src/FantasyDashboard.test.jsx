@@ -347,7 +347,7 @@ describe("FantasyTeamDashboard", () => {
     fireEvent.click(detailButton);
 
     const updateButton = await screen.findByRole("button", {
-      name: "Actualizar desde mercado",
+      name: "Actualizar puntos",
     });
 
     fireEvent.click(updateButton);
@@ -896,7 +896,7 @@ describe("FantasyTeamDashboard", () => {
     ).toBeInTheDocument();
 
     expect(
-      within(detailDialog).getByRole("button", { name: "Actualizar desde mercado" })
+      within(detailDialog).getByRole("button", { name: "Actualizar puntos" })
     ).toBeInTheDocument();
 
     const scoresTable = within(detailDialog).getByRole("table", {
