@@ -189,7 +189,75 @@ const RAW_PUBLIC_URL =
     ? process.env.PUBLIC_URL
     : undefined;
 
+const RAW_MARKET_API_BASE =
+  typeof process !== "undefined" && process && process.env
+    ? process.env.REACT_APP_MARKET_API_BASE ?? process.env.MARKET_API_BASE
+    : undefined;
+
+const sanitizeMarketApiBase = (value) => {
+  const base = collapseWhitespace(normalizeText(value));
+  if (!base) return null;
+  if (/^(?:static|none)$/i.test(base)) {
+    return null;
+  }
+  if (/^auto$/i.test(base)) {
+    return "auto";
+  }
+  const stripped = base.replace(/\s+/g, "");
+  if (!stripped) {
+    return null;
+  }
+  return stripped.replace(/\/+$/, "");
+};
+
+const buildApiBaseFromAuto = () => {
+  if (typeof window !== "undefined" && window?.location) {
+    const { origin } = window.location;
+    if (origin && origin !== "null") {
+      return `${origin.replace(/\/$/, "")}/api`;
+    }
+  }
+  return "/api";
+};
+
+const resolveMarketApiBase = () => {
+  const sanitized = sanitizeMarketApiBase(RAW_MARKET_API_BASE);
+  if (!sanitized) {
+    return null;
+  }
+  if (sanitized === "auto") {
+    return buildApiBaseFromAuto();
+  }
+  if (/^https?:\/\//i.test(sanitized)) {
+    return sanitized.replace(/\/+$/, "");
+  }
+  if (sanitized.startsWith("/")) {
+    return sanitized.replace(/\/+$/, "");
+  }
+  return `/${sanitized.replace(/^\/+/, "").replace(/\/+$/, "")}`;
+};
+
+const MARKET_API_BASE = (() => {
+  try {
+    return resolveMarketApiBase();
+  } catch (error) {
+    console.warn("No se pudo resolver la URL base del API de mercado", error);
+    return null;
+  }
+})();
+
+const joinApiPath = (base, segment) => {
+  if (!base) return null;
+  const normalizedBase = base.replace(/\/+$/, "");
+  const normalizedSegment = String(segment || "").replace(/^\/+/, "");
+  return `${normalizedBase}/${normalizedSegment}`;
+};
+
 const resolveMarketEndpoint = () => {
+  if (MARKET_API_BASE) {
+    return joinApiPath(MARKET_API_BASE, "market");
+  }
+
   const rawPublicUrl = RAW_PUBLIC_URL;
 
   if (rawPublicUrl === ".") {
@@ -241,12 +309,19 @@ const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
-const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
+const MARKET_REFRESH_ENDPOINT = joinApiPath(MARKET_API_BASE, "market/refresh");
+const LEGACY_MARKET_SNIFFER_ENDPOINT = joinApiPath(MARKET_API_BASE, "sniff/market");
+const MARKET_SNIFFER_ENDPOINT =
+  MARKET_REFRESH_ENDPOINT ?? LEGACY_MARKET_SNIFFER_ENDPOINT ?? "/api/sniff/market";
 const getPointsSnifferEndpoint = (playerId) => {
   if (playerId === null || playerId === undefined || playerId === "") {
     return null;
   }
-  return `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
+  const legacy = `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
+  if (!MARKET_API_BASE) {
+    return legacy;
+  }
+  return joinApiPath(MARKET_API_BASE, `points/${encodeURIComponent(String(playerId))}`) ?? legacy;
 };
 
 const getSnifferFriendlyName = (type) =>
