@@ -2,6 +2,35 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Despliegue en GitHub Pages
+
+La aplicación está configurada para publicarse en GitHub Pages en
+[https://andresmend12-lab.github.io/MiFantasy/](https://andresmend12-lab.github.io/MiFantasy/).
+El despliegue genera automáticamente una rama `gh-pages` con la versión
+estática de la aplicación.
+
+Para lanzar un despliegue manual ejecuta los siguientes pasos desde la carpeta
+`frontend`:
+
+1. Instala dependencias si todavía no lo has hecho: `npm install`
+2. Ejecuta `npm run deploy`
+
+El script `deploy` genera el `build` y utiliza una *git worktree* temporal
+para actualizar la rama `gh-pages`. Este enfoque evita construir comandos
+demasiado largos en Windows (el origen del error `spawn ENAMETOOLONG`) y
+limpia la rama antes de copiar los archivos nuevos. La worktree se crea en un
+directorio temporal del sistema y se elimina al finalizar, lo que previene
+errores de "Acceso denegado" en Windows cuando existen carpetas ocultas
+bloqueadas dentro del repositorio.
+
+Si es la primera vez que publicas, asegúrate de que no exista una rama
+`gh-pages` previa o elimínala desde GitHub para empezar desde cero.
+
+Asegúrate de que en la configuración del
+repositorio de GitHub la opción **Pages** apunte a la rama `gh-pages` (directorio
+`root`). Una vez actualizado, el sitio quedará disponible para cualquier
+dispositivo en la URL anterior.
+
 ## Available Scripts
 
 In the project directory, you can run:

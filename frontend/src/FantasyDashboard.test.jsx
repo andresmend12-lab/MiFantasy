@@ -27,9 +27,6 @@ describe("FantasyTeamDashboard", () => {
       if (typeof url === "string" && url.includes("/api/sniff/market")) {
         return Promise.resolve(createJsonResponse({ success: true }));
       }
-      if (typeof url === "string" && url.includes("/api/sniff/points")) {
-        return Promise.resolve(createJsonResponse({ success: true }));
-      }
       if (typeof url === "string" && url.includes("/api/v3/player/")) {
         return Promise.resolve(
           createJsonResponse({
@@ -149,6 +146,7 @@ describe("FantasyTeamDashboard", () => {
   });
 
   afterEach(() => {
+    jest.restoreAllMocks();
     if (originalFetch) {
       global.fetch = originalFetch;
     } else {
@@ -215,10 +213,13 @@ describe("FantasyTeamDashboard", () => {
     ).toBeInTheDocument();
 
     const teamTableAgain = screen.getByTestId("team-table");
-    expect(within(teamTableAgain).getByText("40,5")).toBeInTheDocument();
+    expect(
+      within(teamTableAgain).getAllByRole("button", { name: "Completar" })
+        .length
+    ).toBeGreaterThan(0);
   });
 
-  it("actualiza las puntuaciones de un jugador desde su detalle", async () => {
+  it("permite editar manualmente las puntuaciones desde su detalle", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Nico Williams" }])
@@ -292,9 +293,6 @@ describe("FantasyTeamDashboard", () => {
       if (typeof url === "string" && url.includes("/api/sniff/market")) {
         return Promise.resolve(makeResponse({ success: true }));
       }
-      if (typeof url === "string" && url.includes("/api/sniff/points")) {
-        return Promise.resolve(makeResponse({ success: true }));
-      }
       if (typeof url === "string" && url.includes("/market.json")) {
         const payload =
           marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
@@ -309,9 +307,9 @@ describe("FantasyTeamDashboard", () => {
     expect(
       await screen.findByRole("button", { name: "Actualizar valor de mercado" })
     ).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: /Actualizar puntos de jornada/i })
-    ).not.toBeInTheDocument();
+
+    const matchdayInput = await screen.findByLabelText("Jornada actual");
+    fireEvent.change(matchdayInput, { target: { value: "2" } });
 
     const teamTable = await screen.findByTestId("team-table");
     const locateRow = () => {
@@ -346,18 +344,21 @@ describe("FantasyTeamDashboard", () => {
     );
     fireEvent.click(detailButton);
 
+    const promptValues = ["10", "12"];
+    const promptSpy = jest
+      .spyOn(window, "prompt")
+      .mockImplementation(() => promptValues.shift() ?? null);
+    const alertSpy = jest
+      .spyOn(window, "alert")
+      .mockImplementation(() => {});
+
     const updateButton = await screen.findByRole("button", {
-      name: "Actualizar puntos",
+      name: "Editar puntos",
     });
 
     fireEvent.click(updateButton);
 
-    await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining("/api/sniff/points/2"),
-        expect.objectContaining({ method: "POST" })
-      );
-    });
+    expect(promptSpy).toHaveBeenCalledTimes(2);
 
     await waitFor(() => {
       const updatedRow = locateRow();
@@ -369,6 +370,9 @@ describe("FantasyTeamDashboard", () => {
     expect(initialPoints).not.toBe("22,0");
     expect(initialAverage).not.toBe("11,0");
     expect(initialRecent).not.toBe("11,0");
+
+    promptSpy.mockRestore();
+    alertSpy.mockRestore();
   });
 
   it("actualiza el valor y las variaciones de mercado tras ejecutar el sniffer", async () => {
@@ -549,17 +553,17 @@ describe("FantasyTeamDashboard", () => {
     const totalsRow = within(modal).getByText("Puntos totales").closest("div");
     expect(totalsRow).not.toBeNull();
     if (!totalsRow) throw new Error("Fila de puntos totales no encontrada");
-    expect(within(totalsRow).getByText("87,0")).toBeInTheDocument();
+    expect(within(totalsRow).getByText("—")).toBeInTheDocument();
 
     const averageRow = within(modal).getByText("Media").closest("div");
     expect(averageRow).not.toBeNull();
     if (!averageRow) throw new Error("Fila de media no encontrada");
-    expect(within(averageRow).getByText("5,8")).toBeInTheDocument();
+    expect(within(averageRow).getByText("—")).toBeInTheDocument();
 
     const recentRow = within(modal).getByText("Media últimas 5").closest("div");
     expect(recentRow).not.toBeNull();
     if (!recentRow) throw new Error("Fila de media recientes no encontrada");
-    expect(within(recentRow).getByText("6,4")).toBeInTheDocument();
+    expect(within(recentRow).getByText("—")).toBeInTheDocument();
 
     global.fetch = previousFetch;
   });
@@ -952,7 +956,7 @@ describe("FantasyTeamDashboard", () => {
     );
   });
 
-  it("muestra las últimas jornadas y el detalle con los datos del mercado", async () => {
+  it("muestra las últimas jornadas y el detalle sin datos manuales", async () => {
     window.localStorage.setItem(
       "myTeam",
       JSON.stringify([{ name: "Pau Cubarsí", precioCompra: 1500000 }])
@@ -969,9 +973,7 @@ describe("FantasyTeamDashboard", () => {
       throw new Error("No se encontró la fila de Pau Cubarsí");
     }
 
-    const summaryToggle = within(row).getByText("Últimas jornadas");
-    fireEvent.click(summaryToggle);
-    expect(within(row).getByText(/J6/i)).toBeInTheDocument();
+    expect(within(row).queryByText("Últimas jornadas")).not.toBeInTheDocument();
 
     fireEvent.click(detailButton);
 
@@ -982,14 +984,23 @@ describe("FantasyTeamDashboard", () => {
     ).toBeInTheDocument();
 
     expect(
-      within(detailDialog).getByRole("button", { name: "Actualizar puntos" })
+      within(detailDialog).getByRole("button", { name: "Editar puntos" })
     ).toBeInTheDocument();
 
-    const scoresTable = within(detailDialog).getByRole("table", {
-      name: "Tabla de puntuación por jornada",
-    });
-    expect(await within(scoresTable).findByText("3,2")).toBeInTheDocument();
-    expect(within(scoresTable).getByText("5,2")).toBeInTheDocument();
+    expect(
+      within(detailDialog).getByText(
+        "No hay puntuaciones disponibles para este jugador."
+      )
+    ).toBeInTheDocument();
+
+    const totalsLabel = within(detailDialog).getByText("Puntos totales");
+    expect(totalsLabel.nextElementSibling).toHaveTextContent("—");
+
+    const averageLabel = within(detailDialog).getByText("Media");
+    expect(averageLabel.nextElementSibling).toHaveTextContent("—");
+
+    const lastFiveLabel = within(detailDialog).getByText("Media últimas 5");
+    expect(lastFiveLabel.nextElementSibling).toHaveTextContent("—");
 
     fireEvent.click(screen.getByRole("button", { name: /cerrar detalle/i }));
     await waitFor(() =>
