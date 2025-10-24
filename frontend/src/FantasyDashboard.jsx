@@ -239,6 +239,32 @@ const getSnifferFriendlyName = (type) =>
     ? "valor de mercado"
     : "actualización";
 
+const SNIFER_AUTOMATION_UNAVAILABLE_STATUSES = new Set([404, 405]);
+
+const isSnifferAutomationUnavailableError = (error) => {
+  if (!error || !error.isSnifferCommandError) {
+    return false;
+  }
+  const status = Number(error.status);
+  if (Number.isFinite(status) && SNIFER_AUTOMATION_UNAVAILABLE_STATUSES.has(status)) {
+    return true;
+  }
+  const message = collapseWhitespace(normalizeText(error.message ?? ""));
+  if (!message) {
+    return false;
+  }
+  if (/\b(404|405)\b/.test(message)) {
+    return true;
+  }
+  if (/not\s+allowed/i.test(message)) {
+    return true;
+  }
+  if (/no(?:\s+se)?\s+permite/i.test(message)) {
+    return true;
+  }
+  return false;
+};
+
 async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
   const resolvedEndpoint = endpoint ?? (type === "market" ? MARKET_SNIFFER_ENDPOINT : null);
   if (!resolvedEndpoint) {
@@ -273,9 +299,12 @@ async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
     } catch {
       /* noop */
     }
-    const message = details?.trim()
-      ? details.trim()
-      : `La ${getSnifferFriendlyName(type)} finalizó con errores (${response?.status ?? "desconocido"}).`;
+    const hasHtml = /<\/?[a-z][^>]*>/i.test(details ?? "");
+    const fallbackMessage = `La ${getSnifferFriendlyName(type)} finalizó con errores (${response?.status ?? "desconocido"}).`;
+    const normalizedMessage = collapseWhitespace(normalizeText(details));
+    const message = hasHtml
+      ? fallbackMessage
+      : normalizedMessage || fallbackMessage;
     const error = new Error(message);
     error.isSnifferCommandError = true;
     error.status = response?.status;
@@ -499,7 +528,20 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
     const { force } = options ?? {};
     const shouldForceReload = force !== false;
     const existingPayload = store.marketPayload ?? null;
-    await executeSnifferCommand({ type: "market" });
+    let automationUnavailable = false;
+    try {
+      await executeSnifferCommand({ type: "market" });
+    } catch (error) {
+      if (isSnifferAutomationUnavailableError(error)) {
+        automationUnavailable = true;
+        console.warn(
+          "Actualización automática de mercado no disponible en este entorno",
+          error
+        );
+      } else {
+        throw error;
+      }
+    }
 
     let marketPayload = null;
     if (shouldForceReload) {
@@ -549,7 +591,11 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
         })
       : [];
 
-    storeControl.pushToast?.("Actualización completada", { type: "success" });
+    const completionMessage = automationUnavailable
+      ? "Mercado recargado con los datos disponibles (la actualización automática no está soportada en este entorno)."
+      : "Actualización completada";
+    const completionType = automationUnavailable ? "warning" : "success";
+    storeControl.pushToast?.(completionMessage, { type: completionType });
     return results;
   } catch (error) {
     storeControl.pushToast?.(
