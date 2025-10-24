@@ -390,6 +390,8 @@ const storeControl = {
       .filter((value) => Number.isFinite(value)),
 };
 
+let automationUnavailableNoticeShown = false;
+
 const toastStyles = {
   info: "border border-gray-200 bg-white text-gray-700",
   success: "border border-green-200 bg-green-50 text-green-700",
@@ -608,11 +610,19 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
         })
       : [];
 
+    if (automationUnavailable && !automationUnavailableNoticeShown) {
+      automationUnavailableNoticeShown = true;
+      storeControl.pushToast?.(
+        "La actualización automática del mercado no está disponible en esta versión publicada; " +
+          "se usarán los datos más recientes de market.json.",
+        { type: "info" }
+      );
+    }
+
     const completionMessage = automationUnavailable
-      ? "Mercado recargado con los datos disponibles (la actualización automática no está soportada en este entorno)."
+      ? "Mercado recargado correctamente con los datos publicados."
       : "Actualización completada";
-    const completionType = automationUnavailable ? "warning" : "success";
-    storeControl.pushToast?.(completionMessage, { type: completionType });
+    storeControl.pushToast?.(completionMessage, { type: "success" });
     return results;
   } catch (error) {
     storeControl.pushToast?.(
