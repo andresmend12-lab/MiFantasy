@@ -65,11 +65,66 @@ function emptyDirectoryExceptGit(dir) {
 }
 
 function copyBuildToWorktree() {
-  for (const entry of fs.readdirSync(buildDir)) {
-    const source = path.join(buildDir, entry);
-    const destination = path.join(worktreeDir, entry);
-    fs.cpSync(source, destination, { recursive: true, force: true });
+  fs.mkdirSync(worktreeDir, { recursive: true });
+
+  const entries = fs.readdirSync(buildDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const source = path.join(buildDir, entry.name);
+    const destination = path.join(worktreeDir, entry.name);
+    copyEntry(source, destination, entry);
   }
+}
+
+function copyEntry(source, destination, dirent) {
+  if (dirent?.isDirectory()) {
+    removeIfExists(destination);
+    fs.mkdirSync(destination, { recursive: true });
+    const children = fs.readdirSync(source, { withFileTypes: true });
+    for (const child of children) {
+      copyEntry(path.join(source, child.name), path.join(destination, child.name), child);
+    }
+    return;
+  }
+
+  if (dirent?.isSymbolicLink()) {
+    removeIfExists(destination);
+    const target = fs.readlinkSync(source);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    const type = getSymlinkType(source);
+    fs.symlinkSync(target, destination, type);
+    return;
+  }
+
+  removeIfExists(destination);
+  fs.mkdirSync(path.dirname(destination), { recursive: true });
+  fs.copyFileSync(source, destination);
+}
+
+function removeIfExists(targetPath) {
+  try {
+    fs.rmSync(targetPath, { recursive: true, force: true });
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
+    }
+  }
+}
+
+function getSymlinkType(source) {
+  if (process.platform !== 'win32') {
+    return undefined;
+  }
+
+  try {
+    const stats = fs.statSync(source);
+    if (stats.isDirectory()) {
+      return 'dir';
+    }
+  } catch (error) {
+    // Ignore errors and fall back to default type below.
+  }
+
+  return 'file';
 }
 
 function commitAndPush() {
