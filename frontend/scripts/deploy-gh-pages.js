@@ -2,6 +2,7 @@
 
 const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 function runGit(args, options = {}) {
@@ -31,25 +32,37 @@ function readGit(args, options = {}) {
   return result.stdout.trim();
 }
 
-function ensureWorktree(repoRoot, worktreeDir) {
-  fs.rmSync(worktreeDir, { recursive: true, force: true });
+function ensureWorktree(repoRoot) {
   runGit(['worktree', 'prune'], { cwd: repoRoot });
 
-  const attempts = [
-    ['worktree', 'add', '--force', worktreeDir, 'gh-pages'],
-    ['worktree', 'add', '--force', '-B', 'gh-pages', worktreeDir, 'origin/gh-pages'],
-    ['worktree', 'add', '--force', '-B', 'gh-pages', worktreeDir, 'HEAD'],
-  ];
+  const worktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gh-pages-worktree-'));
+  let worktreeReady = false;
 
-  for (let index = 0; index < attempts.length; index += 1) {
-    try {
-      runGit(attempts[index], { cwd: repoRoot });
-      return;
-    } catch (error) {
-      if (index === attempts.length - 1) {
-        throw error;
+  try {
+    const attempts = [
+      ['worktree', 'add', '--force', worktreeDir, 'gh-pages'],
+      ['worktree', 'add', '--force', '-B', 'gh-pages', worktreeDir, 'origin/gh-pages'],
+      ['worktree', 'add', '--force', '-B', 'gh-pages', worktreeDir, 'HEAD'],
+    ];
+
+    for (let index = 0; index < attempts.length; index += 1) {
+      try {
+        runGit(attempts[index], { cwd: repoRoot });
+        worktreeReady = true;
+        return worktreeDir;
+      } catch (error) {
+        if (index === attempts.length - 1) {
+          throw error;
+        }
       }
     }
+
+    return worktreeDir;
+  } catch (error) {
+    if (fs.existsSync(worktreeDir) && !worktreeReady) {
+      fs.rmSync(worktreeDir, { recursive: true, force: true });
+    }
+    throw error;
   }
 }
 
@@ -79,15 +92,15 @@ function main() {
   }
 
   const repoRoot = readGit(['rev-parse', '--show-toplevel']);
-  const worktreeDir = path.join(repoRoot, '.gh-pages-worktree');
+  let worktreeDir;
 
   let worktreeReady = false;
-  ensureWorktree(repoRoot, worktreeDir);
+  worktreeDir = ensureWorktree(repoRoot);
   worktreeReady = true;
 
   try {
     emptyDirectoryExceptGit(worktreeDir);
-    fs.cpSync(buildDir, worktreeDir, { recursive: true });
+    fs.cpSync(buildDir, worktreeDir, { recursive: true, force: true });
 
     if (!hasChanges(worktreeDir)) {
       console.log('No changes detected in build output. Skipping deploy.');
@@ -102,7 +115,14 @@ function main() {
     console.log('Deployment to gh-pages completed successfully.');
   } finally {
     if (worktreeReady && fs.existsSync(worktreeDir)) {
-      runGit(['worktree', 'remove', worktreeDir, '--force'], { cwd: repoRoot });
+      try {
+        runGit(['worktree', 'remove', worktreeDir, '--force'], { cwd: repoRoot });
+      } catch (removeError) {
+        console.warn('Failed to remove gh-pages worktree cleanly. Cleaning up manually.');
+      }
+      if (fs.existsSync(worktreeDir)) {
+        fs.rmSync(worktreeDir, { recursive: true, force: true });
+      }
     }
   }
 }

@@ -18,7 +18,10 @@ Para lanzar un despliegue manual ejecuta los siguientes pasos desde la carpeta
 El script `deploy` genera el `build` y utiliza una *git worktree* temporal
 para actualizar la rama `gh-pages`. Este enfoque evita construir comandos
 demasiado largos en Windows (el origen del error `spawn ENAMETOOLONG`) y
-limpia la rama antes de copiar los archivos nuevos.
+limpia la rama antes de copiar los archivos nuevos. La worktree se crea en un
+directorio temporal del sistema y se elimina al finalizar, lo que previene
+errores de "Acceso denegado" en Windows cuando existen carpetas ocultas
+bloqueadas dentro del repositorio.
 
 Si es la primera vez que publicas, asegúrate de que no exista una rama
 `gh-pages` previa o elimínala desde GitHub para empezar desde cero.
