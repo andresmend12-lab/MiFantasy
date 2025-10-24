@@ -200,7 +200,23 @@ const resolveMarketEndpoint = () => {
     return `${rawPublicUrl.replace(/\/$/, "")}/market.json`;
   }
 
-  return "/market.json";
+  if (typeof window !== "undefined" && window?.location?.href) {
+    try {
+      return new URL("market.json", window.location.href).toString();
+    } catch (error) {
+      try {
+        const pathname = window.location?.pathname ?? "/";
+        const basePath = pathname.endsWith("/")
+          ? pathname
+          : pathname.replace(/[^/]+$/, "");
+        return `${basePath || "/"}market.json`;
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+
+  return "market.json";
 };
 
 const MARKET_ENDPOINT = resolveMarketEndpoint();
