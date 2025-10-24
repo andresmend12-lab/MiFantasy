@@ -295,7 +295,7 @@ describe("FantasyTeamDashboard", () => {
       if (typeof url === "string" && url.includes("/api/sniff/points")) {
         return Promise.resolve(makeResponse({ success: true }));
       }
-      if (typeof url === "string" && url.includes("/market.json")) {
+      if (typeof url === "string" && url.includes("market.json")) {
         const payload =
           marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
         marketCall += 1;
@@ -523,7 +523,7 @@ describe("FantasyTeamDashboard", () => {
 
     const previousFetch = global.fetch;
     global.fetch = jest.fn((url) => {
-      if (typeof url === "string" && url.includes("/market.json")) {
+      if (typeof url === "string" && url.includes("market.json")) {
         return Promise.resolve(makeResponse(payload));
       }
       if (typeof url === "string" && url.includes("/api/sniff/")) {

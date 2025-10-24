@@ -184,7 +184,26 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
-const MARKET_ENDPOINT = "/market.json";
+const RAW_PUBLIC_URL =
+  typeof process !== "undefined" && process && process.env
+    ? process.env.PUBLIC_URL
+    : undefined;
+
+const resolveMarketEndpoint = () => {
+  const rawPublicUrl = RAW_PUBLIC_URL;
+
+  if (rawPublicUrl === ".") {
+    return "market.json";
+  }
+
+  if (typeof rawPublicUrl === "string" && rawPublicUrl.length > 0) {
+    return `${rawPublicUrl.replace(/\/$/, "")}/market.json`;
+  }
+
+  return "/market.json";
+};
+
+const MARKET_ENDPOINT = resolveMarketEndpoint();
 const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
