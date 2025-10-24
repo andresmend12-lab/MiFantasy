@@ -5,7 +5,7 @@ Este servicio Express ejecuta el script `sniff_market_json_v3_debug.py` para reg
 ## Requisitos
 
 - Node.js 18 o superior.
-- Python 3.10+ con `pip`.
+- Python 3.10+ con `pip` (en Windows puedes usar el lanzador `py`).
 - Dependencias de Python: `playwright` y los navegadores (`python -m playwright install chromium`).
 
 ## Puesta en marcha
@@ -17,6 +17,12 @@ pip install playwright
 python -m playwright install chromium
 npm start
 ```
+
+> 💡 En Windows, si `npm start` muestra el error `no se encontró Python`, instala Python 3 y asegúrate de que `py` o `python`
+> estén disponibles en la variable PATH. También puedes crear un fichero `.env` en la carpeta `server` y definir `PYTHON_BIN`
+> con la ruta completa del ejecutable, por ejemplo `PYTHON_BIN="C:\\Python312\\python.exe"`.
+
+Puedes usar el fichero [`server/.env.example`](./.env.example) como plantilla para tu configuración local.
 
 Por defecto el servidor escucha en `http://localhost:8000` y expone las siguientes rutas:
 
@@ -36,7 +42,7 @@ Por defecto el servidor escucha en `http://localhost:8000` y expone las siguient
 | `MARKET_REFRESH_MODE` | Modo del script (`full`, `ids`, etc.) | `full` |
 | `MARKET_REFRESH_ON_BOOT` | Ejecuta un refresco al arrancar (`true`/`false`) | `true` |
 | `MARKET_JSON_PATH` | Ruta absoluta o relativa para `market.json` | `../market.json` |
-| `PYTHON_BIN` | Ejecutable de Python | `python3` |
+| `PYTHON_BIN` | Ejecutable de Python (se detecta automáticamente entre `py`, `python`, `python3`) | *(detección automática)* |
 | `MARKET_SNIFFER_PATH` | Ruta al script de Playwright | `../sniff_market_json_v3_debug.py` |
 
 ## Despliegue

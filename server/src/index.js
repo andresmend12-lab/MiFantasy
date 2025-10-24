@@ -4,7 +4,7 @@ import fs from "fs";
 import { readFile, stat } from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import cron from "node-cron";
 import pino from "pino";
 import { ensureDir } from "fs-extra";
@@ -22,7 +22,6 @@ const MARKET_JSON_PATH = path.resolve(
   process.env.MARKET_JSON_PATH || "market.json"
 );
 
-const PYTHON_BIN = process.env.PYTHON_BIN || process.env.PYTHON || "python3";
 const SNIFFER_SCRIPT = path.resolve(
   PROJECT_ROOT,
   process.env.MARKET_SNIFFER_PATH || "sniff_market_json_v3_debug.py"
@@ -50,6 +49,45 @@ const readMarketPayload = async () => {
   }
 };
 
+let resolvedPythonBin = null;
+
+const detectPythonBin = () => {
+  if (resolvedPythonBin) {
+    return resolvedPythonBin;
+  }
+
+  const explicit = process.env.PYTHON_BIN || process.env.PYTHON;
+  const candidates = explicit
+    ? [explicit]
+    : process.platform === "win32"
+    ? ["py", "python", "python3"]
+    : ["python3", "python"];
+
+  for (const candidate of candidates) {
+    const check = spawnSync(candidate, ["--version"], {
+      stdio: "pipe",
+      windowsHide: true,
+    });
+
+    if (!check.error && check.status === 0) {
+      resolvedPythonBin = candidate;
+      logger.info({ python: candidate }, "Intérprete de Python detectado");
+      return resolvedPythonBin;
+    }
+
+    if (check.error && check.error.code !== "ENOENT") {
+      logger.warn(
+        { python: candidate, err: check.error },
+        "No se pudo comprobar la versión de Python"
+      );
+    }
+  }
+
+  throw new Error(
+    "No se encontró un intérprete de Python. Instala Python 3 o configura la variable de entorno PYTHON_BIN con la ruta correcta."
+  );
+};
+
 const ensureSnifferExists = () => {
   if (!fs.existsSync(SNIFFER_SCRIPT)) {
     throw new Error(`No se encontró el script de sniffing en ${SNIFFER_SCRIPT}`);
@@ -62,12 +100,13 @@ const runSniffer = async () => {
   await ensureDir(path.dirname(MARKET_JSON_PATH));
 
   return new Promise((resolve, reject) => {
+    const pythonBin = detectPythonBin();
     const args = [SNIFFER_SCRIPT];
     if (MARKET_REFRESH_MODE) {
       args.push("--mode", MARKET_REFRESH_MODE);
     }
     logger.info({ args }, "Ejecutando script de sniffing");
-    const child = spawn(PYTHON_BIN, args, {
+    const child = spawn(pythonBin, args, {
       cwd: PROJECT_ROOT,
       stdio: ["ignore", "pipe", "pipe"],
       env: {
