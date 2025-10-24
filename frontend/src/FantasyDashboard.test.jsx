@@ -295,7 +295,7 @@ describe("FantasyTeamDashboard", () => {
       if (typeof url === "string" && url.includes("/api/sniff/points")) {
         return Promise.resolve(makeResponse({ success: true }));
       }
-      if (typeof url === "string" && url.includes("/market.json")) {
+      if (typeof url === "string" && url.includes("market.json")) {
         const payload =
           marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
         marketCall += 1;
@@ -478,6 +478,129 @@ describe("FantasyTeamDashboard", () => {
     expect(marketCall).toBeGreaterThanOrEqual(2);
   });
 
+  it("recarga el mercado aunque el sniffer devuelva 405 en producción", async () => {
+    window.localStorage.setItem(
+      "myTeam",
+      JSON.stringify([{ name: "Nico Williams" }])
+    );
+
+    const makeResponse = (body) => {
+      const text = JSON.stringify(body);
+      return {
+        ok: true,
+        json: async () => body,
+        text: async () => text,
+        clone() {
+          return {
+            ok: true,
+            text: async () => text,
+            headers: { get: () => "application/json" },
+          };
+        },
+        headers: { get: () => "application/json" },
+      };
+    };
+
+    const previousFetch = global.fetch;
+    const marketPayloads = [
+      {
+        updated_at: "2025-02-01T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2000000",
+            diff_1: "-100000",
+            diff_7: "500000",
+          },
+        ],
+      },
+      {
+        updated_at: "2025-02-02T00:00:00Z",
+        players: [
+          {
+            id: 2,
+            name: "Nico WilliamsN. Williams",
+            team: "Athletic",
+            team_id: "5",
+            position: "Delantero",
+            value: "2450000",
+            diff_1: "75000",
+            diff_7: "620000",
+          },
+        ],
+      },
+    ];
+
+    let marketCall = 0;
+    try {
+      global.fetch = jest.fn((url) => {
+        if (typeof url === "string" && url.includes("/api/sniff/market")) {
+          return Promise.resolve({
+            ok: false,
+            status: 405,
+            text: async () =>
+              "<html><body><h1>405 Not Allowed</h1></body></html>",
+            headers: { get: () => "text/html" },
+          });
+        }
+        if (typeof url === "string" && url.includes("/api/sniff/points")) {
+          return Promise.resolve(makeResponse({ success: true }));
+        }
+        if (typeof url === "string" && url.includes("/api/v3/player/")) {
+          return Promise.resolve(makeResponse({ data: { jornadas: [] } }));
+        }
+        if (typeof url === "string" && url.includes("market.json")) {
+          const payload =
+            marketPayloads[Math.min(marketCall, marketPayloads.length - 1)];
+          marketCall += 1;
+          return Promise.resolve(makeResponse(payload));
+        }
+        return Promise.resolve(makeResponse({ success: true }));
+      });
+
+      render(<FantasyTeamDashboard />);
+
+      const teamTable = await screen.findByTestId("team-table");
+      const getRow = () => {
+        const cell = within(teamTable).getByText("Nico Williams");
+        const row = cell.closest("tr");
+        if (!row) {
+          throw new Error("Fila del jugador no encontrada");
+        }
+        return row;
+      };
+
+      const initialRow = await waitFor(() => getRow());
+      const initialCells = within(initialRow).getAllByRole("cell");
+      expect(initialCells[3].textContent).toContain("2.000.000");
+
+      const marketButton = await screen.findByRole("button", {
+        name: "Actualizar valor de mercado",
+      });
+      fireEvent.click(marketButton);
+
+      await waitFor(() => {
+        const updatedRow = getRow();
+        const updatedCells = within(updatedRow).getAllByRole("cell");
+        expect(updatedCells[3].textContent).toContain("2.450.000");
+        expect(updatedCells[8].textContent).toContain("+75.000");
+        expect(updatedCells[9].textContent).toContain("+620.000");
+      });
+
+      expect(marketCall).toBeGreaterThanOrEqual(2);
+      const triggeredAutomation = global.fetch.mock.calls.some(([url]) =>
+        typeof url === "string" && url.includes("/api/sniff/market")
+      );
+      expect(triggeredAutomation).toBe(true);
+    } finally {
+      global.fetch = previousFetch;
+    }
+  });
+
   it("muestra totales y medias en el detalle aunque falte el historial de puntos", async () => {
     window.localStorage.setItem(
       "myTeam",
@@ -523,7 +646,7 @@ describe("FantasyTeamDashboard", () => {
 
     const previousFetch = global.fetch;
     global.fetch = jest.fn((url) => {
-      if (typeof url === "string" && url.includes("/market.json")) {
+      if (typeof url === "string" && url.includes("market.json")) {
         return Promise.resolve(makeResponse(payload));
       }
       if (typeof url === "string" && url.includes("/api/sniff/")) {

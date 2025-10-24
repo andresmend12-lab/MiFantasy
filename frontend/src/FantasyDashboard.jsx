@@ -184,17 +184,144 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
 
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
-const MARKET_ENDPOINT = "/market.json";
+const RAW_PUBLIC_URL =
+  typeof process !== "undefined" && process && process.env
+    ? process.env.PUBLIC_URL
+    : undefined;
+
+const RAW_MARKET_API_BASE =
+  typeof process !== "undefined" && process && process.env
+    ? process.env.REACT_APP_MARKET_API_BASE ?? process.env.MARKET_API_BASE
+    : undefined;
+
+const sanitizeMarketApiBase = (value) => {
+  const base = collapseWhitespace(normalizeText(value));
+  if (!base) return null;
+  if (/^(?:static|none)$/i.test(base)) {
+    return null;
+  }
+  if (/^auto$/i.test(base)) {
+    return "auto";
+  }
+  const stripped = base.replace(/\s+/g, "");
+  if (!stripped) {
+    return null;
+  }
+  return stripped.replace(/\/+$/, "");
+};
+
+const buildApiBaseFromAuto = () => {
+  if (typeof window !== "undefined" && window?.location) {
+    const { origin } = window.location;
+    if (origin && origin !== "null") {
+      return `${origin.replace(/\/$/, "")}/api`;
+    }
+  }
+  return "/api";
+};
+
+const resolveMarketApiBase = () => {
+  const sanitized = sanitizeMarketApiBase(RAW_MARKET_API_BASE);
+  if (!sanitized) {
+    return null;
+  }
+  if (sanitized === "auto") {
+    return buildApiBaseFromAuto();
+  }
+  if (/^https?:\/\//i.test(sanitized)) {
+    return sanitized.replace(/\/+$/, "");
+  }
+  if (sanitized.startsWith("/")) {
+    return sanitized.replace(/\/+$/, "");
+  }
+  return `/${sanitized.replace(/^\/+/, "").replace(/\/+$/, "")}`;
+};
+
+const MARKET_API_BASE = (() => {
+  try {
+    return resolveMarketApiBase();
+  } catch (error) {
+    console.warn("No se pudo resolver la URL base del API de mercado", error);
+    return null;
+  }
+})();
+
+const joinApiPath = (base, segment) => {
+  if (!base) return null;
+  const normalizedBase = base.replace(/\/+$/, "");
+  const normalizedSegment = String(segment || "").replace(/^\/+/, "");
+  return `${normalizedBase}/${normalizedSegment}`;
+};
+
+const resolveMarketEndpoint = () => {
+  if (MARKET_API_BASE) {
+    return joinApiPath(MARKET_API_BASE, "market");
+  }
+
+  const rawPublicUrl = RAW_PUBLIC_URL;
+
+  if (rawPublicUrl === ".") {
+    return "market.json";
+  }
+
+  if (typeof rawPublicUrl === "string" && rawPublicUrl.length > 0) {
+    return `${rawPublicUrl.replace(/\/$/, "")}/market.json`;
+  }
+
+  if (typeof window !== "undefined" && window?.location?.href) {
+    const { origin, pathname } = window.location;
+    const sanitizePathname = (value) => {
+      if (!value || value === "/") {
+        return "/";
+      }
+      const containsFileName = /\.[^/]+$/.test(value);
+      const base = containsFileName ? value.replace(/[^/]+$/, "") : value;
+      const withTrailingSlash = base.endsWith("/") ? base : `${base}/`;
+      return withTrailingSlash;
+    };
+
+    try {
+      const normalizedPath = sanitizePathname(pathname ?? "/");
+      if (origin && origin !== "null") {
+        return `${origin}${normalizedPath}market.json`;
+      }
+      if (normalizedPath === "/") {
+        return "market.json";
+      }
+      if (normalizedPath.startsWith("/")) {
+        return `${normalizedPath}market.json`;
+      }
+      return `/${normalizedPath}market.json`;
+    } catch {
+      try {
+        return new URL("market.json", window.location.href).toString();
+      } catch {
+        /* ignore */
+      }
+    }
+  }
+
+  return "market.json";
+};
+
+const MARKET_ENDPOINT = resolveMarketEndpoint();
 const PLAYER_DETAIL_ENDPOINT = "https://www.laligafantasymarca.com/api/v3/player";
 const PLAYER_DETAIL_COMPETITION = "laliga-fantasy";
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
-const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
+const MARKET_REFRESH_ENDPOINT = joinApiPath(MARKET_API_BASE, "market/refresh");
+const LEGACY_MARKET_SNIFFER_ENDPOINT = joinApiPath(MARKET_API_BASE, "sniff/market");
+const MARKET_SNIFFER_ENDPOINT =
+  MARKET_REFRESH_ENDPOINT ?? LEGACY_MARKET_SNIFFER_ENDPOINT ?? "/api/sniff/market";
 const getPointsSnifferEndpoint = (playerId) => {
   if (playerId === null || playerId === undefined || playerId === "") {
     return null;
   }
-  return `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
+  const legacy = `/api/sniff/points/${encodeURIComponent(String(playerId))}`;
+  if (!MARKET_API_BASE) {
+    return legacy;
+  }
+  return joinApiPath(MARKET_API_BASE, `points/${encodeURIComponent(String(playerId))}`) ?? legacy;
 };
 
 const getSnifferFriendlyName = (type) =>
@@ -203,6 +330,32 @@ const getSnifferFriendlyName = (type) =>
     : type === "market"
     ? "valor de mercado"
     : "actualización";
+
+const SNIFER_AUTOMATION_UNAVAILABLE_STATUSES = new Set([404, 405]);
+
+const isSnifferAutomationUnavailableError = (error) => {
+  if (!error || !error.isSnifferCommandError) {
+    return false;
+  }
+  const status = Number(error.status);
+  if (Number.isFinite(status) && SNIFER_AUTOMATION_UNAVAILABLE_STATUSES.has(status)) {
+    return true;
+  }
+  const message = collapseWhitespace(normalizeText(error.message ?? ""));
+  if (!message) {
+    return false;
+  }
+  if (/\b(404|405)\b/.test(message)) {
+    return true;
+  }
+  if (/not\s+allowed/i.test(message)) {
+    return true;
+  }
+  if (/no(?:\s+se)?\s+permite/i.test(message)) {
+    return true;
+  }
+  return false;
+};
 
 async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
   const resolvedEndpoint = endpoint ?? (type === "market" ? MARKET_SNIFFER_ENDPOINT : null);
@@ -238,9 +391,12 @@ async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
     } catch {
       /* noop */
     }
-    const message = details?.trim()
-      ? details.trim()
-      : `La ${getSnifferFriendlyName(type)} finalizó con errores (${response?.status ?? "desconocido"}).`;
+    const hasHtml = /<\/?[a-z][^>]*>/i.test(details ?? "");
+    const fallbackMessage = `La ${getSnifferFriendlyName(type)} finalizó con errores (${response?.status ?? "desconocido"}).`;
+    const normalizedMessage = collapseWhitespace(normalizeText(details));
+    const message = hasHtml
+      ? fallbackMessage
+      : normalizedMessage || fallbackMessage;
     const error = new Error(message);
     error.isSnifferCommandError = true;
     error.status = response?.status;
@@ -308,6 +464,8 @@ const storeControl = {
       )
       .filter((value) => Number.isFinite(value)),
 };
+
+let automationUnavailableNoticeShown = false;
 
 const toastStyles = {
   info: "border border-gray-200 bg-white text-gray-700",
@@ -464,7 +622,20 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
     const { force } = options ?? {};
     const shouldForceReload = force !== false;
     const existingPayload = store.marketPayload ?? null;
-    await executeSnifferCommand({ type: "market" });
+    let automationUnavailable = false;
+    try {
+      await executeSnifferCommand({ type: "market" });
+    } catch (error) {
+      if (isSnifferAutomationUnavailableError(error)) {
+        automationUnavailable = true;
+        console.warn(
+          "Actualización automática de mercado no disponible en este entorno",
+          error
+        );
+      } else {
+        throw error;
+      }
+    }
 
     let marketPayload = null;
     if (shouldForceReload) {
@@ -514,7 +685,19 @@ export async function sniff_market_json_v3_debug_market(options = {}) {
         })
       : [];
 
-    storeControl.pushToast?.("Actualización completada", { type: "success" });
+    if (automationUnavailable && !automationUnavailableNoticeShown) {
+      automationUnavailableNoticeShown = true;
+      storeControl.pushToast?.(
+        "La actualización automática del mercado no está disponible en esta versión publicada; " +
+          "se usarán los datos más recientes de market.json.",
+        { type: "info" }
+      );
+    }
+
+    const completionMessage = automationUnavailable
+      ? "Mercado recargado correctamente con los datos publicados."
+      : "Actualización completada";
+    storeControl.pushToast?.(completionMessage, { type: "success" });
     return results;
   } catch (error) {
     storeControl.pushToast?.(
