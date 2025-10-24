@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# MiFantasy - Guía de uso y despliegue
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto es una aplicación creada con React que permite consultar información de fantasía. A continuación encontrarás los pasos necesarios para ejecutarla en tu entorno local y publicarla en GitHub Pages sin que aparezca una página en blanco.
 
-## Available Scripts
+## Requisitos previos
 
-In the project directory, you can run:
+- [Node.js](https://nodejs.org/) 18 o superior.
+- npm (se instala automáticamente con Node.js).
+- Git configurado y con acceso al repositorio donde se alojará la página.
 
-### `npm start`
+## Instalación
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Clona este repositorio y accede a la carpeta `frontend`:
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   cd MiFantasy/frontend
+   ```
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Ejecución en desarrollo
 
-### `npm test`
+Para iniciar el entorno de desarrollo y ver los cambios en tiempo real:
+```bash
+npm start
+```
+El servidor se abrirá en `http://localhost:3000`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Construir la aplicación
 
-### `npm run build`
+Genera la versión optimizada de producción con:
+```bash
+npm run build
+```
+Este comando crea la carpeta `build/` con todos los archivos listos para publicar.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Despliegue en GitHub Pages
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Asegúrate de que en `package.json` exista la propiedad:
+   ```json
+   "homepage": "."
+   ```
+   Esto obliga a que las rutas de los recursos sean relativas y evita la pantalla en blanco.
+2. Ejecuta el script de despliegue:
+   ```bash
+   npm run deploy
+   ```
+   El script realiza lo siguiente automáticamente:
+   - Crea (o reutiliza) un *worktree* en `.gh-pages`.
+   - Limpia el contenido anterior de la rama `gh-pages`.
+   - Copia cada archivo generado en `build/` directamente a la raíz del *worktree*.
+   - Crea un commit y lo envía a la rama `gh-pages` si existe el remoto `origin`.
+3. Ve a **Settings → Pages** en tu repositorio de GitHub y selecciona la rama `gh-pages` como fuente. Después de unos minutos, el sitio quedará disponible.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Solución de problemas (pantalla en blanco)
 
-### `npm run eject`
+Si la página sigue apareciendo en blanco tras el despliegue:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Confirma que el archivo `frontend/package.json` tiene `"homepage": "."` y vuelve a ejecutar `npm run build` seguido de `npm run deploy`.
+2. Comprueba en la carpeta `frontend/.gh-pages` que existan `index.html` y los activos (`static/js`, `static/css`, etc.) en la raíz y no dentro de una subcarpeta `build/`.
+3. Verifica en GitHub que la rama `gh-pages` contenga esos mismos archivos en la raíz.
+4. Si el repositorio está en una organización, habilita GitHub Pages desde **Settings → Pages** y asegúrate de que la visibilidad sea pública.
+5. Limpia la caché del navegador o abre una ventana en modo incógnito para descartar archivos antiguos.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Scripts disponibles
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- `npm start`: inicia el entorno de desarrollo.
+- `npm test`: ejecuta las pruebas.
+- `npm run build`: genera la compilación de producción.
+- `npm run deploy`: publica la aplicación en `gh-pages`.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Para más detalles sobre Create React App, visita la [documentación oficial](https://create-react-app.dev/).
