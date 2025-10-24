@@ -1,13 +1,12 @@
 import cors from "cors";
 import express from "express";
-import fs from "fs";
-import { readFile, stat } from "fs/promises";
+import { readFile, stat, writeFile } from "fs/promises";
 import { fileURLToPath } from "url";
 import path from "path";
-import { spawn, spawnSync } from "child_process";
 import cron from "node-cron";
 import pino from "pino";
 import { ensureDir } from "fs-extra";
+import { sniffMarket } from "./sniffer/playwright.js";
 
 const logger = pino({
   level: process.env.LOG_LEVEL || "info",
@@ -22,12 +21,7 @@ const MARKET_JSON_PATH = path.resolve(
   process.env.MARKET_JSON_PATH || "market.json"
 );
 
-const SNIFFER_SCRIPT = path.resolve(
-  PROJECT_ROOT,
-  process.env.MARKET_SNIFFER_PATH || "sniff_market_json_v3_debug.py"
-);
-
-const MARKET_REFRESH_MODE = process.env.MARKET_REFRESH_MODE || "full";
+const MARKET_REFRESH_MODE = process.env.MARKET_REFRESH_MODE || "market";
 const REFRESH_CRON = process.env.MARKET_REFRESH_CRON || "0 */6 * * *"; // every 6 hours
 const PORT = Number(process.env.PORT) || 8000;
 
@@ -49,104 +43,19 @@ const readMarketPayload = async () => {
   }
 };
 
-let resolvedPythonBin = null;
-
-const detectPythonBin = () => {
-  if (resolvedPythonBin) {
-    return resolvedPythonBin;
-  }
-
-  const explicit = process.env.PYTHON_BIN || process.env.PYTHON;
-  const candidates = explicit
-    ? [explicit]
-    : process.platform === "win32"
-    ? ["py", "python", "python3"]
-    : ["python3", "python"];
-
-  for (const candidate of candidates) {
-    const check = spawnSync(candidate, ["--version"], {
-      stdio: "pipe",
-      windowsHide: true,
-    });
-
-    if (!check.error && check.status === 0) {
-      resolvedPythonBin = candidate;
-      logger.info({ python: candidate }, "Intérprete de Python detectado");
-      return resolvedPythonBin;
-    }
-
-    if (check.error && check.error.code !== "ENOENT") {
-      logger.warn(
-        { python: candidate, err: check.error },
-        "No se pudo comprobar la versión de Python"
-      );
-    }
-  }
-
-  throw new Error(
-    "No se encontró un intérprete de Python. Instala Python 3 o configura la variable de entorno PYTHON_BIN con la ruta correcta."
-  );
-};
-
-const ensureSnifferExists = () => {
-  if (!fs.existsSync(SNIFFER_SCRIPT)) {
-    throw new Error(`No se encontró el script de sniffing en ${SNIFFER_SCRIPT}`);
-  }
-};
-
 const runSniffer = async () => {
-  ensureSnifferExists();
-
   await ensureDir(path.dirname(MARKET_JSON_PATH));
-
-  return new Promise((resolve, reject) => {
-    const pythonBin = detectPythonBin();
-    const args = [SNIFFER_SCRIPT];
-    if (MARKET_REFRESH_MODE) {
-      args.push("--mode", MARKET_REFRESH_MODE);
-    }
-    logger.info({ args }, "Ejecutando script de sniffing");
-    const child = spawn(pythonBin, args, {
-      cwd: PROJECT_ROOT,
-      stdio: ["ignore", "pipe", "pipe"],
-      env: {
-        ...process.env,
-        PYTHONUNBUFFERED: "1",
-      },
-    });
-
-    let stdout = "";
-    let stderr = "";
-
-    child.stdout.on("data", (chunk) => {
-      const text = chunk.toString();
-      stdout += text;
-      logger.info({ msg: text.trim() }, "sniffer:stdout");
-    });
-
-    child.stderr.on("data", (chunk) => {
-      const text = chunk.toString();
-      stderr += text;
-      logger.error({ msg: text.trim() }, "sniffer:stderr");
-    });
-
-    child.on("error", (error) => {
-      reject(error);
-    });
-
-    child.on("close", (code) => {
-      if (code === 0) {
-        resolve({ stdout, stderr });
-      } else {
-        const error = new Error(
-          `El proceso de sniffing finalizó con código ${code}. ${stderr}`
-        );
-        error.stdout = stdout;
-        error.stderr = stderr;
-        reject(error);
-      }
-    });
+  const normalizedMode =
+    MARKET_REFRESH_MODE && MARKET_REFRESH_MODE.toLowerCase() === "full"
+      ? "market"
+      : MARKET_REFRESH_MODE;
+  logger.info({ mode: normalizedMode }, "Ejecutando actualización de mercado");
+  const payload = await sniffMarket({
+    logger,
+    mode: normalizedMode,
   });
+  await writeFile(MARKET_JSON_PATH, JSON.stringify(payload, null, 2), "utf-8");
+  return payload;
 };
 
 const refreshMarket = async ({ force = false } = {}) => {
@@ -158,8 +67,7 @@ const refreshMarket = async ({ force = false } = {}) => {
     lastRefreshError = null;
     lastRefreshStartedAt = new Date().toISOString();
     try {
-      await runSniffer();
-      const payload = await readMarketPayload();
+      const payload = await runSniffer();
       lastRefreshFinishedAt = new Date().toISOString();
       return payload;
     } catch (error) {

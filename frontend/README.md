@@ -56,13 +56,13 @@ Este comando crea la carpeta `build/` con todos los archivos listos para publica
 
 ## Actualización automática del mercado
 
-Para automatizar la descarga del `market.json` y evitar errores 405 durante el refresco desde GitHub Pages, el proyecto incluye un pequeño backend en Node.js que ejecuta el script `sniff_market_json_v3_debug.py` de forma programada.
+Para automatizar la descarga del `market.json` y evitar errores 405 durante el refresco desde GitHub Pages, el proyecto incluye un pequeño backend en Node.js que usa Playwright (Chromium) para capturar los datos de FutbolFantasy de forma programada.
 
 ### Requisitos adicionales
 
-- Python 3.10 o superior.
-- [Playwright](https://playwright.dev/python/) para Python (se instala con `pip install playwright`).
-- Navegadores de Playwright instalados (`python -m playwright install chromium`).
+- Node.js 18 o superior.
+- Dependencias de npm instaladas (`npm install`).
+- Navegadores de Playwright para Chromium (se descargan automáticamente con `npm install`, pero puedes forzarlo con `npx playwright install chromium`).
 
 ### Puesta en marcha del backend
 
@@ -71,10 +71,9 @@ Para automatizar la descarga del `market.json` y evitar errores 405 durante el r
    cd ../server
    npm install
    ```
-2. (Solo la primera vez) instala Playwright para Python y su navegador headless:
+2. (Opcional, solo la primera vez) instala explícitamente el navegador Chromium de Playwright (y si usas Linux, añade `npx playwright install-deps` para preparar las bibliotecas del sistema):
    ```bash
-   pip install playwright
-   python -m playwright install chromium
+   npx playwright install chromium
    ```
 3. Inicia el servicio (por defecto expone la API en `http://localhost:8000/api`):
    ```bash
@@ -87,10 +86,11 @@ El backend ejecuta automáticamente una actualización completa al arrancar y lu
 | --- | --- | --- |
 | `PORT` | Puerto HTTP del backend | `8000` |
 | `MARKET_REFRESH_CRON` | Cron en formato estándar para refrescar el mercado | `0 */6 * * *` |
-| `MARKET_REFRESH_MODE` | Modo pasado al script de sniffing (`full`, `ids`, etc.) | `full` |
+| `MARKET_REFRESH_MODE` | Modo de captura (`market` o `points`) | `market` |
 | `MARKET_REFRESH_ON_BOOT` | Ejecutar un refresco inicial (`true`/`false`) | `true` |
-| `PYTHON_BIN` | Ruta al intérprete de Python | `python3` |
 | `MARKET_JSON_PATH` | Ruta donde se escribirá `market.json` | `../market.json` |
+| `MARKET_SOURCE_URL` | URL desde la que se extraen los datos | `https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado` |
+| `PLAYWRIGHT_HEADLESS` | Ejecutar Chromium en modo headless (`true`/`false`) | `true` |
 
 ### Conectar el frontend con el backend
 

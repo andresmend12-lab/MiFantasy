@@ -1,26 +1,25 @@
 # Backend de actualización automática
 
-Este servicio Express ejecuta el script `sniff_market_json_v3_debug.py` para regenerar `market.json` de forma programada y expone una API REST que el frontend puede consumir.
+Este servicio Express utiliza Playwright (Chromium) para regenerar `market.json` de forma programada y expone una API REST que el frontend puede consumir.
 
 ## Requisitos
 
 - Node.js 18 o superior.
-- Python 3.10+ con `pip` (en Windows puedes usar el lanzador `py`).
-- Dependencias de Python: `playwright` y los navegadores (`python -m playwright install chromium`).
+- Dependencias de npm instaladas (`npm install`).
+- Playwright con Chromium (se descarga automáticamente al hacer `npm install`, pero puedes forzarlo con `npx playwright install chromium`).
+- En Linux necesitarás las dependencias del sistema para Chromium; puedes instalarlas con `npx playwright install-deps` (o el comando equivalente de tu distribución).
 
 ## Puesta en marcha
 
 ```bash
 cd server
 npm install
-pip install playwright
-python -m playwright install chromium
+npx playwright install chromium
 npm start
 ```
 
-> 💡 En Windows, si `npm start` muestra el error `no se encontró Python`, instala Python 3 y asegúrate de que `py` o `python`
-> estén disponibles en la variable PATH. También puedes crear un fichero `.env` en la carpeta `server` y definir `PYTHON_BIN`
-> con la ruta completa del ejecutable, por ejemplo `PYTHON_BIN="C:\\Python312\\python.exe"`.
+> 💡 El backend intentará descargar Chromium automáticamente si detecta que no está instalado. Si prefieres instalarlo manualmente
+> (por ejemplo, en entornos corporativos con proxies), ejecuta `npx playwright install chromium` antes de iniciar el servidor.
 
 Puedes usar el fichero [`server/.env.example`](./.env.example) como plantilla para tu configuración local.
 
@@ -39,11 +38,11 @@ Por defecto el servidor escucha en `http://localhost:8000` y expone las siguient
 | --- | --- | --- |
 | `PORT` | Puerto HTTP | `8000` |
 | `MARKET_REFRESH_CRON` | Cron para refrescos programados | `0 */6 * * *` |
-| `MARKET_REFRESH_MODE` | Modo del script (`full`, `ids`, etc.) | `full` |
+| `MARKET_REFRESH_MODE` | Modo de captura (`market` o `points`) | `market` |
 | `MARKET_REFRESH_ON_BOOT` | Ejecuta un refresco al arrancar (`true`/`false`) | `true` |
 | `MARKET_JSON_PATH` | Ruta absoluta o relativa para `market.json` | `../market.json` |
-| `PYTHON_BIN` | Ejecutable de Python (se detecta automáticamente entre `py`, `python`, `python3`) | *(detección automática)* |
-| `MARKET_SNIFFER_PATH` | Ruta al script de Playwright | `../sniff_market_json_v3_debug.py` |
+| `MARKET_SOURCE_URL` | URL desde la que se extraen los datos | `https://www.futbolfantasy.com/analytics/laliga-fantasy/mercado` |
+| `PLAYWRIGHT_HEADLESS` | Ejecuta Chromium en modo headless (`true`/`false`) | `true` |
 
 ## Despliegue
 
