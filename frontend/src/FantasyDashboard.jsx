@@ -201,15 +201,32 @@ const resolveMarketEndpoint = () => {
   }
 
   if (typeof window !== "undefined" && window?.location?.href) {
+    const { origin, pathname } = window.location;
+    const sanitizePathname = (value) => {
+      if (!value || value === "/") {
+        return "/";
+      }
+      const containsFileName = /\.[^/]+$/.test(value);
+      const base = containsFileName ? value.replace(/[^/]+$/, "") : value;
+      const withTrailingSlash = base.endsWith("/") ? base : `${base}/`;
+      return withTrailingSlash;
+    };
+
     try {
-      return new URL("market.json", window.location.href).toString();
-    } catch (error) {
+      const normalizedPath = sanitizePathname(pathname ?? "/");
+      if (origin && origin !== "null") {
+        return `${origin}${normalizedPath}market.json`;
+      }
+      if (normalizedPath === "/") {
+        return "market.json";
+      }
+      if (normalizedPath.startsWith("/")) {
+        return `${normalizedPath}market.json`;
+      }
+      return `/${normalizedPath}market.json`;
+    } catch {
       try {
-        const pathname = window.location?.pathname ?? "/";
-        const basePath = pathname.endsWith("/")
-          ? pathname
-          : pathname.replace(/[^/]+$/, "");
-        return `${basePath || "/"}market.json`;
+        return new URL("market.json", window.location.href).toString();
       } catch {
         /* ignore */
       }
