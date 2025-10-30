@@ -1662,19 +1662,7 @@ export default function FantasyTeamDashboard() {
   });
   const [sharedStateReady, setSharedStateReady] = useState(!isSharedSyncActive);
   const [sharedStateError, setSharedStateError] = useState(null);
-  const sharedSnapshotRef = useRef({
-    team: sanitizeStoredTeam(myTeam),
-    sales: sanitizeStoredSales(sales),
-    budget: sanitizeSharedBudget(presupuestoActual),
-    savedLineup: sanitizeLineupState(alineacionGuardada, formacionSeleccionada),
-    currentLineup: sanitizeLineupState(
-      { formation: formacionSeleccionada, slots: alineacion },
-      formacionSeleccionada
-    ),
-    matchday: sanitizeSharedMatchday(currentMatchday),
-    marketCache: sanitizeMarketCache(cacheMercado),
-    scoreCache: sanitizeScoreCache(cachePuntuaciones),
-  });
+  const sharedSnapshotRef = useRef({});
   const sharedPendingUpdateRef = useRef({});
   const sharedUpdateTimerRef = useRef(null);
   const budgetParsed = useMemo(
@@ -1691,51 +1679,59 @@ export default function FantasyTeamDashboard() {
     let firstSnapshot = true;
     const unsubscribe = listenToSharedDashboardState(
       (rawPayload) => {
-        const payload = rawPayload && typeof rawPayload === "object" ? rawPayload : {};
+        const payload =
+          rawPayload && typeof rawPayload === "object" ? rawPayload : null;
+        const nextSnapshot = {};
 
-        if (Object.prototype.hasOwnProperty.call(payload, "team")) {
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "team")) {
           const sanitized = sanitizeStoredTeam(payload.team);
-          sharedSnapshotRef.current.team = sanitized;
+          nextSnapshot.team = sanitized;
           setMyTeam((prev) => {
             const prevSanitized = sanitizeStoredTeam(prev);
             return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
           });
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "sales")) {
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "sales")) {
           const sanitized = sanitizeStoredSales(payload.sales);
-          sharedSnapshotRef.current.sales = sanitized;
+          nextSnapshot.sales = sanitized;
           setSales((prev) => {
             const prevSanitized = sanitizeStoredSales(prev);
             return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
           });
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "budget")) {
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "budget")) {
           const sanitized = sanitizeSharedBudget(payload.budget);
-          sharedSnapshotRef.current.budget = sanitized;
+          nextSnapshot.budget = sanitized;
           if (sanitized !== null && sanitized !== undefined) {
             setPresupuestoActual((prev) => (prev === sanitized ? prev : sanitized));
           }
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "savedLineup")) {
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "savedLineup")
+        ) {
           const sanitized = sanitizeLineupState(
             payload.savedLineup,
             formacionSeleccionada
           );
-          sharedSnapshotRef.current.savedLineup = sanitized;
+          nextSnapshot.savedLineup = sanitized;
           setAlineacionGuardada((prev) =>
             lineupStateEquals(prev, sanitized) ? prev : sanitized
           );
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "currentLineup")) {
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "currentLineup")
+        ) {
           const sanitized = sanitizeLineupState(
             payload.currentLineup,
             formacionSeleccionada
           );
-          sharedSnapshotRef.current.currentLineup = sanitized;
+          nextSnapshot.currentLineup = sanitized;
           if (sanitized) {
             setFormacionSeleccionada((prev) =>
               prev === sanitized.formation ? prev : sanitized.formation
@@ -1746,31 +1742,39 @@ export default function FantasyTeamDashboard() {
           }
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "matchday")) {
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "matchday")) {
           const sanitized = sanitizeSharedMatchday(payload.matchday);
-          sharedSnapshotRef.current.matchday = sanitized;
+          nextSnapshot.matchday = sanitized;
           if (sanitized !== null && sanitized !== undefined) {
             setCurrentMatchday((prev) => (prev === sanitized ? prev : sanitized));
           }
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "marketCache")) {
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "marketCache")
+        ) {
           const sanitized = sanitizeMarketCache(payload.marketCache);
-          sharedSnapshotRef.current.marketCache = sanitized;
+          nextSnapshot.marketCache = sanitized;
           setCacheMercado((prev) => {
             const prevSanitized = sanitizeMarketCache(prev);
             return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
           });
         }
 
-        if (Object.prototype.hasOwnProperty.call(payload, "scoreCache")) {
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "scoreCache")
+        ) {
           const sanitized = sanitizeScoreCache(payload.scoreCache);
-          sharedSnapshotRef.current.scoreCache = sanitized;
+          nextSnapshot.scoreCache = sanitized;
           setCachePuntuaciones((prev) => {
             const prevSanitized = sanitizeScoreCache(prev);
             return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
           });
         }
+
+        sharedSnapshotRef.current = nextSnapshot;
 
         if (firstSnapshot) {
           setSharedStateReady(true);

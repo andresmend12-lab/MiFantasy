@@ -15,6 +15,7 @@
   },
   "scripts": {
     "sync-market": "node ../scripts/sync-market-json.js",
+    "prestart": "npm run sync-market",
     "prebuild": "npm run sync-market",
     "start": "react-scripts start",
     "build": "react-scripts build",
