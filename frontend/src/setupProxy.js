@@ -1,10 +1,8 @@
 const { spawn } = require("child_process");
-const fs = require("fs/promises");
 const path = require("path");
 
 const repoRoot = path.resolve(__dirname, "..", "..");
-const marketJsonSource = path.join(repoRoot, "market.json");
-const marketJsonDestination = path.join(repoRoot, "frontend", "public", "market.json");
+const { syncMarketJson } = require("../../scripts/sync-market-json");
 
 const getPythonExecutable = () => {
   if (process.env.MIFANTASY_PYTHON) {
@@ -14,12 +12,6 @@ const getPythonExecutable = () => {
     return process.env.PYTHON;
   }
   return process.platform === "win32" ? "python" : "python3";
-};
-
-const copyMarketJson = async () => {
-  await fs.mkdir(path.dirname(marketJsonDestination), { recursive: true });
-  await fs.copyFile(marketJsonSource, marketJsonDestination);
-  return marketJsonDestination;
 };
 
 const runPythonScript = (scriptName, args = []) =>
@@ -94,7 +86,7 @@ const respondWithError = (res, type, error) => {
 const handleSnifferRequest = (res, type, scriptName, args = []) =>
   runPythonScript(scriptName, args)
     .then((result) =>
-      copyMarketJson().then(() =>
+      syncMarketJson({ quiet: true }).then(() =>
         res.json({
           success: true,
           command: result.command,

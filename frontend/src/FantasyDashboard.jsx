@@ -1,4 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import marketFallbackData from "./data/market.json";
+import {
+  isSharedSyncSupported,
+  listenToSharedDashboardState,
+  queueSharedDashboardUpdate,
+} from "./sharedState";
 
 const normalizeText = (value) =>
   typeof value === "string" ? value : value ? String(value) : "";
@@ -1016,6 +1022,93 @@ const lineupEquals = (a, b) => {
   });
 };
 
+const canonicalizeValue = (value) => {
+  if (Array.isArray(value)) {
+    return value.map(canonicalizeValue);
+  }
+  if (value instanceof Date) {
+    return value.toISOString();
+  }
+  if (value && typeof value.toDate === "function") {
+    try {
+      return value.toDate().toISOString();
+    } catch {
+      return null;
+    }
+  }
+  if (value && typeof value === "object") {
+    return Object.keys(value)
+      .sort()
+      .reduce((acc, key) => {
+        const sanitized = canonicalizeValue(value[key]);
+        if (sanitized !== undefined) {
+          acc[key] = sanitized;
+        }
+        return acc;
+      }, {});
+  }
+  if (typeof value === "number") {
+    if (!Number.isFinite(value) || Number.isNaN(value)) {
+      return null;
+    }
+  }
+  return value;
+};
+
+const deepEqual = (a, b) => {
+  if (a === b) return true;
+  try {
+    return (
+      JSON.stringify(canonicalizeValue(a)) ===
+      JSON.stringify(canonicalizeValue(b))
+    );
+  } catch {
+    return false;
+  }
+};
+
+const sanitizeSharedBudget = (value) => {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const num = Number(value);
+  return Number.isFinite(num) ? num : null;
+};
+
+const sanitizeSharedMatchday = (value) => {
+  const clamped = clampMatchday(value);
+  return clamped ?? null;
+};
+
+const sanitizeLineupState = (data, fallbackFormation = DEFAULT_FORMATION) => {
+  if (!data) return null;
+  const formationCandidate =
+    typeof data.formation === "string" && data.formation.trim()
+      ? data.formation
+      : fallbackFormation;
+  const formation = FORMATIONS.includes(formationCandidate)
+    ? formationCandidate
+    : DEFAULT_FORMATION;
+  const slots = ensureLineupShape(data.slots ?? data, formation);
+  return { formation, slots };
+};
+
+const lineupStateEquals = (a, b) => {
+  if (a === b) return true;
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  const formationA = FORMATIONS.includes(a.formation)
+    ? a.formation
+    : DEFAULT_FORMATION;
+  const formationB = FORMATIONS.includes(b.formation)
+    ? b.formation
+    : DEFAULT_FORMATION;
+  if (formationA !== formationB) {
+    return false;
+  }
+  return lineupEquals(a.slots, b.slots);
+};
+
 const flattenLineupKeys = (lineup) => {
   if (!lineup) return [];
   const values = [];
@@ -1475,6 +1568,7 @@ const sanitizeStoredSales = (entries) => {
 };
 
 export default function FantasyTeamDashboard() {
+  const isSharedSyncActive = isSharedSyncSupported();
   const [market, setMarket] = useState({ updated_at: null, players: [] });
   const [query, setQuery] = useState("");
   const [myTeam, setMyTeam] = useState(() => {
@@ -1567,10 +1661,349 @@ export default function FantasyTeamDashboard() {
     }
     return DEFAULT_MATCHDAY;
   });
+  const [sharedStateReady, setSharedStateReady] = useState(!isSharedSyncActive);
+  const [sharedStateError, setSharedStateError] = useState(null);
+  const sharedSnapshotRef = useRef({});
+  const sharedPendingUpdateRef = useRef({});
+  const sharedUpdateTimerRef = useRef(null);
   const budgetParsed = useMemo(
     () => toOptionalNumber(budgetDraft),
     [budgetDraft]
   );
+
+  useEffect(() => {
+    if (!isSharedSyncActive) {
+      setSharedStateReady(true);
+      return () => {};
+    }
+
+    let firstSnapshot = true;
+    const unsubscribe = listenToSharedDashboardState(
+      (rawPayload) => {
+        const payload =
+          rawPayload && typeof rawPayload === "object" ? rawPayload : null;
+        const nextSnapshot = {};
+
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "team")) {
+          const sanitized = sanitizeStoredTeam(payload.team);
+          nextSnapshot.team = sanitized;
+          setMyTeam((prev) => {
+            const prevSanitized = sanitizeStoredTeam(prev);
+            return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
+          });
+        }
+
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "sales")) {
+          const sanitized = sanitizeStoredSales(payload.sales);
+          nextSnapshot.sales = sanitized;
+          setSales((prev) => {
+            const prevSanitized = sanitizeStoredSales(prev);
+            return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
+          });
+        }
+
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "budget")) {
+          const sanitized = sanitizeSharedBudget(payload.budget);
+          nextSnapshot.budget = sanitized;
+          if (sanitized !== null && sanitized !== undefined) {
+            setPresupuestoActual((prev) => (prev === sanitized ? prev : sanitized));
+          }
+        }
+
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "savedLineup")
+        ) {
+          const sanitized = sanitizeLineupState(
+            payload.savedLineup,
+            formacionSeleccionada
+          );
+          nextSnapshot.savedLineup = sanitized;
+          setAlineacionGuardada((prev) =>
+            lineupStateEquals(prev, sanitized) ? prev : sanitized
+          );
+        }
+
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "currentLineup")
+        ) {
+          const sanitized = sanitizeLineupState(
+            payload.currentLineup,
+            formacionSeleccionada
+          );
+          nextSnapshot.currentLineup = sanitized;
+          if (sanitized) {
+            setFormacionSeleccionada((prev) =>
+              prev === sanitized.formation ? prev : sanitized.formation
+            );
+            setAlineacion((prev) =>
+              lineupEquals(prev, sanitized.slots) ? prev : sanitized.slots
+            );
+          }
+        }
+
+        if (payload && Object.prototype.hasOwnProperty.call(payload, "matchday")) {
+          const sanitized = sanitizeSharedMatchday(payload.matchday);
+          nextSnapshot.matchday = sanitized;
+          if (sanitized !== null && sanitized !== undefined) {
+            setCurrentMatchday((prev) => (prev === sanitized ? prev : sanitized));
+          }
+        }
+
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "marketCache")
+        ) {
+          const sanitized = sanitizeMarketCache(payload.marketCache);
+          nextSnapshot.marketCache = sanitized;
+          setCacheMercado((prev) => {
+            const prevSanitized = sanitizeMarketCache(prev);
+            return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
+          });
+        }
+
+        if (
+          payload &&
+          Object.prototype.hasOwnProperty.call(payload, "scoreCache")
+        ) {
+          const sanitized = sanitizeScoreCache(payload.scoreCache);
+          nextSnapshot.scoreCache = sanitized;
+          setCachePuntuaciones((prev) => {
+            const prevSanitized = sanitizeScoreCache(prev);
+            return deepEqual(prevSanitized, sanitized) ? prev : sanitized;
+          });
+        }
+
+        sharedSnapshotRef.current = nextSnapshot;
+
+        if (firstSnapshot) {
+          setSharedStateReady(true);
+          firstSnapshot = false;
+        }
+      },
+      (error) => {
+        if (firstSnapshot) {
+          setSharedStateReady(true);
+          firstSnapshot = false;
+        }
+        setSharedStateError((prev) => prev ?? error);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, [
+    isSharedSyncActive,
+    formacionSeleccionada,
+    setMyTeam,
+    setSales,
+    setPresupuestoActual,
+    setAlineacionGuardada,
+    setFormacionSeleccionada,
+    setAlineacion,
+    setCurrentMatchday,
+    setCacheMercado,
+    setCachePuntuaciones,
+  ]);
+
+  useEffect(
+    () => () => {
+      if (sharedUpdateTimerRef.current) {
+        clearTimeout(sharedUpdateTimerRef.current);
+        sharedUpdateTimerRef.current = null;
+      }
+    },
+    []
+  );
+
+  const enqueueSharedUpdate = useCallback(
+    (partial) => {
+      if (!isSharedSyncActive || !sharedStateReady) {
+        return;
+      }
+      if (!partial || typeof partial !== "object") {
+        return;
+      }
+
+      const entries = Object.entries(partial).filter(
+        ([, value]) => value !== undefined
+      );
+      if (!entries.length) {
+        return;
+      }
+
+      sharedPendingUpdateRef.current = {
+        ...sharedPendingUpdateRef.current,
+        ...Object.fromEntries(entries),
+      };
+
+      if (sharedUpdateTimerRef.current) {
+        return;
+      }
+
+      sharedUpdateTimerRef.current = setTimeout(() => {
+        sharedUpdateTimerRef.current = null;
+        const payload = sharedPendingUpdateRef.current;
+        sharedPendingUpdateRef.current = {};
+        if (!Object.keys(payload).length) {
+          return;
+        }
+        queueSharedDashboardUpdate(payload).catch((error) => {
+          setSharedStateError((prev) => prev ?? error);
+        });
+      }, 250);
+    },
+    [isSharedSyncActive, sharedStateReady]
+  );
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeStoredTeam(myTeam);
+    if (deepEqual(sharedSnapshotRef.current.team, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.team = sanitized;
+    enqueueSharedUpdate({ team: sanitized });
+  }, [
+    myTeam,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeStoredSales(sales);
+    if (deepEqual(sharedSnapshotRef.current.sales, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.sales = sanitized;
+    enqueueSharedUpdate({ sales: sanitized });
+  }, [
+    sales,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeSharedBudget(presupuestoActual);
+    if (sanitized === null || sanitized === undefined) {
+      return;
+    }
+    if (sharedSnapshotRef.current.budget === sanitized) {
+      return;
+    }
+    sharedSnapshotRef.current.budget = sanitized;
+    enqueueSharedUpdate({ budget: sanitized });
+  }, [
+    presupuestoActual,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeLineupState(alineacionGuardada, formacionSeleccionada);
+    if (lineupStateEquals(sharedSnapshotRef.current.savedLineup, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.savedLineup = sanitized;
+    enqueueSharedUpdate({ savedLineup: sanitized });
+  }, [
+    alineacionGuardada,
+    formacionSeleccionada,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeLineupState(
+      { formation: formacionSeleccionada, slots: alineacion },
+      formacionSeleccionada
+    );
+    if (lineupStateEquals(sharedSnapshotRef.current.currentLineup, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.currentLineup = sanitized;
+    enqueueSharedUpdate({ currentLineup: sanitized });
+  }, [
+    alineacion,
+    formacionSeleccionada,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeSharedMatchday(currentMatchday);
+    if (sanitized === null || sanitized === undefined) {
+      return;
+    }
+    if (sharedSnapshotRef.current.matchday === sanitized) {
+      return;
+    }
+    sharedSnapshotRef.current.matchday = sanitized;
+    enqueueSharedUpdate({ matchday: sanitized });
+  }, [
+    currentMatchday,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeMarketCache(cacheMercado);
+    if (deepEqual(sharedSnapshotRef.current.marketCache, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.marketCache = sanitized;
+    enqueueSharedUpdate({ marketCache: sanitized });
+  }, [
+    cacheMercado,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
+
+  useEffect(() => {
+    if (!isSharedSyncActive || !sharedStateReady) {
+      return;
+    }
+    const sanitized = sanitizeScoreCache(cachePuntuaciones);
+    if (deepEqual(sharedSnapshotRef.current.scoreCache, sanitized)) {
+      return;
+    }
+    sharedSnapshotRef.current.scoreCache = sanitized;
+    enqueueSharedUpdate({ scoreCache: sanitized });
+  }, [
+    cachePuntuaciones,
+    isSharedSyncActive,
+    sharedStateReady,
+    enqueueSharedUpdate,
+  ]);
   const budgetIsValid = budgetParsed !== null;
 
   const MARKET_URL = MARKET_ENDPOINT;
@@ -1599,6 +2032,16 @@ export default function FantasyTeamDashboard() {
     },
     [removeToast]
   );
+
+  useEffect(() => {
+    if (!sharedStateError) {
+      return;
+    }
+    pushToast(
+      "No se pudo sincronizar el estado compartido en la nube. Tus cambios serán locales.",
+      { type: "warning", duration: 6000 }
+    );
+  }, [sharedStateError, pushToast]);
 
   const updatePlayerState = useCallback((playerId, updates) => {
     const id =
@@ -1811,20 +2254,51 @@ export default function FantasyTeamDashboard() {
   );
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
+      setStatus("cargando");
+      let data = null;
       try {
-        setStatus("cargando");
         const res = await fetch(MARKET_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("No se pudo descargar market.json");
-        const data = await res.json();
-        applyMarketPayload(data);
-        setStatus("ok");
+        data = await res.json();
       } catch (e) {
         console.error(e);
-        setStatus("error");
       }
+
+      if (cancelled) {
+        return;
+      }
+
+      if (data && typeof data === "object") {
+        applyMarketPayload(data);
+        setStatus("ok");
+        return;
+      }
+
+      try {
+        if (marketFallbackData && typeof marketFallbackData === "object") {
+          applyMarketPayload(marketFallbackData);
+          if (typeof console !== "undefined" && console.info) {
+            console.info(
+              "Usando market.json empaquetado como respaldo porque no se pudo descargar la versión hospedada"
+            );
+          }
+          setStatus("ok");
+          return;
+        }
+      } catch (fallbackError) {
+        console.error(fallbackError);
+      }
+
+      setStatus("error");
     };
+
     load();
+
+    return () => {
+      cancelled = true;
+    };
   }, [applyMarketPayload]);
 
   useEffect(() => {
