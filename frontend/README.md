@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# MiFantasy (frontend)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicación web creada con Create React App que permite gestionar tu equipo de LaLiga Fantasy desde cualquier dispositivo. Esta versión incorpora autenticación con Firebase y está preparada para desplegarse automáticamente en GitHub Pages en la URL `https://andresmend12-lab.github.io/MiFantasy/`.
 
-## Available Scripts
+## Requisitos previos
 
-In the project directory, you can run:
+- Node.js 18 o superior.
+- Una cuenta de Firebase con un proyecto configurado para usar **Email/Password Authentication**.
+- Acceso al repositorio de GitHub `andresmend12-lab/MiFantasy` con GitHub Pages habilitado.
 
-### `npm start`
+## Configuración inicial
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1. Instala las dependencias:
+   ```bash
+   cd frontend
+   npm install
+   ```
+2. Duplica el archivo [`public/firebase-config.template.js`](public/firebase-config.template.js) como `public/firebase-config.js` y rellena los datos del proyecto de Firebase (pueden copiarse desde la consola de Firebase > Configuración del proyecto > Tus apps > SDK de Firebase para la Web).
+3. Activa el proveedor de autenticación Email/Password desde la consola de Firebase (`Build > Authentication > Sign-in method`).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+> ⚠️ Los valores del archivo `firebase-config.js` son públicos. No incluyas claves secretas ni credenciales privadas.
 
-### `npm test`
+## Desarrollo local
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+cd frontend
+npm start
+```
 
-### `npm run build`
+El proyecto se abrirá en [http://localhost:3000](http://localhost:3000). Al no existir un backend público, la acción “Actualizar valor de mercado” permanecerá deshabilitada; puedes seguir usando las herramientas de edición manual para mantener tus datos al día.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Ejecutar tests
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd frontend
+npm test
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Despliegue manual en GitHub Pages
 
-### `npm run eject`
+1. Asegúrate de tener el archivo `firebase-config.js` con los valores correctos.
+2. Ejecuta el build y publica el contenido:
+   ```bash
+   cd frontend
+   npm run deploy
+   ```
+3. GitHub Pages actualizará automáticamente el contenido en la URL indicada.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Despliegue automático (GitHub Actions)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Este repositorio incluye un workflow (`.github/workflows/deploy.yml`) que construye y publica la aplicación cada vez que se fusiona código en la rama `main`. El workflow utiliza los scripts de npm definidos en `package.json` y despliega el contenido generado en la rama `gh-pages`.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Variables de entorno útiles
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- `REACT_APP_FIREBASE_API_KEY`, `REACT_APP_FIREBASE_AUTH_DOMAIN`, etc.: Alternativa al archivo `firebase-config.js` para inyectar la configuración desde variables de entorno durante el build.
+- `REACT_APP_ENABLE_MARKET_SNIFFER`: Establécela en `true` únicamente si cuentas con un backend accesible que implemente los endpoints `/api/sniff/*`.
+- `REACT_APP_MARKET_SNIFFER_ENDPOINT`: URL completa del endpoint que ejecuta la actualización del mercado.
 
-## Learn More
+## Nota sobre el backend
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+La recopilación automática de mercado depende de los scripts Python existentes y de un endpoint (`/api/sniff/market`). En entornos serverless (como GitHub Pages) necesitarás desplegar estos scripts como función en la nube (Firebase Functions, Cloud Run, etc.) y actualizar la variable `REACT_APP_MARKET_SNIFFER_ENDPOINT`. Mientras no exista dicho backend, el botón de actualización mostrará un mensaje informativo y permanecerá deshabilitado.

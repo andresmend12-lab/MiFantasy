@@ -1,7 +1,27 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import FantasyTeamDashboard, {
-  sniff_market_json_v3_debug_market,
-} from "./FantasyDashboard";
+
+jest.mock("./auth/AuthContext", () => ({
+  useAuth: () => ({
+    user: { uid: "test-user", email: "test@example.com" },
+    loading: false,
+    error: null,
+    configError: null,
+    signIn: jest.fn(),
+    register: jest.fn(),
+    signOut: jest.fn(),
+  }),
+}));
+
+let FantasyTeamDashboard;
+let sniff_market_json_v3_debug_market;
+
+beforeAll(async () => {
+  process.env.REACT_APP_ENABLE_MARKET_SNIFFER = "true";
+  process.env.PUBLIC_URL = "";
+  const module = await import("./FantasyDashboard");
+  FantasyTeamDashboard = module.default;
+  sniff_market_json_v3_debug_market = module.sniff_market_json_v3_debug_market;
+});
 
 describe("FantasyTeamDashboard", () => {
   const originalFetch = global.fetch;

@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 
-test("muestra el título principal", () => {
+test("informa si falta la configuración pública de Firebase", () => {
   render(<App />);
   expect(
-    screen.getByRole("heading", { name: /mi equipo – laliga fantasy/i })
+    screen.getByText(/configuración de firebase incompleta/i)
   ).toBeInTheDocument();
 });

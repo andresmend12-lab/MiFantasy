@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from "./auth/AuthContext";
 
 const normalizeText = (value) =>
   typeof value === "string" ? value : value ? String(value) : "";
@@ -182,15 +183,51 @@ const fmtEUR = new Intl.NumberFormat("es-ES", {
   maximumFractionDigits: 2,
 });
 
+const appendBasePath = (resourcePath) => {
+  if (typeof resourcePath !== "string") {
+    return "/";
+  }
+  const trimmed = resourcePath.trim();
+  if (!trimmed) {
+    return "/";
+  }
+  if (/^https?:\/\//i.test(trimmed)) {
+    return trimmed;
+  }
+  if (trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  const sanitizedPath = trimmed.replace(/^\/+/, "");
+  const publicUrl = process.env.PUBLIC_URL;
+  if (!publicUrl) {
+    return `/${sanitizedPath}`;
+  }
+  try {
+    const url = new URL(publicUrl);
+    const basePath = url.pathname.replace(/\/+$/, "");
+    const combined = `${basePath}/${sanitizedPath}`;
+    return combined ? combined.replace(/\/{2,}/g, "/") : `/${sanitizedPath}`;
+  } catch {
+    const normalizedBase = publicUrl.replace(/\/+$/, "");
+    const prefix = normalizedBase.startsWith("/")
+      ? normalizedBase
+      : `/${normalizedBase}`;
+    return `${prefix}/${sanitizedPath}`.replace(/\/{2,}/g, "/");
+  }
+};
+
 const MARKET_CACHE_STORAGE_KEY = "playerMarketCache";
 const SCORE_CACHE_STORAGE_KEY = "playerScoresCache";
-const MARKET_ENDPOINT = "/market.json";
+const MARKET_ENDPOINT = appendBasePath("market.json");
 const SCORE_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const MAX_MATCHDAYS = 38;
 const DEFAULT_MATCHDAY = 9;
 const MATCHDAY_STORAGE_KEY = "teamCurrentMatchday";
 
-const MARKET_SNIFFER_ENDPOINT = "/api/sniff/market";
+const MARKET_SNIFFER_ENDPOINT =
+  process.env.REACT_APP_MARKET_SNIFFER_ENDPOINT || "/api/sniff/market";
+const MARKET_SNIFFER_AVAILABLE =
+  process.env.REACT_APP_ENABLE_MARKET_SNIFFER === "true";
 
 const getSnifferFriendlyName = (type) =>
   type === "points"
@@ -203,6 +240,14 @@ async function executeSnifferCommand({ type = null, endpoint = null } = {}) {
   const resolvedEndpoint = endpoint ?? (type === "market" ? MARKET_SNIFFER_ENDPOINT : null);
   if (!resolvedEndpoint) {
     return null;
+  }
+  if (!MARKET_SNIFFER_AVAILABLE) {
+    const error = new Error(
+      "La actualización automática del mercado no está disponible en la versión web."
+    );
+    error.isSnifferCommandError = true;
+    error.code = "sniffer-disabled";
+    throw error;
   }
   if (typeof fetch !== "function") {
     const error = new Error(
@@ -1475,6 +1520,7 @@ const sanitizeStoredSales = (entries) => {
 };
 
 export default function FantasyTeamDashboard() {
+  const { user, signOut: signOutUser } = useAuth();
   const [market, setMarket] = useState({ updated_at: null, players: [] });
   const [query, setQuery] = useState("");
   const [myTeam, setMyTeam] = useState(() => {
@@ -1551,6 +1597,8 @@ export default function FantasyTeamDashboard() {
   const [budgetDraft, setBudgetDraft] = useState("");
   const [marketSnifferRunning, setMarketSnifferRunning] = useState(false);
   const [manualUpdateRunning, setManualUpdateRunning] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const signingOutRef = useRef(false);
   const [toasts, setToasts] = useState([]);
   const toastIdRef = useRef(0);
   const [currentMatchday, setCurrentMatchday] = useState(() => {
@@ -1599,6 +1647,26 @@ export default function FantasyTeamDashboard() {
     },
     [removeToast]
   );
+
+  const handleSignOut = useCallback(async () => {
+    if (signingOutRef.current) {
+      return;
+    }
+    signingOutRef.current = true;
+    setSigningOut(true);
+    try {
+      await signOutUser();
+      pushToast("Sesión cerrada correctamente.", { type: "success" });
+    } catch (error) {
+      console.error("No se pudo cerrar la sesión", error);
+      pushToast("No se pudo cerrar la sesión. Inténtalo de nuevo.", {
+        type: "error",
+      });
+    } finally {
+      signingOutRef.current = false;
+      setSigningOut(false);
+    }
+  }, [pushToast, signOutUser]);
 
   const updatePlayerState = useCallback((playerId, updates) => {
     const id =
@@ -2667,6 +2735,13 @@ export default function FantasyTeamDashboard() {
   }, [applyMarketPayload]);
 
   const handleMarketSniffer = useCallback(async () => {
+    if (!MARKET_SNIFFER_AVAILABLE) {
+      pushToast(
+        "La actualización automática no está disponible en la versión publicada de MiFantasy.",
+        { type: "info" }
+      );
+      return;
+    }
     if (marketSnifferRunning) return;
     setMarketSnifferRunning(true);
     try {
@@ -4012,23 +4087,41 @@ export default function FantasyTeamDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 p-6">
       <div className="mx-auto max-w-6xl space-y-6">
-        <header className="flex items-center justify-between">
-          <h1 className="text-2xl md:text-3xl font-bold">
-            Mi equipo – LaLiga Fantasy
-          </h1>
-          <div className="text-sm text-gray-600">
-            {status === "ok" && (
-              <span>
-                Última actualización: {" "}
-                {market.updated_at
-                  ? new Date(market.updated_at).toLocaleString("es-ES")
-                  : "desconocida"}
+        <header className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold">
+              Mi equipo – LaLiga Fantasy
+            </h1>
+            <div className="text-sm text-gray-600">
+              {status === "ok" && (
+                <span>
+                  Última actualización: {" "}
+                  {market.updated_at
+                    ? new Date(market.updated_at).toLocaleString("es-ES")
+                    : "desconocida"}
+                </span>
+              )}
+              {status === "cargando" && <span>Cargando mercado…</span>}
+              {status === "error" && (
+                <span className="text-red-600">Error al cargar market.json</span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-3 rounded-full bg-white/80 px-4 py-2 text-sm text-gray-700 shadow">
+            <div className="flex flex-col text-right">
+              <span className="font-semibold">
+                {user?.displayName ?? user?.email ?? "Usuario"}
               </span>
-            )}
-            {status === "cargando" && <span>Cargando mercado…</span>}
-            {status === "error" && (
-              <span className="text-red-600">Error al cargar market.json</span>
-            )}
+              <span className="text-xs text-gray-500">Sesión activa</span>
+            </div>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              disabled={signingOut}
+              className="rounded-full bg-gray-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-gray-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+            >
+              {signingOut ? "Cerrando…" : "Cerrar sesión"}
+            </button>
           </div>
         </header>
 
@@ -4037,12 +4130,22 @@ export default function FantasyTeamDashboard() {
             type="button"
             className="rounded-full bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white shadow hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-300"
             onClick={handleMarketSniffer}
-            disabled={marketSnifferRunning}
+            disabled={!MARKET_SNIFFER_AVAILABLE || marketSnifferRunning}
+            title={
+              MARKET_SNIFFER_AVAILABLE
+                ? undefined
+                : "Disponible únicamente cuando se configure un backend compatible"
+            }
           >
             {marketSnifferRunning
               ? "Actualizando mercado…"
               : "Actualizar valor de mercado"}
           </button>
+          {!MARKET_SNIFFER_AVAILABLE && (
+            <span className="text-xs text-gray-500">
+              Necesitas un backend (por ejemplo, funciones de Firebase) para activar la actualización automática.
+            </span>
+          )}
           <label className="flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm text-gray-700 shadow-sm ring-1 ring-inset ring-gray-200">
             <span>Jornada actual</span>
             <input
