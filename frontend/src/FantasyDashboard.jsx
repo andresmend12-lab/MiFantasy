@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import marketFallbackData from "./data/market.json";
 import {
   isSharedSyncSupported,
   listenToSharedDashboardState,
@@ -2253,20 +2254,51 @@ export default function FantasyTeamDashboard() {
   );
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
+      setStatus("cargando");
+      let data = null;
       try {
-        setStatus("cargando");
         const res = await fetch(MARKET_URL, { cache: "no-store" });
         if (!res.ok) throw new Error("No se pudo descargar market.json");
-        const data = await res.json();
-        applyMarketPayload(data);
-        setStatus("ok");
+        data = await res.json();
       } catch (e) {
         console.error(e);
-        setStatus("error");
       }
+
+      if (cancelled) {
+        return;
+      }
+
+      if (data && typeof data === "object") {
+        applyMarketPayload(data);
+        setStatus("ok");
+        return;
+      }
+
+      try {
+        if (marketFallbackData && typeof marketFallbackData === "object") {
+          applyMarketPayload(marketFallbackData);
+          if (typeof console !== "undefined" && console.info) {
+            console.info(
+              "Usando market.json empaquetado como respaldo porque no se pudo descargar la versión hospedada"
+            );
+          }
+          setStatus("ok");
+          return;
+        }
+      } catch (fallbackError) {
+        console.error(fallbackError);
+      }
+
+      setStatus("error");
     };
+
     load();
+
+    return () => {
+      cancelled = true;
+    };
   }, [applyMarketPayload]);
 
   useEffect(() => {

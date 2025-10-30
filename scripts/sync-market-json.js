@@ -4,6 +4,14 @@ const path = require("path");
 const repoRoot = path.resolve(__dirname, "..");
 const defaultSource = path.join(repoRoot, "market.json");
 const defaultDestination = path.join(repoRoot, "frontend", "public", "market.json");
+const defaultExtraDestinations = [
+  path.join(repoRoot, "frontend", "src", "data", "market.json"),
+];
+
+async function copyFileWithDirs(source, destination) {
+  await fs.mkdir(path.dirname(destination), { recursive: true });
+  await fs.copyFile(source, destination);
+}
 
 async function ensureFileExists(filePath) {
   try {
@@ -21,16 +29,30 @@ async function ensureFileExists(filePath) {
 }
 
 async function syncMarketJson(options = {}) {
-  const { source = defaultSource, destination = defaultDestination, quiet = false } = options;
+  const {
+    source = defaultSource,
+    destinations,
+    quiet = false,
+  } = options;
   await ensureFileExists(source);
-  await fs.mkdir(path.dirname(destination), { recursive: true });
-  await fs.copyFile(source, destination);
-  if (!quiet) {
-    const relativeSource = path.relative(repoRoot, source);
-    const relativeDestination = path.relative(repoRoot, destination);
-    console.log(`[sync-market-json] Copiado ${relativeSource} -> ${relativeDestination}`);
+  const targets = destinations && destinations.length
+    ? destinations
+    : [defaultDestination, ...defaultExtraDestinations];
+
+  const relativeSource = path.relative(repoRoot, source);
+  const results = [];
+  for (const destination of targets) {
+    await copyFileWithDirs(source, destination);
+    results.push(destination);
+    if (!quiet) {
+      const relativeDestination = path.relative(repoRoot, destination);
+      console.log(
+        `[sync-market-json] Copiado ${relativeSource} -> ${relativeDestination}`
+      );
+    }
   }
-  return { source, destination };
+
+  return { source, destinations: results };
 }
 
 module.exports = { syncMarketJson };
